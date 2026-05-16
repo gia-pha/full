@@ -1,4 +1,6 @@
 là một thành viên trong họ tộc:
+* tôi muốn xem tôi đang thuộc những dòng họ nào (theo cha, theo mẹ, theo vợ/chồng)
+* tôi muốn chuyển đổi giữa các dòng họ để xem thông tin, cây phả hệ của từng dòng
 * tôi mong muốn được thấy các thành viên trong họ tộc, cũng như mối quan hệ với tôi
 * tôi mong muốn biết được cách xưng hô với những người trong họ tộc để dễ dàng giao tiếp
 * tôi muốn biết được thông tin về họ tộc của tôi: lịch sử, nguồn gốc, ngày giỗ tỗ, nhà thờ họ, vị trí thôn. vĩ nhân trong dòng họ, hình ảnh họ tộc...
