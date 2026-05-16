@@ -1,0 +1,374 @@
+{
+  "vi": {
+    "app": {
+      "title": "Gia Phai - Ho Toc Vi Viet",
+      "sidebar": {
+        "tree": "Cay pho he",
+        "members": "Thanh vien",
+        "clanInfo": "Thong tin ho toc",
+        "events": "Su kien",
+        "funds": "Quyi ho toc",
+        "admin": "Quan tri",
+        "notifications": "Thong bao",
+        "settings": "Cai dat",
+        "profile": "Ho so ca nhan",
+        "logout": "Dang xuat",
+        "publicPage": "Trang cong khai",
+        "invite": "Moi thanh vien",
+        "language": "Ngôn ngữ",
+        "clans": "Dong ho"
+      }
+    },
+    "tree": {
+      "title": "Cay pho he",
+      "expand": "Mo ro",
+      "collapse": "Thu nho",
+      "search": "Tim kiem thanh vien",
+      "zoomIn": "Phong to",
+      "zoomOut": "Thu nho",
+      "reset": "Dat lai",
+      "currentPerson": "Ban",
+      "deceased": "Da qua dot",
+      "generation": "The hе"
+    },
+    "member": {
+      "title": "Thong tin thanh vien",
+      "name": "Ho ten",
+      "gender": "Gioi tinh",
+      "male": "Nam",
+      "female": "Nu",
+      "birthYear": "Nam sinh",
+      "deathYear": "Nam quit",
+      "generation": "The hе",
+      "spouse": "Nguoi phoi ngau",
+      "parent": "Cha/me",
+      "children": "Con cai",
+      "relationship": "Moi quan he voi ban",
+      "honorific": "Way xung ho",
+      "role": "Vai tro",
+      "notes": "Ghi chu",
+      "edit": "Chinh sua",
+      "delete": "Xoa",
+      "basicInfo": "Thong tin co ban",
+      "detailedInfo": "Thong tin chi tiet",
+      "limitedAccess": "Chi xem duoc thong tin co ban"
+    },
+    "clan": {
+      "title": "Thong tin ho toc",
+      "history": "Lich su",
+      "origin": "Nguon goc",
+      "memorialDate": "Ngay giô to",
+      "clanHouse": "Nha tho ho",
+      "village": "Thon",
+      "notableFigures": "Vi nhan",
+      "images": "Hinh anh ho toc",
+      "publicUrl": "Link cong khai",
+      "copyLink": "Sao chep link",
+      "lineage": {
+        "father": "Theo cha",
+        "mother": "Theo me",
+        "spouse": "Theo vo/chong"
+      }
+    },
+    "events": {
+      "title": "Su kien ho toc",
+      "past": "Da dien ra",
+      "upcoming": "Se dien ra",
+      "date": "Thoi gian",
+      "location": "Dia diem",
+      "description": "Mo ta",
+      "images": "Hinh anh",
+      "attendees": "Nguoi tham du",
+      "viewMap": "Xem ban do",
+      "addToCalendar": "Them vao lich",
+      "addEvent": "Them su kien",
+      "editEvent": "Chinh sua su kien",
+      "deleteEvent": "Xoa su kien",
+      "type": {
+        "memorial": "Le giô to",
+        "meeting": "Hoi nghi",
+        "reunion": "Quen ma",
+        "anniversary": "Ky niem"
+      }
+    },
+    "fund": {
+      "title": "Quyi ho toc",
+      "balance": "So du hien tai",
+      "contributions": "Dong gap",
+      "expenses": "Chi tieu",
+      "transactions": "Giao dich",
+      "amount": "So tien",
+      "date": "Ngay",
+      "description": "Mo ta",
+      "person": "Nguoi",
+      "event": "Su kien",
+      "addContribution": "Them dong gap",
+      "addExpense": "Them chi tieu",
+      "chartTitle": "Bieu do theo thang",
+      "totalContributions": "Tong dong gap",
+      "totalExpenses": "Tong chi tieu"
+    },
+    "admin": {
+      "title": "Quan tri ho toc",
+      "members": "Danh sach thanh vien",
+      "roles": "Vai tro",
+      "editRole": "Chinh sua vai tro",
+      "resetAccount": "Dat lai tai khoan",
+      "importGedcom": "Nhap GEDCOM",
+      "exportGedcom": "Xuat GEDCOM",
+      "designateAdmin": "Chi dinh admin",
+      "roles": {
+        "admin": "Quan tri",
+        "treasurer": "Thu quyi",
+        "editor": "Bien tap",
+        "member": "Thanh vien"
+      }
+    },
+    "notifications": {
+      "title": "Thong bao",
+      "markRead": "Dau da doc",
+      "markAllRead": "Dau tat ca da doc",
+      "preferences": "So thich thong bao",
+      "fundChanges": "Bien dong quyi",
+      "newEvents": "Su kien moi",
+      "memberJoins": "Thanh vien moi",
+      "memorialDates": "Nho ngay giô to",
+      "delete": "Xoa thong bao"
+    },
+    "auth": {
+      "login": "Dang nhap",
+      "register": "Dang ky",
+      "email": "Email",
+      "password": "Mat khau",
+      "name": "Ho ten",
+      "joinClan": "Tham gia ho toc",
+      "inviteCode": "Ma moi",
+      "forgotPassword": "Quen mat khau"
+    },
+    "profile": {
+      "title": "Ho so ca nhan",
+      "edit": "Chinh sua",
+      "name": "Ho ten",
+      "birthYear": "Nam sinh",
+      "gender": "Gioi tinh",
+      "spouse": "Nguoi phoi ngau",
+      "save": "Luu",
+      "cancel": "Huy",
+      "deleteAccount": "Xoa tai khoan"
+    },
+    "invite": {
+      "title": "Moi thanh vien",
+      "email": "Email nguoi duoc moi",
+      "message": "Nhan dep",
+      "send": "Gui loi moi",
+      "sent": "Da gui",
+      "pending": "Dang cho",
+      "accepted": "Da chap nhan"
+    },
+    "publicPage": {
+      "title": "Trang cong khai",
+      "history": "Lich su ho toc",
+      "origin": "Nguon goc",
+      "notableFigures": "Vi nhan",
+      "images": "Hinh anh",
+      "upcomingEvents": "Su kien se dien ra",
+      "joinClan": "Tham gia ho toc",
+      "viewMore": "Xem them"
+    },
+    "gedcom": {
+      "import": "Nhap tu file GEDCOM",
+      "export": "Xuat ra file GEDCOM",
+      "selectFile": "Chon file",
+      "upload": "Tai len",
+      "download": "Tai ve",
+      "success": "Thanh cong",
+      "error": "Loi"
+    }
+  },
+  "en": {
+    "app": {
+      "title": "Gia Phai - Vietnamese Family Tree",
+      "sidebar": {
+        "tree": "Family Tree",
+        "members": "Members",
+        "clanInfo": "Clan Info",
+        "events": "Events",
+        "funds": "Clan Fund",
+        "admin": "Admin",
+        "notifications": "Notifications",
+        "settings": "Settings",
+        "profile": "Profile",
+        "logout": "Logout",
+        "publicPage": "Public Page",
+        "invite": "Invite Member",
+        "language": "Language",
+        "clans": "Clans"
+      }
+    },
+    "tree": {
+      "title": "Family Tree",
+      "expand": "Expand",
+      "collapse": "Collapse",
+      "search": "Search members",
+      "zoomIn": "Zoom In",
+      "zoomOut": "Zoom Out",
+      "reset": "Reset",
+      "currentPerson": "You",
+      "deceased": "Deceased",
+      "generation": "Generation"
+    },
+    "member": {
+      "title": "Member Info",
+      "name": "Full Name",
+      "gender": "Gender",
+      "male": "Male",
+      "female": "Female",
+      "birthYear": "Birth Year",
+      "deathYear": "Death Year",
+      "generation": "Generation",
+      "spouse": "Spouse",
+      "parent": "Parent",
+      "children": "Children",
+      "relationship": "Relationship to you",
+      "honorific": "Honorific",
+      "role": "Role",
+      "notes": "Notes",
+      "edit": "Edit",
+      "delete": "Delete",
+      "basicInfo": "Basic Info",
+      "detailedInfo": "Detailed Info",
+      "limitedAccess": "Only basic info visible"
+    },
+    "clan": {
+      "title": "Clan Information",
+      "history": "History",
+      "origin": "Origin",
+      "memorialDate": "Memorial Date",
+      "clanHouse": "Clan House",
+      "village": "Village",
+      "notableFigures": "Notable Figures",
+      "images": "Clan Photos",
+      "publicUrl": "Public URL",
+      "copyLink": "Copy Link",
+      "lineage": {
+        "father": "Father's Line",
+        "mother": "Mother's Line",
+        "spouse": "Spouse's Line"
+      }
+    },
+    "events": {
+      "title": "Clan Events",
+      "past": "Past Events",
+      "upcoming": "Upcoming Events",
+      "date": "Date",
+      "location": "Location",
+      "description": "Description",
+      "images": "Photos",
+      "attendees": "Attendees",
+      "viewMap": "View Map",
+      "addToCalendar": "Add to Calendar",
+      "addEvent": "Add Event",
+      "editEvent": "Edit Event",
+      "deleteEvent": "Delete Event",
+      "type": {
+        "memorial": "Memorial Ceremony",
+        "meeting": "Meeting",
+        "reunion": "Reunion",
+        "anniversary": "Anniversary"
+      }
+    },
+    "fund": {
+      "title": "Clan Fund",
+      "balance": "Current Balance",
+      "contributions": "Contributions",
+      "expenses": "Expenses",
+      "transactions": "Transactions",
+      "amount": "Amount",
+      "date": "Date",
+      "description": "Description",
+      "person": "Person",
+      "event": "Event",
+      "addContribution": "Add Contribution",
+      "addExpense": "Add Expense",
+      "chartTitle": "Monthly Chart",
+      "totalContributions": "Total Contributions",
+      "totalExpenses": "Total Expenses"
+    },
+    "admin": {
+      "title": "Clan Administration",
+      "members": "Member List",
+      "roles": "Roles",
+      "editRole": "Edit Role",
+      "resetAccount": "Reset Account",
+      "importGedcom": "Import GEDCOM",
+      "exportGedcom": "Export GEDCOM",
+      "designateAdmin": "Designate Admin",
+      "roles": {
+        "admin": "Admin",
+        "treasurer": "Treasurer",
+        "editor": "Editor",
+        "member": "Member"
+      }
+    },
+    "notifications": {
+      "title": "Notifications",
+      "markRead": "Mark as Read",
+      "markAllRead": "Mark All Read",
+      "preferences": "Notification Preferences",
+      "fundChanges": "Fund Changes",
+      "newEvents": "New Events",
+      "memberJoins": "New Members",
+      "memorialDates": "Memorial Reminders",
+      "delete": "Delete Notification"
+    },
+    "auth": {
+      "login": "Login",
+      "register": "Register",
+      "email": "Email",
+      "password": "Password",
+      "name": "Full Name",
+      "joinClan": "Join Clan",
+      "inviteCode": "Invite Code",
+      "forgotPassword": "Forgot Password"
+    },
+    "profile": {
+      "title": "Profile",
+      "edit": "Edit",
+      "name": "Full Name",
+      "birthYear": "Birth Year",
+      "gender": "Gender",
+      "spouse": "Spouse",
+      "save": "Save",
+      "cancel": "Cancel",
+      "deleteAccount": "Delete Account"
+    },
+    "invite": {
+      "title": "Invite Member",
+      "email": "Invitee Email",
+      "message": "Message",
+      "send": "Send Invitation",
+      "sent": "Sent",
+      "pending": "Pending",
+      "accepted": "Accepted"
+    },
+    "publicPage": {
+      "title": "Public Page",
+      "history": "Clan History",
+      "origin": "Origin",
+      "notableFigures": "Notable Figures",
+      "images": "Photos",
+      "upcomingEvents": "Upcoming Events",
+      "joinClan": "Join Clan",
+      "viewMore": "View More"
+    },
+    "gedcom": {
+      "import": "Import from GEDCOM file",
+      "export": "Export to GEDCOM file",
+      "selectFile": "Select File",
+      "upload": "Upload",
+      "download": "Download",
+      "success": "Success",
+      "error": "Error"
+    }
+  }
+}
