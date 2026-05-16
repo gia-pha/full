@@ -12,6 +12,7 @@ là một thành viên trong họ tộc:
 * tôi muốn tắt bật thông báo mà tôi muốn
 * tôi muốn xóa thông tin trong hệ thống khi cần
 * tôi muốn chia sẻ liên kết trang công khai của họ tộc cho người quen để họ tìm hiểu và gia nhập
+* tôi muốn chỉnh sửa thông tin cá nhân: tên, năm sinh, giới tính, người phối ngẫu
 
 
 là người tạo nên họ tộc trong hệ thống:
@@ -33,6 +34,7 @@ là một người có vai trò thủ quỹ của họ tộc:
 là một người có vai trò biên tập cho họ tộc:
 * tôi muốn chỉnh sửa các sự kiện của họ tộc, thay đổi thời gian, địa điểm, hình ảnh của từng sự kiện
 * tôi muốn chỉnh sửa tất cả các thông tin của họ tộc
+* tôi muốn chỉnh sửa các thông tin của các thành viên trong họ tộc
 
 là một người quan tâm đến họ tộc nhưng chưa phải thành viên trong hệ thống:
 * tôi muốn xem trang công khai của họ tộc với thông tin cơ bản: lịch sử, nguồn gốc, vĩ nhân, hình ảnh họ tộc
