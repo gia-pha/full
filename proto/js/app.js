@@ -85,6 +85,16 @@ class App {
     const page = store.state.currentPage;
     const t = this.t();
 
+    // Only these pages are centered on large screens
+    const centeredPages = new Set(['notifications', 'profile', 'invite']);
+    let container = root;
+    if (centeredPages.has(page)) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'h-full max-w-4xl mx-auto w-full';
+      root.appendChild(wrapper);
+      container = wrapper;
+    }
+
     const constructors = {
       'tree': TreeRenderer,
       'members': MembersListComponent,
@@ -100,7 +110,7 @@ class App {
 
     const Ctor = constructors[page];
     if (Ctor) {
-      this.components[page] = new Ctor(root, store, t);
+      this.components[page] = new Ctor(container, store, t);
     } else {
       root.innerHTML = '<div class="flex items-center justify-center h-full text-gray-400">Trang khong ton tai</div>';
     }
