@@ -8,6 +8,8 @@ là một thành viên trong họ tộc:
 * tôi muốn mời những người tôi quen vào làm thành viên của họ tộc
 * tôi muốn tắt bật thông báo mà tôi muốn
 * tôi muốn xóa thông tin trong hệ thống khi cần
+* tôi muốn chia sẻ liên kết trang công khai của họ tộc cho người quen để họ tìm hiểu và gia nhập
+
 
 là người tạo nên họ tộc trong hệ thống:
 * tôi luôn có vai trò là người quản trị của họ tộc
@@ -29,3 +31,7 @@ là một người có vai trò biên tập cho họ tộc:
 * tôi muốn chỉnh sửa các sự kiện của họ tộc, thay đổi thời gian, địa điểm, hình ảnh của từng sự kiện
 * tôi muốn chỉnh sửa tất cả các thông tin của họ tộc
 
+là một người quan tâm đến họ tộc nhưng chưa phải thành viên trong hệ thống:
+* tôi muốn xem trang công khai của họ tộc với thông tin cơ bản: lịch sử, nguồn gốc, vĩ nhân, hình ảnh họ tộc
+* tôi muốn xem danh sách các sự kiện sắp tới của họ tộc để có thể tham dự
+* tôi muốn đăng ký trở thành thành viên của họ tộc
