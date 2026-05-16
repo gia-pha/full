@@ -6,6 +6,7 @@ là một thành viên trong họ tộc:
 * tôi muốn xem danh biết sắp tới có những sự kiện nào, địa điểm và thời gian, bản đồ và lịch, thông báo để tôi dễ tham dự
 * tôi muốn xem quỹ của họ tộc còn bao nhiêu, xem chi tiết những đóng góp và chi tiêu, cũng như xem biểu đồ đóng góp chi tiêu theo từng tháng, và thông báo khi có biến động số dư
 * tôi muốn mời những người tôi quen vào làm thành viên của họ tộc
+* tôi chỉ có thể xem thông tin cơ bản của thành viên có mối liên hệ xa
 * tôi muốn tắt bật thông báo mà tôi muốn
 * tôi muốn xóa thông tin trong hệ thống khi cần
 
