@@ -15,7 +15,8 @@ class Store {
       sidebarOpen: true,
       notifications: [],
       modalOpen: null,
-      modalData: null
+      modalData: null,
+      builderMode: false
     };
     this._listeners = [];
   }
@@ -185,6 +186,11 @@ class Store {
 
   getPersonById(id) {
     return this._state.data?.persons?.find(p => p.id === id) || null;
+  }
+
+  setBuilderMode(enabled) {
+    this._state.builderMode = enabled;
+    this._notify();
   }
 }
 
