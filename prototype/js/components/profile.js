@@ -19,11 +19,12 @@ class ProfileComponent {
 
     this.container.innerHTML = `
       <div class="h-full overflow-y-auto bg-white">
-        <div class="relative h-32 sm:h-40 bg-gradient-to-r from-emerald-500 to-teal-600">
-          ${!this.editing ? `<button class="profile-edit-btn absolute top-4 right-4 px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-colors">✏️ ${this.t.profile.edit}</button>` : `<button class="absolute top-4 right-20 px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg text-white text-sm font-medium transition-colors">${this.t.profile.cancel}</button><button class="profile-save absolute top-4 right-4 px-4 py-2 bg-white/90 hover:bg-white rounded-lg text-emerald-700 text-sm font-medium transition-colors">${this.t.profile.save}</button>`}
+        <div class="px-4 sm:px-6 lg:px-8 py-6 border-b border-gray-200 flex items-center justify-between">
+          <h2 class="text-xl font-bold text-gray-800">${this.t.profile.title}</h2>
+          ${!this.editing ? `<button class="profile-edit-btn px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-medium transition-colors">✏️ ${this.t.profile.edit}</button>` : `<button class="profile-cancel px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-lg text-sm font-medium transition-colors mr-2">${this.t.profile.cancel}</button><button class="profile-save px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-medium transition-colors">${this.t.profile.save}</button>`}
         </div>
-        <div class="px-4 sm:px-6 lg:px-8 -mt-12 pb-8">
-          <div class="w-24 h-24 lg:w-28 lg:h-28 rounded-2xl bg-white shadow-xl flex items-center justify-center text-4xl border-4 border-white ${person.gender === 'male' ? 'text-blue-500' : 'text-pink-500'} mb-6">${person.gender === 'male' ? '♂' : '♀'}</div>
+        <div class="px-4 sm:px-6 lg:px-8 py-6 pb-8">
+          <div class="w-20 h-20 rounded-2xl bg-white shadow-lg flex items-center justify-center text-3xl border-2 border-gray-100 ${person.gender === 'male' ? 'text-blue-500' : 'text-pink-500'} mb-4">${person.gender === 'male' ? '♂' : '♀'}</div>
           <div class="max-w-2xl space-y-6">
             <div>
               <label class="text-sm text-gray-400">${this.t.profile.name}</label>
