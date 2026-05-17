@@ -44,8 +44,150 @@ html, body {
 .bottom-sheet.open { transform: translateY(0); }
 
 /* Family Chart overrides */
-.f3-svg { background: #f9fafb !important; }
 .f3-card { cursor: pointer; }
+
+/* Tree - dark background as library default */
+.tree-viewport {
+  background: #212121 !important;
+}
+
+#FamilyChart {
+  background: #212121 !important;
+}
+
+/* Light mode toggle */
+.tree-light .tree-viewport {
+  background: #f9fafb !important;
+}
+
+.tree-light #FamilyChart {
+  background: #f9fafb !important;
+}
+
+.tree-light .f3-card-inner,
+.tree-light .card-inner {
+  background: #1f2937 !important;
+  color: #f9fafb !important;
+  border-color: #374151 !important;
+}
+
+.tree-light .cards_view .card {
+  color: #f9fafb !important;
+}
+
+.tree-light .f3-nav-cont button {
+  background: #374151 !important;
+  color: #f9fafb !important;
+  border-color: #4b5563 !important;
+}
+
+/* Family Chart Edit Form */
+.f3-form-cont {
+  position: absolute !important;
+  top: 16px !important;
+  right: 16px !important;
+  width: 400px !important;
+  max-height: calc(100vh - 120px) !important;
+  background: white !important;
+  border-radius: 16px !important;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.05) !important;
+  border: none !important;
+  padding: 0 !important;
+  overflow-y: auto !important;
+  z-index: 40 !important;
+}
+
+.f3-form-cont:not(.opened) {
+  display: none !important;
+}
+
+.f3-form-cont form {
+  padding: 20px 24px !important;
+}
+
+.f3-form-cont label {
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: #6b7280 !important;
+  margin-bottom: 4px !important;
+  display: block !important;
+}
+
+.f3-form-cont input[type="text"],
+.f3-form-cont input[type="number"],
+.f3-form-cont input[type="date"],
+.f3-form-cont textarea,
+.f3-form-cont select {
+  width: 100% !important;
+  padding: 10px 14px !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 10px !important;
+  font-size: 14px !important;
+  font-family: inherit !important;
+  color: #1f2937 !important;
+  background: #f9fafb !important;
+  outline: none !important;
+  transition: border-color 0.15s, box-shadow 0.15s !important;
+  margin-bottom: 12px !important;
+}
+
+.f3-form-cont input:focus,
+.f3-form-cont textarea:focus,
+.f3-form-cont select:focus {
+  border-color: #10b981 !important;
+  box-shadow: 0 0 0 3px rgba(16,185,129,0.1) !important;
+  background: white !important;
+}
+
+.f3-form-cont button {
+  padding: 10px 18px !important;
+  border-radius: 10px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  border: none !important;
+  transition: background 0.15s, transform 0.1s !important;
+}
+
+.f3-form-cont button[type="submit"] {
+  background: #059669 !important;
+  color: white !important;
+  width: 100% !important;
+  margin-top: 8px !important;
+}
+
+.f3-form-cont button[type="submit"]:hover {
+  background: #047857 !important;
+}
+
+.f3-form-cont .f3-btn-cancel,
+.f3-form-cont button[type="button"] {
+  background: #f3f4f6 !important;
+  color: #6b7280 !important;
+}
+
+.f3-form-cont .f3-btn-cancel:hover,
+.f3-form-cont button[type="button"]:hover {
+  background: #e5e7eb !important;
+}
+
+/* Nav controls */
+.f3-nav-cont {
+  position: absolute !important;
+  top: 12px !important;
+  left: 12px !important;
+  z-index: 30 !important;
+}
+
+.f3-nav-cont button {
+  background: white !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 10px !important;
+  padding: 8px 12px !important;
+  font-size: 16px !important;
+  cursor: pointer !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+}
 
 /* Drawer animation */
 .drawer-overlay { transition: opacity 0.3s; }

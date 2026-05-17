@@ -6,6 +6,7 @@ class TreeRenderer {
     this.store = store;
     this.t = t;
     this.chart = null;
+    this.editTree = null;
     this.init();
   }
 
@@ -21,15 +22,15 @@ class TreeRenderer {
         <input type="text" class="tree-search-input px-5 py-3 border border-gray-300 rounded-xl text-sm flex-1 max-w-xs focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="${this.t.tree.search}" />
         <button class="tree-reset px-5 py-3 bg-gray-100 hover:bg-gray-200 rounded-xl text-sm font-medium flex-shrink-0 transition-colors">${this.t.tree.reset}</button>
         <div class="flex items-center gap-2 ml-auto">
+          <button class="tree-toggle-light p-2.5 bg-gray-100 hover:bg-gray-200 rounded-xl text-sm transition-colors" title="Light mode">☀️</button>
           <button class="tree-toggle-builder-desktop p-2.5 bg-gray-100 hover:bg-gray-200 rounded-xl text-sm transition-colors" title="Chuyen doi hien thi">🏗️</button>
         </div>
       </div>
       <div class="tree-mobile-actions lg:hidden absolute top-3 right-3 z-30 flex items-center gap-2">
-        <button class="tree-toggle-builder p-2.5 bg-white shadow-lg border border-gray-200 hover:bg-gray-50 rounded-xl text-sm transition-colors" title="Chuyen doi hien thi">🏗️</button>
         <button class="tree-toggle-search p-2.5 bg-white shadow-lg border border-gray-200 hover:bg-gray-50 rounded-xl text-sm transition-colors">🔍</button>
       </div>
       <div class="tree-viewport relative flex-1 min-h-0 bg-gray-50">
-        <div id="FamilyChart" class="f3 absolute inset-0" style="background:#f9fafb;"></div>
+        <div id="FamilyChart" class="f3" style="width:100%;height:100%;"></div>
       </div>
     `;
     this.renderChart();
@@ -70,36 +71,46 @@ class TreeRenderer {
     }
 
     try {
-      chartEl.innerHTML = '';
-      this.chart = f3.createChart(chartEl, familyData);
-      this.chart.setCardHtml()
-        .setCardDisplay([
-          ['first name', 'last name'],
-          ['birth year', 'death year'],
-          ['generation']
-        ]);
-      this.chart.updateTree({ initial: true });
-      setTimeout(() => this._bindCardClicks(), 800);
-      setTimeout(() => this._scaleChart(), 1200);
+        chartEl.innerHTML = '';
+        this.chart = f3.createChart(chartEl, familyData)
+          .setTransitionTime(1000)
+          .setCardXSpacing(350)
+          .setCardYSpacing(200);
+
+        this.card = this.chart.setCardHtml()
+          .setCardDisplay([
+            ['first name', 'last name'],
+            ['birth year', 'death year'],
+            ['generation']
+          ]);
+
+        if (this.store.state.builderMode) {
+          this.editTree = this.chart.editTree()
+            .fixed(true)
+            .setFields(['first name', 'last name', 'birth year', 'death year', 'gender', 'notes'])
+            .setEditFirst(true)
+            .setCardClickOpen(this.card)
+            .setOnChange(() => {
+              const updated = this.editTree.exportData();
+              console.log('Data updated:', updated);
+            });
+          this.editTree.setEdit();
+        }
+
+        this.chart.updateTree({ initial: true });
+        if (this.store.state.builderMode) {
+          this.editTree.open(this.chart.getMainDatum());
+        } else {
+          setTimeout(() => this._bindCardClicks(), 800);
+        }
+    
     } catch (err) {
       console.error('Family Chart error:', err);
       chartEl.innerHTML = `<div class="flex items-center justify-center h-full text-red-500 text-sm p-4 text-center">Loi: ${err.message}</div>`;
     }
   }
 
-  _scaleChart() {
-    if (window.innerWidth < 1024) return;
-    const chartEl = this.container.querySelector('#FamilyChart');
-    if (!chartEl) return;
-    const svg = chartEl.querySelector('svg');
-    if (svg) {
-      svg.style.transform = 'scale(1.35)';
-      svg.style.transformOrigin = '50% 0%';
-    } else {
-      setTimeout(() => this._scaleChart(), 200);
-    }
-  }
-
+ 
   _bindCardClicks() {
     const chartEl = this.container.querySelector('#FamilyChart');
     if (!chartEl) return;
@@ -138,12 +149,34 @@ class TreeRenderer {
         toolbar.classList.toggle('pointer-events-none');
       }
     });
-    this.container.querySelector('.tree-toggle-builder')?.addEventListener('click', () => {
-      this.store.setBuilderMode(!this.store.state.builderMode);
-    });
     this.container.querySelector('.tree-toggle-builder-desktop')?.addEventListener('click', () => {
-      this.store.setBuilderMode(!this.store.state.builderMode);
+      this._toggleBuilder();
     });
+    this.container.querySelector('.tree-toggle-light')?.addEventListener('click', () => {
+      this._toggleLight();
+    });
+  }
+
+  _toggleLight() {
+    this.container.classList.toggle('tree-light');
+  }
+
+  _toggleBuilder() {
+    const enabled = !this.store.state.builderMode;
+    this.store.setBuilderMode(enabled);
+
+    if (enabled) {
+      const chartEl = this.container.querySelector('#FamilyChart');
+      if (this._clickHandler && chartEl) {
+        chartEl.removeEventListener('click', this._clickHandler);
+        this._clickHandler = null;
+      }
+      this.renderChart();
+    } else if (this.editTree) {
+      this.editTree.destroy();
+      this.editTree = null;
+      this.renderChart();
+    }
   }
 
   updateTranslations(t) {
