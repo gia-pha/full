@@ -42,7 +42,7 @@ class AuthComponent {
                   <p class="text-gray-600 text-sm">Dang ky bang Passkey</p>
                   <p class="text-gray-400 text-xs mt-1">Tai lieu se dugc luu tru local tren thiet bi cua ban</p>
                 </div>
-                <div><label class="text-sm text-gray-600">${this.t.auth.name}</label><input type="text" class="auth-name w-full mt-2 px-5 py-3 border border-gray-300 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Ho ten" /></div>
+                <div><label class="text-sm text-gray-600">${this.t.auth.name}</label><input type="text" required class="auth-name w-full mt-2 px-5 py-3 border border-gray-300 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Ho ten" /></div>
                 <button type="submit" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-medium text-base transition-colors">🔐 Tao Passkey & Tham gia</button>
               </form>
             `}
@@ -56,15 +56,13 @@ class AuthComponent {
   bindEvents() {
     this.container.querySelectorAll('.auth-tab').forEach(tab => tab.addEventListener('click', () => { this.mode = tab.dataset.mode; this.render(); this.bindEvents(); }));
     this.container.querySelector('.auth-passkey-login')?.addEventListener('click', () => {
-      alert('Dang ki chong Passkey... (prototype)');
       this.store._state._authenticated = true;
       this.store._notify();
     });
     this.container.querySelector('.auth-form')?.addEventListener('submit', e => {
       e.preventDefault();
       const name = this.container.querySelector('.auth-name')?.value;
-      if (!name) return alert('Vui long nhap ho ten');
-      alert('Tao Passkey thanh cong! (prototype)');
+      if (!name) return;
       this.store._state._authenticated = true;
       this.store._notify();
     });
