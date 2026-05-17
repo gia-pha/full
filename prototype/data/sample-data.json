@@ -626,7 +626,19 @@
         { "id": "txn-015", "type": "contribution", "amount": 7000000, "date": "2025-09-05", "personId": "person-014", "description": "Dong gap quyi ho toc", "eventId": null },
         { "id": "txn-016", "type": "expense", "amount": 8000000, "date": "2025-10-20", "personId": "person-008", "description": "Chi phi hoi nghi", "eventId": "event-002" },
         { "id": "txn-017", "type": "contribution", "amount": 10000000, "date": "2025-11-01", "personId": "person-015", "description": "Dong gap quyi ho toc", "eventId": null },
-        { "id": "txn-018", "type": "expense", "amount": 3000000, "date": "2025-12-01", "personId": "person-008", "description": "Chi phi van phong", "eventId": null }
+        { "id": "txn-018", "type": "expense", "amount": 3000000, "date": "2025-12-01", "personId": "person-008", "description": "Chi phi van phong", "eventId": null },
+         { "id": "txn-019", "type": "contribution", "amount": 18000000, "date": "2024-01-15", "personId": "person-010", "description": "Dong gap quyi ho toc", "eventId": null },
+         { "id": "txn-020", "type": "expense", "amount": 10000000, "date": "2024-02-20", "personId": "person-008", "description": "Sua chua nha tho ho", "eventId": null },
+         { "id": "txn-021", "type": "contribution", "amount": 12000000, "date": "2024-03-10", "personId": "person-011", "description": "Dong gap le giô to", "eventId": null },
+         { "id": "txn-022", "type": "expense", "amount": 20000000, "date": "2024-04-15", "personId": "person-008", "description": "Tich tac le giô to", "eventId": null },
+         { "id": "txn-023", "type": "contribution", "amount": 8000000, "date": "2024-05-20", "personId": "person-013", "description": "Dong gap quyi ho toc", "eventId": null },
+         { "id": "txn-024", "type": "expense", "amount": 5000000, "date": "2024-06-10", "personId": "person-008", "description": "Chi phi hoi nghi", "eventId": null },
+         { "id": "txn-025", "type": "contribution", "amount": 15000000, "date": "2024-07-05", "personId": "person-010", "description": "Dong gap xay nha tho ho", "eventId": null },
+         { "id": "txn-026", "type": "expense", "amount": 25000000, "date": "2024-08-15", "personId": "person-008", "description": "Mua vat lieu xay dung", "eventId": null },
+         { "id": "txn-027", "type": "contribution", "amount": 10000000, "date": "2024-09-20", "personId": "person-014", "description": "Dong gap quyi ho toc", "eventId": null },
+         { "id": "txn-028", "type": "expense", "amount": 8000000, "date": "2024-10-10", "personId": "person-008", "description": "Tra luong thuc phong ky", "eventId": null },
+         { "id": "txn-029", "type": "contribution", "amount": 20000000, "date": "2024-11-15", "personId": "person-015", "description": "Dong gap quyi ho toc", "eventId": null },
+         { "id": "txn-030", "type": "expense", "amount": 15000000, "date": "2024-12-20", "personId": "person-008", "description": "Chi phi cuoi nam", "eventId": null }
       ]
     },
     "clan-tran": {
