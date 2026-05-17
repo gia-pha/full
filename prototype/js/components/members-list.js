@@ -24,7 +24,7 @@ class MembersListComponent {
           <input type="text" class="members-search w-full px-4 lg:px-5 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="${this.t.tree.search}" value="${this.query}" />
         </div>
         <div class="p-4 sm:p-6 lg:p-8">
-          <p class="text-sm text-gray-400 mb-4">${filtered.length} thanh vien</p>
+          <p class="text-sm text-gray-400 mb-4">${filtered.length} ${this.t.member.count}</p>
           <div class="space-y-3">
             ${sorted.map(m => `
               <button class="member-item w-full text-left p-4 lg:p-5 rounded-xl border border-gray-200 hover:border-emerald-300 hover:bg-emerald-50/50 transition-all ${m.id === current?.id ? 'bg-emerald-50 border-emerald-300' : 'bg-white'}" data-id="${m.id}">
@@ -33,13 +33,13 @@ class MembersListComponent {
                   <div class="flex-1 min-w-0">
                     <div class="flex items-center gap-2">
                       <span class="font-semibold text-gray-800 text-base truncate">${m.name}</span>
-                      ${m.id === current?.id ? '<span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-xs rounded-full font-medium flex-shrink-0">Ban</span>' : ''}
+                      ${m.id === current?.id ? `<span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-xs rounded-full font-medium flex-shrink-0">${this.t.member.you}</span>` : ''}
                       ${m.deathYear ? '<span class="text-gray-400 flex-shrink-0">✝</span>' : ''}
                     </div>
                     <div class="flex items-center gap-3 mt-1">
                       ${m.honorific ? `<span class="text-xs text-emerald-600 font-medium">${m.honorific}</span>` : ''}
                       <span class="text-xs text-gray-400">${m.birthYear}${m.deathYear ? '-' + m.deathYear : ''}</span>
-                      <span class="text-xs text-gray-400">The ${m.generation}</span>
+                      <span class="text-xs text-gray-400">${this.t.tree.generation} ${m.generation}</span>
                     </div>
                   </div>
                   <div class="flex items-center gap-2 flex-shrink-0">

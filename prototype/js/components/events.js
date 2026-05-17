@@ -28,7 +28,7 @@ class EventsComponent {
             <button class="events-tab px-5 py-2.5 rounded-xl text-sm font-medium transition-colors ${this.tab === 'upcoming' ? 'bg-emerald-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}" data-tab="upcoming">📅 ${this.t.events.upcoming} (${upcoming.length})</button>
             <button class="events-tab px-5 py-2.5 rounded-xl text-sm font-medium transition-colors ${this.tab === 'past' ? 'bg-emerald-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}" data-tab="past">📋 ${this.t.events.past} (${past.length})</button>
           </div>
-          ${shown.length === 0 ? `<div class="text-center py-16 text-gray-400"><div class="text-5xl mb-4">📭</div><p class="text-base">Khong co su kien</p></div>` : `
+          ${shown.length === 0 ? `<div class="text-center py-16 text-gray-400"><div class="text-5xl mb-4">📭</div><p class="text-base">${this.t.events.noEvents}</p></div>` : `
             <div class="space-y-4">
               ${shown.map(e => this.renderCard(e, canEdit)).join('')}
             </div>
@@ -50,7 +50,7 @@ class EventsComponent {
             <div class="flex-1 min-w-0">
               <div class="flex flex-wrap items-center gap-2 mb-2">
                 <span class="px-3 py-1 text-xs rounded-full font-medium bg-${color}-100 text-${color}-700">${this.t.events.type[event.type] || event.type}</span>
-                <span class="px-3 py-1 text-xs rounded-full font-medium ${event.status === 'upcoming' ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-500'}">${event.status === 'upcoming' ? 'Sap toi' : 'Da qua'}</span>
+                <span class="px-3 py-1 text-xs rounded-full font-medium ${event.status === 'upcoming' ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-500'}">${event.status === 'upcoming' ? this.t.events.upcomingLabel : this.t.events.pastLabel}</span>
               </div>
               <h3 class="font-bold text-gray-800 text-lg">${event.title}</h3>
             </div>
@@ -81,7 +81,7 @@ class EventsComponent {
                 const p = allPersons.find(x => x.id === id);
                 return p ? `<div class="w-8 h-8 rounded-full ${p.gender === 'male' ? 'bg-blue-400' : 'bg-pink-400'} border-2 border-white flex items-center justify-center text-white text-xs font-bold" title="${p.name}">${p.name.split(' ').pop()?.charAt(0)}</div>` : '';
               }).join('')}</div>
-              <span class="text-sm text-gray-400">${event.attendees.length} nguoi tham du</span>
+              <span class="text-sm text-gray-400">${event.attendees.length} ${this.t.events.attendeesCount}</span>
             </div>
           ` : ''}
         </div>
@@ -93,7 +93,7 @@ class EventsComponent {
     this.container.querySelectorAll('.events-tab').forEach(tab => tab.addEventListener('click', () => { this.tab = tab.dataset.tab; this.render(); this.bindEvents(); }));
     this.container.querySelector('.events-add')?.addEventListener('click', () => this.store.openModal('add-event', { clanId: this.store.state.currentClanId }));
     this.container.querySelectorAll('.event-edit').forEach(b => b.addEventListener('click', () => { const e = this.store.getClanEvents(this.store.state.currentClanId).find(x => x.id === b.dataset.id); this.store.openModal('edit-event', e); }));
-    this.container.querySelectorAll('.event-delete').forEach(b => b.addEventListener('click', () => { if (confirm('Xoa su kien?')) alert('Da xoa (prototype)'); }));
+    this.container.querySelectorAll('.event-delete').forEach(b => b.addEventListener('click', () => {     if (confirm(this.t.events.deleteConfirm)) alert(this.t.events.deleteSuccess); }));
     this.container.querySelectorAll('.event-cal').forEach(b => b.addEventListener('click', () => {
       const e = this.store.getClanEvents(this.store.state.currentClanId).find(x => x.id === b.dataset.id);
       if (e) { const d = e.date.replace(/-/g, ''); window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(e.title)}&dates=${d}/${d}&location=${encodeURIComponent(e.location)}`, '_blank'); }

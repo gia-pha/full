@@ -40,7 +40,7 @@ class SidebarComponent {
           <div class="p-4 border-b border-gray-200">
             <div class="flex items-center gap-3">
               <div class="w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0">GP</div>
-              ${state.sidebarOpen ? '<h1 class="text-lg font-bold text-gray-800 truncate">Gia Phai</h1>' : ''}
+              ${state.sidebarOpen ? '<h1 class="text-lg font-bold text-gray-800 truncate">Gia Phả</h1>' : ''}
             </div>
           </div>
 
