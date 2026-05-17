@@ -100,7 +100,7 @@ class ModalComponent {
         ${this.textarea(this.t.events.description, 'modal-event-desc', event?.description || '')}
         <div class="grid grid-cols-2 gap-3">
           ${this.input(this.t.events.date, 'modal-event-date', event?.date || '', 'date')}
-          <div><label class="text-xs sm:text-sm text-gray-600">${this.t.events.type}</label><select class="modal-event-type w-full mt-1 px-3 sm:px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"><option value="memorial" ${event?.type === 'memorial' ? 'selected' : ''}>Giô to</option><option value="meeting" ${event?.type === 'meeting' ? 'selected' : ''}>Hoi nghi</option><option value="reunion" ${event?.type === 'reunion' ? 'selected' : ''}>Quen ma</option><option value="anniversary" ${event?.type === 'anniversary' ? 'selected' : ''}>Ky niem</option></select></div>
+          <div><label class="text-xs sm:text-sm text-gray-600">Loai</label><select class="modal-event-type w-full mt-1 px-3 sm:px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"><option value="memorial" ${event?.type === 'memorial' ? 'selected' : ''}>Giô to</option><option value="meeting" ${event?.type === 'meeting' ? 'selected' : ''}>Hoi nghi</option><option value="reunion" ${event?.type === 'reunion' ? 'selected' : ''}>Quen ma</option><option value="anniversary" ${event?.type === 'anniversary' ? 'selected' : ''}>Ky niem</option></select></div>
         </div>
         ${this.input(this.t.events.location, 'modal-event-location', event?.location || '')}
         ${this.input('Map URL', 'modal-event-map', event?.mapUrl || '', 'url')}
