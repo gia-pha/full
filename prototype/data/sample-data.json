@@ -662,8 +662,9 @@
     }
   },
   "invitations": [
-    { "id": "inv-001", "email": "nguyenvang@mail.com", "clanId": "clan-nguyen", "invitedBy": "person-010", "status": "pending", "date": "2025-05-01" },
-    { "id": "inv-002", "email": "nguyenthie@mail.com", "clanId": "clan-nguyen", "invitedBy": "person-010", "status": "accepted", "date": "2025-04-15" }
+    { "id": "inv-001", "name": "Nguyen Van G", "clanId": "clan-nguyen", "invitedBy": "person-010", "status": "accepted", "date": "2025-05-01" },
+    { "id": "inv-002", "name": "Nguyen Thi E", "clanId": "clan-nguyen", "invitedBy": "person-010", "status": "accepted", "date": "2025-04-15" },
+    { "id": "inv-003", "name": "Nguyen Van H", "clanId": "clan-nguyen", "invitedBy": "person-010", "status": "accepted", "date": "2025-03-20" }
   ],
   "notifications": [
     { "id": "notif-001", "personId": "person-010", "type": "fund_change", "title": "Bien dong so du quyi", "message": "Quyi ho Nguyen da giam 25.000.000 VND - Phieu le giô to", "date": "2025-02-15", "read": true },
