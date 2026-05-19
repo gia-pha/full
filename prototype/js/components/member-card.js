@@ -17,7 +17,7 @@ class MemberCardComponent {
     if (!person) { this.container.innerHTML = ''; return; }
 
     const rel = calculateRelationship(currentPerson, person, allPersons);
-    const honorific = getVietnameseHonorific(rel, currentPerson, person);
+    const honorific = getVietnameseHonorific(rel, currentPerson, person, this.t);
     const isClose = rel && rel.distance <= 3;
     const spouse = person.spouseId ? allPersons.find(p => p.id === person.spouseId) : null;
     const parent = person.parentId ? allPersons.find(p => p.id === person.parentId) : null;

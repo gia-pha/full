@@ -120,7 +120,7 @@ class SidebarComponent {
               const active = state.currentPage === item.id;
               return `<button class="nav-btn flex-1 flex flex-col items-center justify-center gap-0.5 active:bg-gray-100 relative ${active ? 'text-emerald-600' : 'text-gray-400'}" data-page="${item.id}">${active ? '<div class="absolute top-0 inset-x-0 h-0.5 bg-emerald-600 rounded-full mx-4"></div>' : ''}<span class="mt-1 text-xl">${item.icon}</span><span class="text-[11px] font-medium truncate">${item.label}</span></button>`;
             }).join('')}
-            <button class="nav-btn flex-1 flex flex-col items-center justify-center gap-0.5 active:bg-gray-100 text-gray-400 relative" data-page="notifications"><span class="mt-1 text-xl relative">🔔${unread > 0 ? '<span class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>' : ''}</span><span class="text-[11px] font-medium">Thong bao</span></button>
+            <button class="nav-btn flex-1 flex flex-col items-center justify-center gap-0.5 active:bg-gray-100 text-gray-400 relative" data-page="notifications"><span class="mt-1 text-xl relative">🔔${unread > 0 ? '<span class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>' : ''}</span><span class="text-[11px] font-medium">${this.t.app.sidebar.notifications}</span></button>
           </div>
         </nav>
 

@@ -15,7 +15,7 @@ class MembersListComponent {
     const current = this.store.getCurrentPerson();
     const allPersons = this.store.state.data?.persons || [];
     const filtered = this.query ? members.filter(m => m.name.toLowerCase().includes(this.query.toLowerCase())) : members;
-    const sorted = filtered.map(m => { const rel = calculateRelationship(current, m, allPersons); return { ...m, rel, honorific: getVietnameseHonorific(rel, current, m), dist: rel?.distance || 99 }; }).sort((a, b) => a.dist - b.dist);
+    const sorted = filtered.map(m => { const rel = calculateRelationship(current, m, allPersons); return { ...m, rel, honorific: getVietnameseHonorific(rel, current, m, this.t), dist: rel?.distance || 99 }; }).sort((a, b) => a.dist - b.dist);
 
     this.container.innerHTML = `
       <div class="h-full overflow-y-auto bg-white">
