@@ -52,69 +52,80 @@ function calculateRelationship(personA, personB, allPersons) {
   return { type: 'related', distance: path.length, genDiff, viaSpouse, viaPaternal, path };
 }
 
-function getVietnameseHonorific(relationship, currentPerson, targetPerson) {
+function getVietnameseHonorific(relationship, currentPerson, targetPerson, t) {
+  const h = t?.honorifics || {};
   if (!relationship || relationship.type === 'self') return '';
   if (relationship.type === 'distant') return '';
 
-  const { genDiff, viaSpouse, viaPaternal } = relationship;
+  const { genDiff, viaSpouse, viaPaternal, path } = relationship;
   const isMale = targetPerson.gender === 'male';
   const currentUserMale = currentPerson.gender === 'male';
 
   if (targetPerson.id === currentPerson.spouseId) {
-    return currentUserMale ? 'vo' : 'chong';
+    return currentUserMale ? h.wife : h.husband;
   }
 
   if (currentPerson.parentId === targetPerson.id) {
-    const parentGender = targetPerson.gender;
-    const isFatherLine = viaPaternal;
-    if (parentGender === 'male') {
-      return isFatherLine ? 'ba' : 'ba trai';
-    } else {
-      return isFatherLine ? 'me' : 'me trai';
-    }
+    return targetPerson.gender === 'male' ? h.father : h.mother;
   }
 
   if (genDiff > 0) {
     if (genDiff === 2) {
-      if (isMale) return viaPaternal ? 'o' : 'o trai';
-      return viaPaternal ? 'ba me' : 'ba trai';
+      if (isMale) return viaPaternal ? h.grandfather : h.grandfatherMaternal;
+      return viaPaternal ? h.grandmother : h.grandmotherMaternal;
     }
     if (genDiff === 1) {
       if (isMale) {
-        return viaPaternal ? (currentUserMale ? 'chu' : 'chu') : 'chu trai';
+        return viaPaternal ? h.uncle : h.uncleMaternal;
       } else {
-        return viaPaternal ? 'co' : 'co trai';
+        return viaPaternal ? h.aunt : h.auntMaternal;
       }
     }
-    if (genDiff >= 3) {
-      return isMale ? 'coong' : 'ba mei';
+    if (genDiff === 3) {
+      if (isMale) return viaPaternal ? h.greatGrandfather : h.greatGrandfatherMaternal;
+      return viaPaternal ? h.greatGrandmother : h.greatGrandmotherMaternal;
+    }
+    if (genDiff >= 4) {
+      if (isMale) return viaPaternal ? h.greatGreatGrandfather : h.greatGreatGrandfatherMaternal;
+      return viaPaternal ? h.greatGreatGrandmother : h.greatGreatGrandmotherMaternal;
     }
   }
 
   if (genDiff === 0) {
     if (viaSpouse) {
-      if (isMale) return 'be' + (targetPerson.birthYear < currentPerson.birthYear ? ' lon' : ' ut');
-      return 'be' + (targetPerson.birthYear < currentPerson.birthYear ? ' gai' : ' ut');
+      if (isMale) return targetPerson.birthYear < currentPerson.birthYear ? h.brotherInLawOlder : h.brotherInLawYounger;
+      return targetPerson.birthYear < currentPerson.birthYear ? h.sisterInLawOlder : h.sisterInLawYounger;
     }
     const siblingOrder = getSiblingOrder(currentPerson, targetPerson);
     if (isMale) {
-      if (siblingOrder === 'older') return currentUserMale ? 'anh' : 'anh';
-      return currentUserMale ? 'em trai' : 'em trai';
+      if (siblingOrder === 'older') return h.brotherOlder;
+      return h.brotherYounger;
     } else {
-      if (siblingOrder === 'older') return 'chi';
-      return 'em gai';
+      if (siblingOrder === 'older') return h.sisterOlder;
+      return h.sisterYounger;
     }
   }
 
   if (genDiff < 0) {
     const absGen = Math.abs(genDiff);
     if (absGen === 1) {
-      return isMale ? 'con trai' : 'con gai';
+      return isMale ? h.son : h.daughter;
     }
     if (absGen === 2) {
-      return isMale ? 'chau trai' : 'chau gai';
+      return viaPaternal
+        ? (isMale ? h.grandson : h.granddaughter)
+        : (isMale ? h.grandsonMaternal : h.granddaughterMaternal);
     }
-    return isMale ? 'chong trai' : 'chong gai';
+    if (absGen === 3) {
+      return viaPaternal
+        ? (isMale ? h.greatGrandson : h.greatGranddaughter)
+        : (isMale ? h.greatGrandsonMaternal : h.greatGranddaughterMaternal);
+    }
+    if (absGen >= 4) {
+      return viaPaternal
+        ? (isMale ? h.greatGreatGrandson : h.greatGreatGranddaughter)
+        : (isMale ? h.greatGreatGrandsonMaternal : h.greatGreatGranddaughterMaternal);
+    }
   }
 
   return '';

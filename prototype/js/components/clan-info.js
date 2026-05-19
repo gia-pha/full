@@ -15,10 +15,15 @@ class ClanInfoComponent {
 
     this.container.innerHTML = `
       <div class="h-full overflow-y-auto bg-white">
-        <div class="p-4 sm:p-6 lg:p-8 border-b border-gray-200">
-          <h2 class="text-xl sm:text-2xl font-bold text-gray-800">${clan.name}</h2>
-          <p class="text-sm text-gray-500 mt-1">${this.t.clan.lineage[clan.lineage]}</p>
-        </div>
+<div class="p-4 sm:p-6 lg:p-8 border-b border-gray-200">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <h2 class="text-xl sm:text-2xl font-bold text-gray-800">${clan.name}</h2>
+                <p class="text-sm text-gray-500 mt-1">${this.t.clan.lineage[clan.lineage]}</p>
+              </div>
+              ${(this.store.getCurrentPerson()?.role === 'editor' || this.store.getCurrentPerson()?.role === 'admin') ? `<button class="clan-edit-btn px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-medium flex-shrink-0 transition-colors">✏️ ${this.t.clan.editClan}</button>` : ''}
+            </div>
+          </div>
         <div class="p-4 sm:p-6 lg:p-8 space-y-6">
           <div>
             <h3 class="text-lg font-semibold text-gray-700 mb-3 flex items-center gap-2">📜 ${this.t.clan.history}</h3>
@@ -61,9 +66,7 @@ class ClanInfoComponent {
               <button class="clan-copy-link px-5 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-medium flex-shrink-0 transition-colors">📋 ${this.t.clan.copyLink}</button>
             </div>
           </div>
-          ${(this.store.getCurrentPerson()?.role === 'editor' || this.store.getCurrentPerson()?.role === 'admin') ? `
-            <button class="clan-edit-btn w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-medium text-base transition-colors">✏️ Chinh sua thong tin ho toc</button>
-          ` : ''}
+ 
         </div>
       </div>
     `;
