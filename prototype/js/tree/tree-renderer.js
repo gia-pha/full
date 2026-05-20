@@ -22,9 +22,7 @@ class TreeRenderer {
       <div class="tree-toolbar-desktop lg:flex items-center gap-3 p-4 bg-white border-b border-gray-200">
         <input type="text" class="tree-search-input px-5 py-3 border border-gray-300 rounded-xl text-sm flex-1 max-w-xs focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="${this.t.tree.search}" />
         <button class="tree-reset px-5 py-3 bg-gray-100 hover:bg-gray-200 rounded-xl text-sm font-medium flex-shrink-0 transition-colors">${this.t.tree.reset}</button>
-         <div class="flex items-center gap-2 ml-auto">
-            <button class="tree-toggle-light p-2.5 bg-gray-100 hover:bg-gray-200 rounded-xl text-sm transition-colors" title="Light mode">☀️</button>
-          </div>
+
       </div>
       <div class="tree-mobile-actions lg:hidden absolute top-3 right-3 z-30 flex items-center gap-2">
         <button class="tree-toggle-search p-2.5 bg-white shadow-lg border border-gray-200 hover:bg-gray-50 rounded-xl text-sm transition-colors">🔍</button>
@@ -82,7 +80,19 @@ class TreeRenderer {
             ['first name', 'last name'],
             ['birth year', 'death year'],
             ['generation']
-          ]);
+          ])
+          .setDefaultPersonIcon((d) => {
+            if (d.data.gender === 'F') return femaleIcon();
+            return maleIcon();
+          });
+
+        function femaleIcon() {
+          return `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.75 13C13.75 12.31 14.31 11.75 15 11.75S16.25 12.31 16.25 13 15.69 14.25 15 14.25 13.75 13.69 13.75 13M22 12V22H2V12C2 6.5 6.5 2 12 2S22 6.5 22 12M4 12C4 16.41 7.59 20 12 20S20 16.41 20 12C20 11.21 19.88 10.45 19.67 9.74C18.95 9.91 18.2 10 17.42 10C14.05 10 11.07 8.33 9.26 5.77C8.28 8.16 6.41 10.09 4.05 11.14C4 11.42 4 11.71 4 12M9 14.25C9.69 14.25 10.25 13.69 10.25 13S9.69 11.75 9 11.75 7.75 12.31 7.75 13 8.31 14.25 9 14.25Z"/></svg>`;
+        }
+
+        function maleIcon() {
+          return `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9,11.75A1.25,1.25 0 0,0 7.75,13A1.25,1.25 0 0,0 9,14.25A1.25,1.25 0 0,0 10.25,13A1.25,1.25 0 0,0 9,11.75M15,11.75A1.25,1.25 0 0,0 13.75,13A1.25,1.25 0 0,0 15,14.25A1.25,1.25 0 0,0 16.25,13A1.25,1.25 0 0,0 15,11.75M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20C7.59,20 4,16.41 4,12C4,11.71 4,11.42 4.05,11.14C6.41,10.09 8.28,8.16 9.26,5.77C11.07,8.33 14.05,10 17.42,10C18.2,10 18.95,9.91 19.67,9.74C19.88,10.45 20,11.21 20,12C20,16.41 16.41,20 12,20Z"/></svg>`;
+        }
 
         if (this.showCardButtons) {
           const self = this;
@@ -203,13 +213,6 @@ bindEvents() {
         toolbar.classList.toggle('pointer-events-none');
       }
     });
-    this.container.querySelector('.tree-toggle-light')?.addEventListener('click', () => {
-      this._toggleLight();
-    });
-  }
-
-  _toggleLight() {
-    this.container.classList.toggle('tree-light');
   }
 
   updateTranslations(t) {

@@ -128,12 +128,21 @@ class App {
   }
 
   subscribeToStore() {
-    let authenticated = false, page, clan, selected, lang;
+    let authenticated = false, page, clan, selected, lang, darkMode;
 
     store.subscribe((state) => {
       if (state._authenticated && !authenticated) {
         authenticated = true;
         this.renderMain();
+        return;
+      }
+
+      if (state.darkMode !== darkMode) {
+        darkMode = state.darkMode;
+        if (this.components.sidebar) {
+          this.components.sidebar.render();
+          this.components.sidebar.bindEvents();
+        }
         return;
       }
 

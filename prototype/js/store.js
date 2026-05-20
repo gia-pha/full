@@ -16,7 +16,8 @@ class Store {
       notifications: [],
       modalOpen: null,
       modalData: null,
-      builderMode: false
+      builderMode: false,
+      darkMode: false
     };
     this._listeners = [];
   }
@@ -190,6 +191,12 @@ class Store {
 
   setBuilderMode(enabled) {
     this._state.builderMode = enabled;
+    this._notify();
+  }
+
+  toggleDarkMode() {
+    this._state.darkMode = !this._state.darkMode;
+    document.documentElement.classList.toggle('dark', this._state.darkMode);
     this._notify();
   }
 }
