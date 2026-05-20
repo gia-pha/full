@@ -87,6 +87,10 @@ class SidebarComponent {
 
           <!-- Footer -->
           <div class="p-3 border-t border-gray-200 space-y-2">
+            <button class="dark-mode-btn w-full text-left px-3 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-50 flex items-center gap-3">
+              <span class="text-base flex-shrink-0">${state.darkMode ? '☀️' : '🌙'}</span>
+              ${state.sidebarOpen ? `<span>${state.darkMode ? 'Light Mode' : 'Dark Mode'}</span>` : ''}
+            </button>
             <button class="lang-btn w-full text-left px-3 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-50 flex items-center gap-3">
               <span class="text-base flex-shrink-0">🌍</span>
               ${state.sidebarOpen ? `<span>${state.language === 'vi' ? 'English' : 'Ti\u1ebfng Vi\u1ec7t'}</span>` : ''}
@@ -166,6 +170,7 @@ class SidebarComponent {
       btn.addEventListener('click', () => this.store.setLanguage(this.store.state.language === 'vi' ? 'en' : 'vi'));
     });
     this.container.querySelector('.sidebar-toggle')?.addEventListener('click', () => this.store.toggleSidebar());
+    this.container.querySelector('.dark-mode-btn')?.addEventListener('click', () => this.store.toggleDarkMode());
 
     const menuBtn = this.container.querySelector('.menu-btn');
     const overlay = this.container.querySelector('.drawer-overlay');
