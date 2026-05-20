@@ -55,6 +55,44 @@ html, body {
   button, a, [role="button"], input, select, textarea { min-height: 44px; }
 }
 
+/* Family Chart - light mode defaults */
+.f3 svg path,
+.f3 svg line,
+.f3 svg polyline {
+  stroke: #374151 !important;
+}
+
+.f3-form-cont {
+  background: #ffffff !important;
+  color: #1f2937 !important;
+}
+
+.f3-form-cont input,
+.f3-form-cont textarea,
+.f3-form-cont select {
+  background: #f9fafb !important;
+  color: #1f2937 !important;
+  border-color: #e5e7eb !important;
+}
+
+.f3-form-cont label {
+  color: #6b7280 !important;
+}
+
+.f3-form-cont button {
+  color: #fff !important;
+}
+
+.f3-form-cont .f3-btn-cancel,
+.f3-form-cont button[type="button"] {
+  background: #f3f4f6 !important;
+  color: #6b7280 !important;
+}
+
+.f3-close-btn {
+  color: #374151 !important;
+}
+
 /* Dark mode */
 .dark .tree-viewport {
   background: #111827 !important;
@@ -227,7 +265,29 @@ html, body {
 /* Form container */
 .dark .f3-form-cont {
   background: #1f2937 !important;
+  color: #f9fafb !important;
   border-color: #374151 !important;
+}
+
+.dark .f3-form-cont label {
+  color: #d1d5db !important;
+}
+
+.dark .f3-close-btn {
+  color: #f9fafb !important;
+}
+
+.dark .f3-form-cont .f3-btn-cancel,
+.dark .f3-form-cont button[type="button"] {
+  background: #374151 !important;
+  color: #d1d5db !important;
+}
+
+/* Relationship lines - dark mode */
+.dark .f3 svg path,
+.dark .f3 svg line,
+.dark .f3 svg polyline {
+  stroke: #6b7280 !important;
 }
 
 .dark .f3-form-cont input,
