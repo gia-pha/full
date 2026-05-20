@@ -7,6 +7,7 @@ class TreeRenderer {
     this.t = t;
     this.chart = null;
     this.editTree = null;
+    this.showCardButtons = true;
     this.init();
   }
 
@@ -21,10 +22,9 @@ class TreeRenderer {
       <div class="tree-toolbar-desktop lg:flex items-center gap-3 p-4 bg-white border-b border-gray-200">
         <input type="text" class="tree-search-input px-5 py-3 border border-gray-300 rounded-xl text-sm flex-1 max-w-xs focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="${this.t.tree.search}" />
         <button class="tree-reset px-5 py-3 bg-gray-100 hover:bg-gray-200 rounded-xl text-sm font-medium flex-shrink-0 transition-colors">${this.t.tree.reset}</button>
-        <div class="flex items-center gap-2 ml-auto">
-          <button class="tree-toggle-light p-2.5 bg-gray-100 hover:bg-gray-200 rounded-xl text-sm transition-colors" title="Light mode">☀️</button>
-          <button class="tree-toggle-builder-desktop p-2.5 bg-gray-100 hover:bg-gray-200 rounded-xl text-sm transition-colors" title="Chuyen doi hien thi">🏗️</button>
-        </div>
+         <div class="flex items-center gap-2 ml-auto">
+            <button class="tree-toggle-light p-2.5 bg-gray-100 hover:bg-gray-200 rounded-xl text-sm transition-colors" title="Light mode">☀️</button>
+          </div>
       </div>
       <div class="tree-mobile-actions lg:hidden absolute top-3 right-3 z-30 flex items-center gap-2">
         <button class="tree-toggle-search p-2.5 bg-white shadow-lg border border-gray-200 hover:bg-gray-50 rounded-xl text-sm transition-colors">🔍</button>
@@ -84,25 +84,93 @@ class TreeRenderer {
             ['generation']
           ]);
 
-        if (this.store.state.builderMode) {
-          this.editTree = this.chart.editTree()
-            .fixed(true)
-            .setFields(['first name', 'last name', 'birth year', 'death year', 'gender', 'notes'])
-            .setEditFirst(true)
-            .setCardClickOpen(this.card)
-            .setOnChange(() => {
-              const updated = this.editTree.exportData();
-              console.log('Data updated:', updated);
-            });
-          this.editTree.setEdit();
+        if (this.showCardButtons) {
+          const self = this;
+          this.card.setOnCardUpdate(function(d) {
+            if (d.data._new_rel_data) return;
+            if (self.editTree.isRemovingRelative()) return;
+
+            const card = this.querySelector('.card-inner');
+            if (card.querySelector('.f3-card-edit-btn')) return;
+
+            d3.select(this).select('.card').style('cursor', 'default');
+
+            // Edit button
+            d3.select(card)
+              .append('div')
+              .attr('class', 'f3-svg-circle-hover f3-card-edit-btn')
+              .attr('style', 'cursor:pointer;width:24px;height:24px;position:absolute;top:4px;right:4px;z-index:10;')
+              .html(f3.icons.userEditSvgIcon())
+              .select('svg')
+              .style('padding', '0')
+              .attr('width', 16)
+              .attr('height', 16)
+              .on('click', (e) => {
+                e.stopPropagation();
+                self.editTree.open(d.data);
+                if (self.editTree.isAddingRelative()) return;
+                if (self.editTree.isRemovingRelative()) return;
+                self.card.onCardClickDefault(e, d);
+              });
+
+            // Add relative button
+            d3.select(card)
+              .append('div')
+              .attr('class', 'f3-svg-circle-hover f3-card-add-btn')
+              .attr('style', 'cursor:pointer;width:24px;height:24px;position:absolute;top:4px;right:32px;z-index:10;')
+              .html(f3.icons.userPlusSvgIcon())
+              .select('svg')
+              .style('padding', '0')
+              .attr('width', 16)
+              .attr('height', 16)
+              .on('click', (e) => {
+                e.stopPropagation();
+                self.editTree.open(d.data);
+                self.card.onCardClickDefault(e, d);
+                document.querySelector('.f3-add-relative-btn')?.click();
+              });
+          });
+
+          this.card.setOnCardClick((e, d) => {
+          if (this.editTree.isAddingRelative()) {
+            if (d.data._new_rel_data) {
+              this.editTree.open(d.data);
+            } else {
+              this.editTree.addRelativeInstance.onCancel();
+              this.editTree.closeForm();
+              this.card.onCardClickDefault(e, d);
+            }
+          } else if (this.editTree.isRemovingRelative()) {
+            this.editTree.open(d.data);
+          } else {
+            this.card.onCardClickDefault(e, d);
+          }
+          });
         }
 
+        this.editTree = this.chart.editTree()
+          .fixed(true)
+          .setFields(['first name', 'last name', 'birth year', 'death year', 'gender', 'notes'])
+          .setEditFirst(true);
+        this.editTree.setEdit();
+
+        // Add close button to edit modal
+        setTimeout(() => {
+          const formCont = document.querySelector('.f3-form-cont');
+          if (formCont && !formCont.querySelector('.f3-form-close')) {
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'f3-form-close absolute top-3 right-3 w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-500 z-50';
+            closeBtn.textContent = '✕';
+            closeBtn.onclick = (e) => {
+              e.stopPropagation();
+              this.editTree.closeForm();
+            };
+            formCont.style.position = 'relative';
+            formCont.insertBefore(closeBtn, formCont.firstChild);
+          }
+        }, 500);
+
         this.chart.updateTree({ initial: true });
-        if (this.store.state.builderMode) {
-          this.editTree.open(this.chart.getMainDatum());
-        } else {
-          setTimeout(() => this._bindCardClicks(), 800);
-        }
     
     } catch (err) {
       console.error('Family Chart error:', err);
@@ -110,21 +178,7 @@ class TreeRenderer {
     }
   }
 
- 
-  _bindCardClicks() {
-    const chartEl = this.container.querySelector('#FamilyChart');
-    if (!chartEl) return;
-    if (this._clickHandler) chartEl.removeEventListener('click', this._clickHandler);
-
-    this._clickHandler = (e) => {
-      const g = e.target.closest('g[data-id]');
-      if (!g) return;
-      this.store.setSelectedPerson(g.getAttribute('data-id'));
-    };
-    chartEl.addEventListener('click', this._clickHandler);
-  }
-
-  bindEvents() {
+bindEvents() {
     let timer;
     const handleSearch = (e) => {
       clearTimeout(timer);
@@ -149,9 +203,6 @@ class TreeRenderer {
         toolbar.classList.toggle('pointer-events-none');
       }
     });
-    this.container.querySelector('.tree-toggle-builder-desktop')?.addEventListener('click', () => {
-      this._toggleBuilder();
-    });
     this.container.querySelector('.tree-toggle-light')?.addEventListener('click', () => {
       this._toggleLight();
     });
@@ -159,24 +210,6 @@ class TreeRenderer {
 
   _toggleLight() {
     this.container.classList.toggle('tree-light');
-  }
-
-  _toggleBuilder() {
-    const enabled = !this.store.state.builderMode;
-    this.store.setBuilderMode(enabled);
-
-    if (enabled) {
-      const chartEl = this.container.querySelector('#FamilyChart');
-      if (this._clickHandler && chartEl) {
-        chartEl.removeEventListener('click', this._clickHandler);
-        this._clickHandler = null;
-      }
-      this.renderChart();
-    } else if (this.editTree) {
-      this.editTree.destroy();
-      this.editTree = null;
-      this.renderChart();
-    }
   }
 
   updateTranslations(t) {
