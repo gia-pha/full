@@ -82,6 +82,10 @@ html, body {
 }
 
 /* Family Chart Edit Form */
+.f3-close-btn {
+  color: #374151 !important;
+}
+
 .f3-form-cont {
   position: absolute !important;
   top: 16px !important;
