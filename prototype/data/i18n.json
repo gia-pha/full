@@ -82,7 +82,8 @@
       "reset": "Đặt Lại",
       "currentPerson": "Bạn",
       "deceased": "Đã qua đời",
-      "generation": "Thế hệ"
+      "generation": "Thế hệ",
+      "noData": "Không có dữ liệu"
     },
     "member": {
       "title": "Thông tin thành viên",
@@ -364,7 +365,8 @@
       "reset": "Reset",
       "currentPerson": "You",
       "deceased": "Deceased",
-      "generation": "Generation"
+      "generation": "Generation",
+      "noData": "No data available"
     },
     "member": {
       "title": "Member Info",

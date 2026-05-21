@@ -55,7 +55,7 @@ class TreeRenderer {
 
     const familyData = toFamilyChartData(this.store.state.currentClanId);
     if (familyData.length === 0) {
-      chartEl.innerHTML = '<div class="flex items-center justify-center h-full text-gray-400 text-lg">Khong co du lieu</div>';
+      chartEl.innerHTML = `<div class="flex items-center justify-center h-full text-gray-400 text-lg">${this.t.tree.noData}</div>`;
       return;
     }
 

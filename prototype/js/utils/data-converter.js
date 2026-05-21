@@ -2,42 +2,33 @@ import { store } from '../store.js';
 
 function toFamilyChartData(clanId) {
   const data = store.state.data;
-  if (!data) return [];
+  if (!data || !data.persons) return [];
 
-  const clanPersons = data.persons.filter(p => p.clanId === clanId);
-  const byId = {};
-  clanPersons.forEach(p => byId[p.id] = p);
+  const currentPersonId = store.state.currentPersonId;
 
-  return clanPersons.map(person => {
-    const parents = [];
-    if (person.parentId && byId[person.parentId]) {
-      parents.push(person.parentId);
-    }
+  // Deep clone to prevent f3 library from mutating original data
+  const result = JSON.parse(JSON.stringify(data.persons))
+    .filter(p => p.data.clanId === clanId)
+    .map(p => {
+      const { clanId: _, notificationPreferences: __, ...rest } = p.data;
+      return {
+        id: p.id,
+        data: {
+          id: p.id,
+          ...rest,
+          'birth year': p.data.birthday || '',
+          photo: p.data.avatar || '',
+          isCurrentUser: p.id === currentPersonId
+        },
+        rels: {
+          parents: p.rels.parents || [],
+          spouses: p.rels.spouses || [],
+          children: p.rels.children || []
+        }
+      };
+    });
 
-    const spouse = person.spouseId && byId[person.spouseId] ? [person.spouseId] : [];
-    const children = (person.childrenIds || []).filter(cid => byId[cid]);
-
-    return {
-      id: person.id,
-      data: {
-        gender: person.gender === 'male' ? 'M' : 'F',
-        'first name': person.firstName,
-        'last name': person.lastName,
-        'birth year': person.birthYear || '',
-        'death year': person.deathYear || '',
-        generation: person.generation,
-        notes: person.notes || '',
-        role: person.role || 'member',
-        avatar: person.photo || '',
-        isCurrentUser: person.id === store.state.currentPersonId
-      },
-      rels: {
-        parents,
-        spouses: spouse,
-        children
-      }
-    };
-  });
+  return result;
 }
 
 export { toFamilyChartData };

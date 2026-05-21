@@ -14,7 +14,7 @@ class FundComponent {
     if (!fund) { this.container.innerHTML = '<div class="p-8 text-center text-gray-400">Khong co du lieu</div>'; return; }
     const allPersons = this.store.state.data?.persons || [];
     const allEvents = this.store.state.data?.events || [];
-    const canManage = this.store.getCurrentPerson()?.role === 'treasurer' || this.store.getCurrentPerson()?.role === 'admin';
+    const canManage = this.store.getCurrentPerson()?.data.role === 'treasurer' || this.store.getCurrentPerson()?.data.role === 'admin';
     const totalContrib = fund.transactions.filter(t => t.type === 'contribution').reduce((s, t) => s + t.amount, 0);
     const totalExpense = fund.transactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
     const monthly = {};
@@ -65,7 +65,7 @@ class FundComponent {
                   <tbody>${fund.transactions.slice().reverse().map(tx => {
                     const person = allPersons.find(p => p.id === tx.personId);
                     const event = allEvents.find(e => e.id === tx.eventId);
-                    return `<tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors"><td class="px-4 lg:px-6 py-4 text-gray-500 whitespace-nowrap">${formatDate(tx.date)}</td><td class="px-4 lg:px-6 py-4"><span class="inline-block px-2 py-0.5 rounded text-xs font-medium mr-2 ${tx.type === 'contribution' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}">${tx.type === 'contribution' ? '↗' : '↘'}</span>${tx.description}${event ? ` <span class="text-xs text-gray-400">(${event.title})</span>` : ''}</td><td class="px-4 lg:px-6 py-4 text-gray-600 hidden sm:table-cell">${person?.name || '-'}</td><td class="px-4 lg:px-6 py-4 text-right font-medium whitespace-nowrap ${tx.type === 'contribution' ? 'text-emerald-600' : 'text-red-600'}">${tx.type === 'contribution' ? '+' : '-'}${formatCurrency(tx.amount)}</td></tr>`;
+                    return `<tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors"><td class="px-4 lg:px-6 py-4 text-gray-500 whitespace-nowrap">${formatDate(tx.date)}</td><td class="px-4 lg:px-6 py-4"><span class="inline-block px-2 py-0.5 rounded text-xs font-medium mr-2 ${tx.type === 'contribution' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}">${tx.type === 'contribution' ? '↗' : '↘'}</span>${tx.description}${event ? ` <span class="text-xs text-gray-400">(${event.title})</span>` : ''}</td><td class="px-4 lg:px-6 py-4 text-gray-600 hidden sm:table-cell">${person ? person.data['first name'] + ' ' + person.data['last name'] : '-'}</td><td class="px-4 lg:px-6 py-4 text-right font-medium whitespace-nowrap ${tx.type === 'contribution' ? 'text-emerald-600' : 'text-red-600'}">${tx.type === 'contribution' ? '+' : '-'}${formatCurrency(tx.amount)}</td></tr>`;
                   }).join('')}</tbody>
                 </table>
               </div>

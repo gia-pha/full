@@ -15,8 +15,14 @@
       "clanHouse": "123 Đường Lê Lợi, Huyện Tân Hiệp, Nam Định",
       "village": "Thôn An Đức, xã Tân Hưng",
       "notableFigures": [
-        { "id": "person-001", "achievement": "Tiến khoa, thời Lê Hiếu Long" },
-        { "id": "person-005", "achievement": "Nguyên súy, thời Nguyễn Minh Mạng" }
+        {
+          "id": "person-001",
+          "achievement": "Tiến khoa, thời Lê Hiếu Long"
+        },
+        {
+          "id": "person-005",
+          "achievement": "Nguyên súy, thời Nguyễn Minh Mạng"
+        }
       ],
       "images": [
         "https://placehold.co/600x400/2d5016/ffffff?text=Nhà+thờ+họ",
@@ -25,9 +31,17 @@
       ],
       "publicPageUrl": "https://gia-pha.example.com/public/clan-nguyen",
       "founderId": "person-001",
-      "admins": ["person-001", "person-010"],
-      "treasurers": ["person-008"],
-      "editors": ["person-008", "person-009"]
+      "admins": [
+        "person-001",
+        "person-010"
+      ],
+      "treasurers": [
+        "person-008"
+      ],
+      "editors": [
+        "person-008",
+        "person-009"
+      ]
     },
     {
       "id": "clan-tran",
@@ -39,16 +53,25 @@
       "clanHouse": "456 Đường Trần Hưng Đạo, TP Nam Định",
       "village": "Thôn Trần Xá, xã Trúc Đông",
       "notableFigures": [
-        { "id": "person-020", "achievement": "Hành thương, thời Mạc" }
+        {
+          "id": "person-020",
+          "achievement": "Hành thương, thời Mạc"
+        }
       ],
       "images": [
         "https://placehold.co/600x400/16427b/ffffff?text=Nhà+thờ+họ+Trần"
       ],
       "publicPageUrl": "https://gia-pha.example.com/public/clan-tran",
       "founderId": "person-020",
-      "admins": ["person-020"],
-      "treasurers": ["person-021"],
-      "editors": ["person-021"]
+      "admins": [
+        "person-020"
+      ],
+      "treasurers": [
+        "person-021"
+      ],
+      "editors": [
+        "person-021"
+      ]
     },
     {
       "id": "clan-le",
@@ -65,454 +88,688 @@
       ],
       "publicPageUrl": "https://gia-pha.example.com/public/clan-le",
       "founderId": "person-030",
-      "admins": ["person-030"],
+      "admins": [
+        "person-030"
+      ],
       "treasurers": [],
       "editors": []
     }
   ],
- "persons": [
+  "persons": [
     {
       "id": "person-001",
-      "firstName": "Nguyễn Văn",
-      "lastName": "Hiếu",
-      "name": "Nguyễn Văn Hiếu",
-      "gender": "male",
-      "birthYear": 1850,
-      "deathYear": 1920,
-      "generation": 1,
-      "clanId": "clan-nguyen",
-      "spouseId": "person-002",
-      "parentId": null,
-      "childrenIds": ["person-005", "person-006"],
-      "role": "admin",
-      "notes": "Tiến khoa, ngoại giao sứ thời Lê",
-      "photo": "https://placehold.co/150x150/2d5016/ffffff?text=NVH"
+      "data": {
+        "gender": "M",
+        "first name": "Nguyễn Văn",
+        "last name": "Hiếu",
+        "birthday": "1850",
+        "death year": "1920",
+        "generation": 1,
+        "role": "admin",
+        "notes": "Tiến khoa, ngoại giao sứ thời Lê",
+        "avatar": "https://placehold.co/150x150/2d5016/ffffff?text=NVH",
+        "clanId": "clan-nguyen"
+      },
+      "rels": {
+        "spouses": [
+          "person-002"
+        ],
+        "children": [
+          "person-005",
+          "person-006"
+        ],
+        "parents": []
+      }
     },
     {
       "id": "person-002",
-      "firstName": "Trần Thị",
-      "lastName": "Lan",
-      "name": "Trần Thị Lan",
-      "gender": "female",
-      "birthYear": 1855,
-      "deathYear": 1930,
-      "generation": 1,
-      "clanId": "clan-nguyen",
-      "spouseId": "person-001",
-      "parentId": null,
-      "childrenIds": ["person-005", "person-006"],
-      "role": "member",
-      "notes": "",
-      "photo": "https://placehold.co/150x150/2d5016/ffffff?text=MTL"
+      "data": {
+        "gender": "F",
+        "first name": "Trần Thị",
+        "last name": "Lan",
+        "birthday": "1855",
+        "death year": "1930",
+        "generation": 1,
+        "role": "member",
+        "notes": "",
+        "avatar": "https://placehold.co/150x150/2d5016/ffffff?text=MTL",
+        "clanId": "clan-nguyen"
+      },
+      "rels": {
+        "spouses": [
+          "person-001"
+        ],
+        "children": [
+          "person-005",
+          "person-006"
+        ],
+        "parents": []
+      }
     },
     {
       "id": "person-003",
-      "firstName": "Nguyễn Văn",
-      "lastName": "Cường",
-      "name": "Nguyễn Văn Cường",
-      "gender": "male",
-      "birthYear": 1880,
-      "deathYear": 1950,
-      "generation": 1,
-      "clanId": "clan-nguyen",
-      "spouseId": null,
-      "parentId": null,
-      "childrenIds": [],
-      "role": "member",
-      "notes": "Em út của Nguyễn Văn Hiếu",
-      "photo": "https://placehold.co/150x150/2d5016/ffffff?text=NVC"
+      "data": {
+        "gender": "M",
+        "first name": "Nguyễn Văn",
+        "last name": "Cường",
+        "birthday": "1880",
+        "death year": "1950",
+        "generation": 1,
+        "role": "member",
+        "notes": "Em út của Nguyễn Văn Hiếu",
+        "avatar": "https://placehold.co/150x150/2d5016/ffffff?text=NVC",
+        "clanId": "clan-nguyen"
+      },
+      "rels": {
+        "parents": [],
+        "spouses": [],
+        "children": []
+      }
     },
     {
       "id": "person-005",
-      "firstName": "Nguyễn Văn",
-      "lastName": "Tú",
-      "name": "Nguyễn Văn Tú",
-      "gender": "male",
-      "birthYear": 1880,
-      "deathYear": 1945,
-      "generation": 2,
-      "clanId": "clan-nguyen",
-      "spouseId": "person-004",
-      "parentId": "person-001",
-      "childrenIds": ["person-007", "person-008"],
-      "role": "member",
-      "notes": "Nguyên súy, thời Nguyễn Minh Mạng",
-      "photo": "https://placehold.co/150x150/2d5016/ffffff?text=NVT"
+      "data": {
+        "gender": "M",
+        "first name": "Nguyễn Văn",
+        "last name": "Tú",
+        "birthday": "1880",
+        "death year": "1945",
+        "generation": 2,
+        "role": "member",
+        "notes": "Nguyên súy, thời Nguyễn Minh Mạng",
+        "avatar": "https://placehold.co/150x150/2d5016/ffffff?text=NVT",
+        "clanId": "clan-nguyen"
+      },
+      "rels": {
+        "spouses": [
+          "person-004"
+        ],
+        "children": [
+          "person-007",
+          "person-008"
+        ],
+        "parents": [
+          "person-001",
+          "person-002"
+        ]
+      }
     },
     {
       "id": "person-004",
-      "firstName": "Lê Thị",
-      "lastName": "Hòa",
-      "name": "Lê Thị Hòa",
-      "gender": "female",
-      "birthYear": 1885,
-      "deathYear": 1960,
-      "generation": 2,
-      "clanId": "clan-nguyen",
-      "spouseId": "person-005",
-      "parentId": null,
-      "childrenIds": ["person-007", "person-008"],
-      "role": "member",
-      "notes": "",
-      "photo": "https://placehold.co/150x150/2d5016/ffffff?text=LTH"
+      "data": {
+        "gender": "F",
+        "first name": "Lê Thị",
+        "last name": "Hòa",
+        "birthday": "1885",
+        "death year": "1960",
+        "generation": 2,
+        "role": "member",
+        "notes": "",
+        "avatar": "https://placehold.co/150x150/2d5016/ffffff?text=LTH",
+        "clanId": "clan-nguyen"
+      },
+      "rels": {
+        "spouses": [
+          "person-005"
+        ],
+        "children": [
+          "person-007",
+          "person-008"
+        ],
+        "parents": []
+      }
     },
     {
       "id": "person-006",
-      "firstName": "Nguyễn Văn",
-      "lastName": "Sơn",
-      "name": "Nguyễn Văn Sơn",
-      "gender": "male",
-      "birthYear": 1890,
-      "deathYear": 1960,
-      "generation": 2,
-      "clanId": "clan-nguyen",
-      "spouseId": "person-003b",
-      "parentId": "person-001",
-      "childrenIds": ["person-009"],
-      "role": "member",
-      "notes": "Em út của Nguyễn Văn Tú",
-      "photo": "https://placehold.co/150x150/2d5016/ffffff?text=NVS"
+      "data": {
+        "gender": "M",
+        "first name": "Nguyễn Văn",
+        "last name": "Sơn",
+        "birthday": "1890",
+        "death year": "1960",
+        "generation": 2,
+        "role": "member",
+        "notes": "Em út của Nguyễn Văn Tú",
+        "avatar": "https://placehold.co/150x150/2d5016/ffffff?text=NVS",
+        "clanId": "clan-nguyen"
+      },
+      "rels": {
+        "spouses": [
+          "person-003b"
+        ],
+        "children": [
+          "person-009"
+        ],
+        "parents": [
+          "person-001",
+          "person-002"
+        ]
+      }
     },
     {
       "id": "person-003b",
-      "firstName": "Phạm Thị",
-      "lastName": "Mai",
-      "name": "Phạm Thị Mai",
-      "gender": "female",
-      "birthYear": 1895,
-      "deathYear": 1970,
-      "generation": 2,
-      "clanId": "clan-nguyen",
-      "spouseId": "person-006",
-      "parentId": null,
-      "childrenIds": ["person-009"],
-      "role": "member",
-      "notes": "",
-      "photo": "https://placehold.co/150x150/2d5016/ffffff?text=PTM"
+      "data": {
+        "gender": "F",
+        "first name": "Phạm Thị",
+        "last name": "Mai",
+        "birthday": "1895",
+        "death year": "1970",
+        "generation": 2,
+        "role": "member",
+        "notes": "",
+        "avatar": "https://placehold.co/150x150/2d5016/ffffff?text=PTM",
+        "clanId": "clan-nguyen"
+      },
+      "rels": {
+        "spouses": [
+          "person-006"
+        ],
+        "children": [
+          "person-009"
+        ],
+        "parents": []
+      }
     },
     {
       "id": "person-007",
-      "firstName": "Nguyễn Văn",
-      "lastName": "Đức",
-      "name": "Nguyễn Văn Đức",
-      "gender": "male",
-      "birthYear": 1915,
-      "deathYear": 1985,
-      "generation": 3,
-      "clanId": "clan-nguyen",
-      "spouseId": "person-008b",
-      "parentId": "person-005",
-      "childrenIds": ["person-010"],
-      "role": "member",
-      "notes": "Cô giáo",
-      "photo": "https://placehold.co/150x150/2d5016/ffffff?text=NVD"
+      "data": {
+        "gender": "M",
+        "first name": "Nguyễn Văn",
+        "last name": "Đức",
+        "birthday": "1915",
+        "death year": "1985",
+        "generation": 3,
+        "role": "member",
+        "notes": "Cô giáo",
+        "avatar": "https://placehold.co/150x150/2d5016/ffffff?text=NVD",
+        "clanId": "clan-nguyen"
+      },
+      "rels": {
+        "spouses": [
+          "person-008b"
+        ],
+        "children": [
+          "person-010"
+        ],
+        "parents": [
+          "person-005",
+          "person-004"
+        ]
+      }
     },
     {
       "id": "person-008b",
-      "firstName": "Hoàng Thị",
-      "lastName": "Xuân",
-      "name": "Hoàng Thị Xuân",
-      "gender": "female",
-      "birthYear": 1920,
-      "deathYear": 1995,
-      "generation": 3,
-      "clanId": "clan-nguyen",
-      "spouseId": "person-007",
-      "parentId": null,
-      "childrenIds": ["person-010"],
-      "role": "member",
-      "notes": "",
-      "photo": "https://placehold.co/150x150/2d5016/ffffff?text=HTX"
+      "data": {
+        "gender": "F",
+        "first name": "Hoàng Thị",
+        "last name": "Xuân",
+        "birthday": "1920",
+        "death year": "1995",
+        "generation": 3,
+        "role": "member",
+        "notes": "",
+        "avatar": "https://placehold.co/150x150/2d5016/ffffff?text=HTX",
+        "clanId": "clan-nguyen"
+      },
+      "rels": {
+        "spouses": [
+          "person-007"
+        ],
+        "children": [
+          "person-010"
+        ],
+        "parents": []
+      }
     },
     {
       "id": "person-008",
-      "firstName": "Nguyễn Văn",
-      "lastName": "Phúc",
-      "name": "Nguyễn Văn Phúc",
-      "gender": "male",
-      "birthYear": 1920,
-      "deathYear": null,
-      "generation": 3,
-      "clanId": "clan-nguyen",
-      "spouseId": "person-008c",
-      "parentId": "person-005",
-      "childrenIds": ["person-011", "person-012"],
-      "role": "treasurer",
-      "notes": "Cố sở học sinh",
-      "photo": "https://placehold.co/150x150/2d5016/ffffff?text=NVP"
+      "data": {
+        "gender": "M",
+        "first name": "Nguyễn Văn",
+        "last name": "Phúc",
+        "birthday": "1920",
+        "generation": 3,
+        "role": "treasurer",
+        "notes": "Cố sở học sinh",
+        "avatar": "https://placehold.co/150x150/2d5016/ffffff?text=NVP",
+        "clanId": "clan-nguyen",
+        "death year": ""
+      },
+      "rels": {
+        "spouses": [
+          "person-008c"
+        ],
+        "children": [
+          "person-011",
+          "person-012"
+        ],
+        "parents": [
+          "person-005",
+          "person-004"
+        ]
+      }
     },
     {
       "id": "person-008c",
-      "firstName": "Vũ Thị",
-      "lastName": "Ngọc",
-      "name": "Vũ Thị Ngọc",
-      "gender": "female",
-      "birthYear": 1925,
-      "deathYear": null,
-      "generation": 3,
-      "clanId": "clan-nguyen",
-      "spouseId": "person-008",
-      "parentId": null,
-      "childrenIds": ["person-011", "person-012"],
-      "role": "member",
-      "notes": "",
-      "photo": "https://placehold.co/150x150/2d5016/ffffff?text=VTN"
+      "data": {
+        "gender": "F",
+        "first name": "Vũ Thị",
+        "last name": "Ngọc",
+        "birthday": "1925",
+        "generation": 3,
+        "role": "member",
+        "notes": "",
+        "avatar": "https://placehold.co/150x150/2d5016/ffffff?text=VTN",
+        "clanId": "clan-nguyen",
+        "death year": ""
+      },
+      "rels": {
+        "spouses": [
+          "person-008"
+        ],
+        "children": [
+          "person-011",
+          "person-012"
+        ],
+        "parents": []
+      }
     },
     {
       "id": "person-009",
-      "firstName": "Nguyễn Văn",
-      "lastName": "Khoa",
-      "name": "Nguyễn Văn Khoa",
-      "gender": "male",
-      "birthYear": 1925,
-      "deathYear": 2000,
-      "generation": 3,
-      "clanId": "clan-nguyen",
-      "spouseId": null,
-      "parentId": "person-006",
-      "childrenIds": [],
-      "role": "editor",
-      "notes": "Nhà văn",
-      "photo": "https://placehold.co/150x150/2d5016/ffffff?text=NVK"
+      "data": {
+        "gender": "M",
+        "first name": "Nguyễn Văn",
+        "last name": "Khoa",
+        "birthday": "1925",
+        "death year": "2000",
+        "generation": 3,
+        "role": "editor",
+        "notes": "Nhà văn",
+        "avatar": "https://placehold.co/150x150/2d5016/ffffff?text=NVK",
+        "clanId": "clan-nguyen"
+      },
+      "rels": {
+        "parents": [
+          "person-006",
+          "person-003b"
+        ],
+        "spouses": [],
+        "children": []
+      }
     },
     {
       "id": "person-010",
-      "firstName": "Nguyễn Văn",
-      "lastName": "A",
-      "name": "Nguyễn Văn A",
-      "gender": "male",
-      "birthYear": 1950,
-      "deathYear": null,
-      "generation": 4,
-      "clanId": "clan-nguyen",
-      "spouseId": "person-020",
-      "parentId": "person-007",
-      "childrenIds": ["person-013", "person-014"],
-      "role": "admin",
-      "notes": "Người dùng hiện tại",
-      "photo": "https://placehold.co/150x150/2d5016/ffffff?text=NVA",
-      "notificationPreferences": {
-        "fundChanges": true,
-        "newEvents": true,
-        "memberJoins": false,
-        "memorialDates": true
+      "data": {
+        "gender": "M",
+        "first name": "Nguyễn Văn",
+        "last name": "A",
+        "birthday": "1950",
+        "generation": 4,
+        "role": "admin",
+        "notes": "Người dùng hiện tại",
+        "avatar": "https://placehold.co/150x150/2d5016/ffffff?text=NVA",
+        "notificationPreferences": {
+          "fundChanges": true,
+          "newEvents": true,
+          "memberJoins": false,
+          "memorialDates": true
+        },
+        "clanId": "clan-nguyen",
+        "death year": ""
+      },
+      "rels": {
+        "spouses": [
+          "person-020"
+        ],
+        "children": [
+          "person-013",
+          "person-014"
+        ],
+        "parents": [
+          "person-007",
+          "person-008b"
+        ]
       }
     },
     {
       "id": "person-020",
-      "firstName": "Trần Thị",
-      "lastName": "B",
-      "name": "Trần Thị B",
-      "gender": "female",
-      "birthYear": 1955,
-      "deathYear": null,
-      "generation": 4,
-      "clanId": "clan-nguyen",
-      "spouseId": "person-010",
-      "parentId": null,
-      "childrenIds": ["person-013", "person-014"],
-      "role": "member",
-      "notes": "Vợ của Nguyễn Văn A",
-      "photo": "https://placehold.co/150x150/16427b/ffffff?text=TTB",
-      "notificationPreferences": {
-        "fundChanges": true,
-        "newEvents": true,
-        "memberJoins": true,
-        "memorialDates": true
+      "data": {
+        "gender": "F",
+        "first name": "Trần Thị",
+        "last name": "B",
+        "birthday": "1955",
+        "generation": 4,
+        "role": "member",
+        "notes": "Vợ của Nguyễn Văn A",
+        "avatar": "https://placehold.co/150x150/16427b/ffffff?text=TTB",
+        "notificationPreferences": {
+          "fundChanges": true,
+          "newEvents": true,
+          "memberJoins": true,
+          "memorialDates": true
+        },
+        "clanId": "clan-nguyen",
+        "death year": ""
+      },
+      "rels": {
+        "spouses": [
+          "person-010"
+        ],
+        "children": [
+          "person-013",
+          "person-014"
+        ],
+        "parents": []
       }
     },
     {
       "id": "person-011",
-      "firstName": "Nguyễn Văn",
-      "lastName": "Bình",
-      "name": "Nguyễn Văn Bình",
-      "gender": "male",
-      "birthYear": 1948,
-      "deathYear": null,
-      "generation": 4,
-      "clanId": "clan-nguyen",
-      "spouseId": "person-011b",
-      "parentId": "person-008",
-      "childrenIds": ["person-015"],
-      "role": "member",
-      "notes": "Anh hùng của Nguyễn Văn A",
-      "photo": "https://placehold.co/150x150/2d5016/ffffff?text=NVB"
+      "data": {
+        "gender": "M",
+        "first name": "Nguyễn Văn",
+        "last name": "Bình",
+        "birthday": "1948",
+        "generation": 4,
+        "role": "member",
+        "notes": "Anh hùng của Nguyễn Văn A",
+        "avatar": "https://placehold.co/150x150/2d5016/ffffff?text=NVB",
+        "clanId": "clan-nguyen",
+        "death year": ""
+      },
+      "rels": {
+        "spouses": [
+          "person-011b"
+        ],
+        "children": [
+          "person-015"
+        ],
+        "parents": [
+          "person-008",
+          "person-008c"
+        ]
+      }
     },
     {
       "id": "person-011b",
-      "firstName": "Đặng Thị",
-      "lastName": "C",
-      "name": "Đặng Thị C",
-      "gender": "female",
-      "birthYear": 1950,
-      "deathYear": null,
-      "generation": 4,
-      "clanId": "clan-nguyen",
-      "spouseId": "person-011",
-      "parentId": null,
-      "childrenIds": ["person-015"],
-      "role": "member",
-      "notes": ""
+      "data": {
+        "gender": "F",
+        "first name": "Đặng Thị",
+        "last name": "C",
+        "birthday": "1950",
+        "generation": 4,
+        "role": "member",
+        "notes": "",
+        "avatar": "",
+        "clanId": "clan-nguyen",
+        "death year": ""
+      },
+      "rels": {
+        "spouses": [
+          "person-011"
+        ],
+        "children": [
+          "person-015"
+        ],
+        "parents": []
+      }
     },
     {
       "id": "person-012",
-      "firstName": "Nguyễn Thị",
-      "lastName": "Hùng",
-      "name": "Nguyễn Thị Hùng",
-      "gender": "female",
-      "birthYear": 1952,
-      "deathYear": null,
-      "generation": 4,
-      "clanId": "clan-nguyen",
-      "spouseId": null,
-      "parentId": "person-008",
-      "childrenIds": [],
-      "role": "member",
-      "notes": "Cháu gái của Nguyễn Văn A"
+      "data": {
+        "gender": "F",
+        "first name": "Nguyễn Thị",
+        "last name": "Hùng",
+        "birthday": "1952",
+        "generation": 4,
+        "role": "member",
+        "notes": "Cháu gái của Nguyễn Văn A",
+        "avatar": "",
+        "clanId": "clan-nguyen",
+        "death year": ""
+      },
+      "rels": {
+        "parents": [
+          "person-008",
+          "person-008c"
+        ],
+        "spouses": [],
+        "children": []
+      }
     },
     {
       "id": "person-013",
-      "firstName": "Nguyễn Văn",
-      "lastName": "D",
-      "name": "Nguyễn Văn D",
-      "gender": "male",
-      "birthYear": 1980,
-      "deathYear": null,
-      "generation": 5,
-      "clanId": "clan-nguyen",
-      "spouseId": null,
-      "parentId": "person-010",
-      "childrenIds": [],
-      "role": "member",
-      "notes": "Con trai lớn"
+      "data": {
+        "gender": "M",
+        "first name": "Nguyễn Văn",
+        "last name": "D",
+        "birthday": "1980",
+        "generation": 5,
+        "role": "member",
+        "notes": "Con trai lớn",
+        "avatar": "",
+        "clanId": "clan-nguyen",
+        "death year": ""
+      },
+      "rels": {
+        "parents": [
+          "person-010",
+          "person-020"
+        ],
+        "spouses": [],
+        "children": []
+      }
     },
     {
       "id": "person-014",
-      "firstName": "Nguyễn Thị",
-      "lastName": "E",
-      "name": "Nguyễn Thị E",
-      "gender": "female",
-      "birthYear": 1985,
-      "deathYear": null,
-      "generation": 5,
-      "clanId": "clan-nguyen",
-      "spouseId": null,
-      "parentId": "person-010",
-      "childrenIds": [],
-      "role": "member",
-      "notes": "Con gái"
+      "data": {
+        "gender": "F",
+        "first name": "Nguyễn Thị",
+        "last name": "E",
+        "birthday": "1985",
+        "generation": 5,
+        "role": "member",
+        "notes": "Con gái",
+        "avatar": "",
+        "clanId": "clan-nguyen",
+        "death year": ""
+      },
+      "rels": {
+        "parents": [
+          "person-010",
+          "person-020"
+        ],
+        "spouses": [],
+        "children": []
+      }
     },
     {
       "id": "person-015",
-      "firstName": "Nguyễn Văn",
-      "lastName": "F",
-      "name": "Nguyễn Văn F",
-      "gender": "male",
-      "birthYear": 1978,
-      "deathYear": null,
-      "generation": 5,
-      "clanId": "clan-nguyen",
-      "spouseId": null,
-      "parentId": "person-011",
-      "childrenIds": [],
-      "role": "member",
-      "notes": "Bé của Nguyễn Văn D"
+      "data": {
+        "gender": "M",
+        "first name": "Nguyễn Văn",
+        "last name": "F",
+        "birthday": "1978",
+        "generation": 5,
+        "role": "member",
+        "notes": "Bé của Nguyễn Văn D",
+        "avatar": "",
+        "clanId": "clan-nguyen",
+        "death year": ""
+      },
+      "rels": {
+        "parents": [
+          "person-011",
+          "person-011b"
+        ],
+        "spouses": [],
+        "children": []
+      }
     },
     {
       "id": "person-021",
-      "firstName": "Trần Văn",
-      "lastName": "G",
-      "name": "Trần Văn G",
-      "gender": "male",
-      "birthYear": 1920,
-      "deathYear": 1990,
-      "generation": 1,
-      "clanId": "clan-tran",
-      "spouseId": "person-022",
-      "parentId": null,
-      "childrenIds": ["person-023"],
-      "role": "admin",
-      "notes": "Ông trong họ Trần"
+      "data": {
+        "gender": "M",
+        "first name": "Trần Văn",
+        "last name": "G",
+        "birthday": "1920",
+        "death year": "1990",
+        "generation": 1,
+        "role": "admin",
+        "notes": "Ông trong họ Trần",
+        "avatar": "",
+        "clanId": "clan-tran"
+      },
+      "rels": {
+        "spouses": [
+          "person-022"
+        ],
+        "children": [
+          "person-023"
+        ],
+        "parents": []
+      }
     },
     {
       "id": "person-022",
-      "firstName": "Hoàng Thị",
-      "lastName": "H",
-      "name": "Hoàng Thị H",
-      "gender": "female",
-      "birthYear": 1925,
-      "deathYear": 1995,
-      "generation": 1,
-      "clanId": "clan-tran",
-      "spouseId": "person-021",
-      "parentId": null,
-      "childrenIds": ["person-023"],
-      "role": "member",
-      "notes": ""
+      "data": {
+        "gender": "F",
+        "first name": "Hoàng Thị",
+        "last name": "H",
+        "birthday": "1925",
+        "death year": "1995",
+        "generation": 1,
+        "role": "member",
+        "notes": "",
+        "avatar": "",
+        "clanId": "clan-tran"
+      },
+      "rels": {
+        "spouses": [
+          "person-021"
+        ],
+        "children": [
+          "person-023"
+        ],
+        "parents": []
+      }
     },
     {
       "id": "person-023",
-      "firstName": "Trần Văn",
-      "lastName": "I",
-      "name": "Trần Văn I",
-      "gender": "male",
-      "birthYear": 1950,
-      "deathYear": null,
-      "generation": 2,
-      "clanId": "clan-tran",
-      "spouseId": "person-024",
-      "parentId": "person-021",
-      "childrenIds": ["person-020"],
-      "role": "member",
-      "notes": "Bố vợ của Nguyễn Văn A"
+      "data": {
+        "gender": "M",
+        "first name": "Trần Văn",
+        "last name": "I",
+        "birthday": "1950",
+        "generation": 2,
+        "role": "member",
+        "notes": "Bố vợ của Nguyễn Văn A",
+        "avatar": "",
+        "clanId": "clan-tran",
+        "death year": ""
+      },
+      "rels": {
+        "spouses": [
+          "person-024"
+        ],
+        "children": [],
+        "parents": [
+          "person-021",
+          "person-022"
+        ]
+      }
     },
     {
       "id": "person-024",
-      "firstName": "Nguyễn Thị",
-      "lastName": "J",
-      "name": "Nguyễn Thị J",
-      "gender": "female",
-      "birthYear": 1952,
-      "deathYear": null,
-      "generation": 2,
-      "clanId": "clan-tran",
-      "spouseId": "person-023",
-      "parentId": null,
-      "childrenIds": ["person-020"],
-      "role": "member",
-      "notes": ""
+      "data": {
+        "gender": "F",
+        "first name": "Nguyễn Thị",
+        "last name": "J",
+        "birthday": "1952",
+        "generation": 2,
+        "role": "member",
+        "notes": "",
+        "avatar": "",
+        "clanId": "clan-tran",
+        "death year": ""
+      },
+      "rels": {
+        "spouses": [
+          "person-023"
+        ],
+        "children": [],
+        "parents": []
+      }
     },
     {
       "id": "person-030",
-      "firstName": "Lê Văn",
-      "lastName": "K",
-      "name": "Lê Văn K",
-      "gender": "male",
-      "birthYear": 1900,
-      "deathYear": 1970,
-      "generation": 1,
-      "clanId": "clan-le",
-      "spouseId": null,
-      "parentId": null,
-      "childrenIds": ["person-031"],
-      "role": "admin",
-      "notes": "Ông trong họ Lê"
+      "data": {
+        "gender": "M",
+        "first name": "Lê Văn",
+        "last name": "K",
+        "birthday": "1900",
+        "death year": "1970",
+        "generation": 1,
+        "role": "admin",
+        "notes": "Ông trong họ Lê",
+        "avatar": "",
+        "clanId": "clan-le"
+      },
+      "rels": {
+        "children": [
+          "person-031"
+        ],
+        "parents": [],
+        "spouses": [
+          "person-032"
+        ]
+      }
+    },
+    {
+      "id": "person-032",
+      "data": {
+        "gender": "F",
+        "first name": "Nguyễn Thị",
+        "last name": "M",
+        "birthday": "1905",
+        "death year": "1985",
+        "generation": 1,
+        "role": "member",
+        "notes": "Bà trong họ Lê",
+        "avatar": "",
+        "clanId": "clan-le"
+      },
+      "rels": {
+        "parents": [],
+        "spouses": [
+          "person-030"
+        ],
+        "children": [
+          "person-031"
+        ]
+      }
     },
     {
       "id": "person-031",
-      "firstName": "Lê Văn",
-      "lastName": "L",
-      "name": "Lê Văn L",
-      "gender": "male",
-      "birthYear": 1930,
-      "deathYear": 2000,
-      "generation": 2,
-      "clanId": "clan-le",
-      "spouseId": null,
-      "parentId": "person-030",
-      "childrenIds": [],
-      "role": "member",
-      "notes": "Bố vợ"
+      "data": {
+        "gender": "M",
+        "first name": "Lê Văn",
+        "last name": "L",
+        "birthday": "1930",
+        "death year": "2000",
+        "generation": 2,
+        "role": "member",
+        "notes": "Bố vợ",
+        "avatar": "",
+        "clanId": "clan-le"
+      },
+      "rels": {
+        "parents": [
+          "person-030",
+          "person-032"
+        ],
+        "spouses": [],
+        "children": []
+      }
     }
   ],
   "events": [
@@ -531,7 +788,13 @@
         "https://placehold.co/400x300/2d5016/ffffff?text=Giỗ+tổ+2025-2",
         "https://placehold.co/400x300/2d5016/ffffff?text=Giỗ+tổ+2025-3"
       ],
-      "attendees": ["person-010", "person-008", "person-011", "person-013", "person-014"]
+      "attendees": [
+        "person-010",
+        "person-008",
+        "person-011",
+        "person-013",
+        "person-014"
+      ]
     },
     {
       "id": "event-002",
@@ -546,7 +809,12 @@
       "images": [
         "https://placehold.co/400x300/2d5016/ffffff?text=Họp+hội+2024"
       ],
-      "attendees": ["person-010", "person-008", "person-009", "person-011"]
+      "attendees": [
+        "person-010",
+        "person-008",
+        "person-009",
+        "person-011"
+      ]
     },
     {
       "id": "event-003",
@@ -588,7 +856,15 @@
         "https://placehold.co/400x300/2d5016/ffffff?text=100+nam+nha+tho+ho-1",
         "https://placehold.co/400x300/2d5016/ffffff?text=100+nam+nha+tho+ho-2"
       ],
-      "attendees": ["person-010", "person-008", "person-009", "person-011", "person-013", "person-014", "person-015"]
+      "attendees": [
+        "person-010",
+        "person-008",
+        "person-009",
+        "person-011",
+        "person-013",
+        "person-014",
+        "person-015"
+      ]
     },
     {
       "id": "event-006",
@@ -609,67 +885,416 @@
       "balance": 125000000,
       "currency": "VND",
       "transactions": [
-        { "id": "txn-001", "type": "contribution", "amount": 5000000, "date": "2025-01-10", "personId": "person-010", "description": "Đóng góp quỹ họ tộc", "eventId": null },
-        { "id": "txn-002", "type": "contribution", "amount": 10000000, "date": "2025-01-15", "personId": "person-008", "description": "Đóng góp xây nhà thờ họ", "eventId": null },
-        { "id": "txn-003", "type": "contribution", "amount": 3000000, "date": "2025-02-01", "personId": "person-011", "description": "Đóng góp lễ giỗ tổ", "eventId": "event-001" },
-        { "id": "txn-004", "type": "expense", "amount": 25000000, "date": "2025-02-15", "personId": "person-008", "description": "Chi phí lễ giỗ tổ", "eventId": "event-001" },
-        { "id": "txn-005", "type": "contribution", "amount": 20000000, "date": "2025-03-01", "personId": "person-010", "description": "Đóng góp xây nhà thờ họ", "eventId": null },
-        { "id": "txn-006", "type": "expense", "amount": 15000000, "date": "2025-03-20", "personId": "person-008", "description": "Mua vật liệu xây dựng", "eventId": null },
-        { "id": "txn-007", "type": "contribution", "amount": 8000000, "date": "2025-04-05", "personId": "person-013", "description": "Đóng góp quỹ họ tộc", "eventId": null },
-        { "id": "txn-008", "type": "expense", "amount": 12000000, "date": "2025-04-15", "personId": "person-008", "description": "Trả lương thực phẩm cúng giỗ", "eventId": null },
-        { "id": "txn-009", "type": "contribution", "amount": 15000000, "date": "2025-05-10", "personId": "person-008", "description": "Đóng góp quỹ họ tộc", "eventId": null },
-        { "id": "txn-010", "type": "expense", "amount": 20000000, "date": "2025-06-01", "personId": "person-008", "description": "Cắt băng khánh thành nhà thờ họ", "eventId": "event-005" },
-        { "id": "txn-011", "type": "contribution", "amount": 12000000, "date": "2025-06-10", "personId": "person-011", "description": "Đóng góp kỷ niệm", "eventId": "event-005" },
-        { "id": "txn-012", "type": "expense", "amount": 18000000, "date": "2025-06-15", "personId": "person-008", "description": "Tổ chức lễ kỷ niệm", "eventId": "event-005" },
-        { "id": "txn-013", "type": "contribution", "amount": 25000000, "date": "2025-07-01", "personId": "person-010", "description": "Đóng góp quỹ họ tộc", "eventId": null },
-        { "id": "txn-014", "type": "expense", "amount": 5000000, "date": "2025-08-10", "personId": "person-008", "description": "Sửa chữa nhà thờ họ", "eventId": null },
-        { "id": "txn-015", "type": "contribution", "amount": 7000000, "date": "2025-09-05", "personId": "person-014", "description": "Đóng góp quỹ họ tộc", "eventId": null },
-        { "id": "txn-016", "type": "expense", "amount": 8000000, "date": "2025-10-20", "personId": "person-008", "description": "Chi phí họp hội", "eventId": "event-002" },
-        { "id": "txn-017", "type": "contribution", "amount": 10000000, "date": "2025-11-01", "personId": "person-015", "description": "Đóng góp quỹ họ tộc", "eventId": null },
-        { "id": "txn-018", "type": "expense", "amount": 3000000, "date": "2025-12-01", "personId": "person-008", "description": "Chi phí văn phòng", "eventId": null },
-        { "id": "txn-019", "type": "contribution", "amount": 18000000, "date": "2024-01-15", "personId": "person-010", "description": "Đóng góp quỹ họ tộc", "eventId": null },
-        { "id": "txn-020", "type": "expense", "amount": 10000000, "date": "2024-02-20", "personId": "person-008", "description": "Sửa chữa nhà thờ họ", "eventId": null },
-        { "id": "txn-021", "type": "contribution", "amount": 12000000, "date": "2024-03-10", "personId": "person-011", "description": "Đóng góp lễ giỗ tổ", "eventId": null },
-        { "id": "txn-022", "type": "expense", "amount": 20000000, "date": "2024-04-15", "personId": "person-008", "description": "Tổ chức lễ giỗ tổ", "eventId": null },
-        { "id": "txn-023", "type": "contribution", "amount": 8000000, "date": "2024-05-20", "personId": "person-013", "description": "Đóng góp quỹ họ tộc", "eventId": null },
-        { "id": "txn-024", "type": "expense", "amount": 5000000, "date": "2024-06-10", "personId": "person-008", "description": "Chi phí họp hội", "eventId": null },
-        { "id": "txn-025", "type": "contribution", "amount": 15000000, "date": "2024-07-05", "personId": "person-010", "description": "Đóng góp xây nhà thờ họ", "eventId": null },
-        { "id": "txn-026", "type": "expense", "amount": 25000000, "date": "2024-08-15", "personId": "person-008", "description": "Mua vật liệu xây dựng", "eventId": null },
-        { "id": "txn-027", "type": "contribution", "amount": 10000000, "date": "2024-09-20", "personId": "person-014", "description": "Đóng góp quỹ họ tộc", "eventId": null },
-        { "id": "txn-028", "type": "expense", "amount": 8000000, "date": "2024-10-10", "personId": "person-008", "description": "Trả lương thực phẩm cúng giỗ", "eventId": null },
-        { "id": "txn-029", "type": "contribution", "amount": 20000000, "date": "2024-11-15", "personId": "person-015", "description": "Đóng góp quỹ họ tộc", "eventId": null },
-        { "id": "txn-030", "type": "expense", "amount": 15000000, "date": "2024-12-20", "personId": "person-008", "description": "Chi phí cuối năm", "eventId": null }
+        {
+          "id": "txn-001",
+          "type": "contribution",
+          "amount": 5000000,
+          "date": "2025-01-10",
+          "personId": "person-010",
+          "description": "Đóng góp quỹ họ tộc",
+          "eventId": null
+        },
+        {
+          "id": "txn-002",
+          "type": "contribution",
+          "amount": 10000000,
+          "date": "2025-01-15",
+          "personId": "person-008",
+          "description": "Đóng góp xây nhà thờ họ",
+          "eventId": null
+        },
+        {
+          "id": "txn-003",
+          "type": "contribution",
+          "amount": 3000000,
+          "date": "2025-02-01",
+          "personId": "person-011",
+          "description": "Đóng góp lễ giỗ tổ",
+          "eventId": "event-001"
+        },
+        {
+          "id": "txn-004",
+          "type": "expense",
+          "amount": 25000000,
+          "date": "2025-02-15",
+          "personId": "person-008",
+          "description": "Chi phí lễ giỗ tổ",
+          "eventId": "event-001"
+        },
+        {
+          "id": "txn-005",
+          "type": "contribution",
+          "amount": 20000000,
+          "date": "2025-03-01",
+          "personId": "person-010",
+          "description": "Đóng góp xây nhà thờ họ",
+          "eventId": null
+        },
+        {
+          "id": "txn-006",
+          "type": "expense",
+          "amount": 15000000,
+          "date": "2025-03-20",
+          "personId": "person-008",
+          "description": "Mua vật liệu xây dựng",
+          "eventId": null
+        },
+        {
+          "id": "txn-007",
+          "type": "contribution",
+          "amount": 8000000,
+          "date": "2025-04-05",
+          "personId": "person-013",
+          "description": "Đóng góp quỹ họ tộc",
+          "eventId": null
+        },
+        {
+          "id": "txn-008",
+          "type": "expense",
+          "amount": 12000000,
+          "date": "2025-04-15",
+          "personId": "person-008",
+          "description": "Trả lương thực phẩm cúng giỗ",
+          "eventId": null
+        },
+        {
+          "id": "txn-009",
+          "type": "contribution",
+          "amount": 15000000,
+          "date": "2025-05-10",
+          "personId": "person-008",
+          "description": "Đóng góp quỹ họ tộc",
+          "eventId": null
+        },
+        {
+          "id": "txn-010",
+          "type": "expense",
+          "amount": 20000000,
+          "date": "2025-06-01",
+          "personId": "person-008",
+          "description": "Cắt băng khánh thành nhà thờ họ",
+          "eventId": "event-005"
+        },
+        {
+          "id": "txn-011",
+          "type": "contribution",
+          "amount": 12000000,
+          "date": "2025-06-10",
+          "personId": "person-011",
+          "description": "Đóng góp kỷ niệm",
+          "eventId": "event-005"
+        },
+        {
+          "id": "txn-012",
+          "type": "expense",
+          "amount": 18000000,
+          "date": "2025-06-15",
+          "personId": "person-008",
+          "description": "Tổ chức lễ kỷ niệm",
+          "eventId": "event-005"
+        },
+        {
+          "id": "txn-013",
+          "type": "contribution",
+          "amount": 25000000,
+          "date": "2025-07-01",
+          "personId": "person-010",
+          "description": "Đóng góp quỹ họ tộc",
+          "eventId": null
+        },
+        {
+          "id": "txn-014",
+          "type": "expense",
+          "amount": 5000000,
+          "date": "2025-08-10",
+          "personId": "person-008",
+          "description": "Sửa chữa nhà thờ họ",
+          "eventId": null
+        },
+        {
+          "id": "txn-015",
+          "type": "contribution",
+          "amount": 7000000,
+          "date": "2025-09-05",
+          "personId": "person-014",
+          "description": "Đóng góp quỹ họ tộc",
+          "eventId": null
+        },
+        {
+          "id": "txn-016",
+          "type": "expense",
+          "amount": 8000000,
+          "date": "2025-10-20",
+          "personId": "person-008",
+          "description": "Chi phí họp hội",
+          "eventId": "event-002"
+        },
+        {
+          "id": "txn-017",
+          "type": "contribution",
+          "amount": 10000000,
+          "date": "2025-11-01",
+          "personId": "person-015",
+          "description": "Đóng góp quỹ họ tộc",
+          "eventId": null
+        },
+        {
+          "id": "txn-018",
+          "type": "expense",
+          "amount": 3000000,
+          "date": "2025-12-01",
+          "personId": "person-008",
+          "description": "Chi phí văn phòng",
+          "eventId": null
+        },
+        {
+          "id": "txn-019",
+          "type": "contribution",
+          "amount": 18000000,
+          "date": "2024-01-15",
+          "personId": "person-010",
+          "description": "Đóng góp quỹ họ tộc",
+          "eventId": null
+        },
+        {
+          "id": "txn-020",
+          "type": "expense",
+          "amount": 10000000,
+          "date": "2024-02-20",
+          "personId": "person-008",
+          "description": "Sửa chữa nhà thờ họ",
+          "eventId": null
+        },
+        {
+          "id": "txn-021",
+          "type": "contribution",
+          "amount": 12000000,
+          "date": "2024-03-10",
+          "personId": "person-011",
+          "description": "Đóng góp lễ giỗ tổ",
+          "eventId": null
+        },
+        {
+          "id": "txn-022",
+          "type": "expense",
+          "amount": 20000000,
+          "date": "2024-04-15",
+          "personId": "person-008",
+          "description": "Tổ chức lễ giỗ tổ",
+          "eventId": null
+        },
+        {
+          "id": "txn-023",
+          "type": "contribution",
+          "amount": 8000000,
+          "date": "2024-05-20",
+          "personId": "person-013",
+          "description": "Đóng góp quỹ họ tộc",
+          "eventId": null
+        },
+        {
+          "id": "txn-024",
+          "type": "expense",
+          "amount": 5000000,
+          "date": "2024-06-10",
+          "personId": "person-008",
+          "description": "Chi phí họp hội",
+          "eventId": null
+        },
+        {
+          "id": "txn-025",
+          "type": "contribution",
+          "amount": 15000000,
+          "date": "2024-07-05",
+          "personId": "person-010",
+          "description": "Đóng góp xây nhà thờ họ",
+          "eventId": null
+        },
+        {
+          "id": "txn-026",
+          "type": "expense",
+          "amount": 25000000,
+          "date": "2024-08-15",
+          "personId": "person-008",
+          "description": "Mua vật liệu xây dựng",
+          "eventId": null
+        },
+        {
+          "id": "txn-027",
+          "type": "contribution",
+          "amount": 10000000,
+          "date": "2024-09-20",
+          "personId": "person-014",
+          "description": "Đóng góp quỹ họ tộc",
+          "eventId": null
+        },
+        {
+          "id": "txn-028",
+          "type": "expense",
+          "amount": 8000000,
+          "date": "2024-10-10",
+          "personId": "person-008",
+          "description": "Trả lương thực phẩm cúng giỗ",
+          "eventId": null
+        },
+        {
+          "id": "txn-029",
+          "type": "contribution",
+          "amount": 20000000,
+          "date": "2024-11-15",
+          "personId": "person-015",
+          "description": "Đóng góp quỹ họ tộc",
+          "eventId": null
+        },
+        {
+          "id": "txn-030",
+          "type": "expense",
+          "amount": 15000000,
+          "date": "2024-12-20",
+          "personId": "person-008",
+          "description": "Chi phí cuối năm",
+          "eventId": null
+        }
       ]
     },
     "clan-tran": {
       "balance": 45000000,
       "currency": "VND",
       "transactions": [
-        { "id": "txn-t01", "type": "contribution", "amount": 20000000, "date": "2025-01-05", "personId": "person-020", "description": "Đóng góp quỹ họ tộc", "eventId": null },
-        { "id": "txn-t02", "type": "contribution", "amount": 15000000, "date": "2025-03-10", "personId": "person-023", "description": "Đóng góp quỹ họ tộc", "eventId": null },
-        { "id": "txn-t03", "type": "expense", "amount": 10000000, "date": "2025-04-20", "personId": "person-021", "description": "Chi phí lễ giỗ tổ", "eventId": null },
-        { "id": "txn-t04", "type": "expense", "amount": 5000000, "date": "2025-06-15", "personId": "person-021", "description": "Sửa chữa nhà thờ họ", "eventId": null },
-        { "id": "txn-t05", "type": "contribution", "amount": 20000000, "date": "2025-09-01", "personId": "person-020", "description": "Đóng góp quỹ họ tộc", "eventId": null },
-        { "id": "txn-t06", "type": "expense", "amount": 10000000, "date": "2025-12-01", "personId": "person-021", "description": "Chi phí văn phòng", "eventId": null }
+        {
+          "id": "txn-t01",
+          "type": "contribution",
+          "amount": 20000000,
+          "date": "2025-01-05",
+          "personId": "person-020",
+          "description": "Đóng góp quỹ họ tộc",
+          "eventId": null
+        },
+        {
+          "id": "txn-t02",
+          "type": "contribution",
+          "amount": 15000000,
+          "date": "2025-03-10",
+          "personId": "person-023",
+          "description": "Đóng góp quỹ họ tộc",
+          "eventId": null
+        },
+        {
+          "id": "txn-t03",
+          "type": "expense",
+          "amount": 10000000,
+          "date": "2025-04-20",
+          "personId": "person-021",
+          "description": "Chi phí lễ giỗ tổ",
+          "eventId": null
+        },
+        {
+          "id": "txn-t04",
+          "type": "expense",
+          "amount": 5000000,
+          "date": "2025-06-15",
+          "personId": "person-021",
+          "description": "Sửa chữa nhà thờ họ",
+          "eventId": null
+        },
+        {
+          "id": "txn-t05",
+          "type": "contribution",
+          "amount": 20000000,
+          "date": "2025-09-01",
+          "personId": "person-020",
+          "description": "Đóng góp quỹ họ tộc",
+          "eventId": null
+        },
+        {
+          "id": "txn-t06",
+          "type": "expense",
+          "amount": 10000000,
+          "date": "2025-12-01",
+          "personId": "person-021",
+          "description": "Chi phí văn phòng",
+          "eventId": null
+        }
       ]
     },
     "clan-le": {
       "balance": 10000000,
       "currency": "VND",
       "transactions": [
-        { "id": "txn-l01", "type": "contribution", "amount": 10000000, "date": "2025-01-01", "personId": "person-030", "description": "Quỹ ban đầu", "eventId": null }
+        {
+          "id": "txn-l01",
+          "type": "contribution",
+          "amount": 10000000,
+          "date": "2025-01-01",
+          "personId": "person-030",
+          "description": "Quỹ ban đầu",
+          "eventId": null
+        }
       ]
     }
   },
   "invitations": [
-    { "id": "inv-001", "name": "Nguyễn Văn G", "clanId": "clan-nguyen", "invitedBy": "person-010", "status": "accepted", "date": "2025-05-01" },
-    { "id": "inv-002", "name": "Nguyễn Thị E", "clanId": "clan-nguyen", "invitedBy": "person-010", "status": "accepted", "date": "2025-04-15" },
-    { "id": "inv-003", "name": "Nguyễn Văn H", "clanId": "clan-nguyen", "invitedBy": "person-010", "status": "accepted", "date": "2025-03-20" }
+    {
+      "id": "inv-001",
+      "name": "Nguyễn Văn G",
+      "clanId": "clan-nguyen",
+      "invitedBy": "person-010",
+      "status": "accepted",
+      "date": "2025-05-01"
+    },
+    {
+      "id": "inv-002",
+      "name": "Nguyễn Thị E",
+      "clanId": "clan-nguyen",
+      "invitedBy": "person-010",
+      "status": "accepted",
+      "date": "2025-04-15"
+    },
+    {
+      "id": "inv-003",
+      "name": "Nguyễn Văn H",
+      "clanId": "clan-nguyen",
+      "invitedBy": "person-010",
+      "status": "accepted",
+      "date": "2025-03-20"
+    }
   ],
   "notifications": [
-    { "id": "notif-001", "personId": "person-010", "type": "fund_change", "title": "Biến động số dư quỹ", "message": "Quỹ họ Nguyễn đã giảm 25.000.000 VND - Chi phí lễ giỗ tổ", "date": "2025-02-15", "read": true },
-    { "id": "notif-002", "personId": "person-010", "type": "new_event", "title": "Sự kiện mới", "message": "Lễ giỗ tổ 2026 đã được thêm vào lịch", "date": "2025-12-20", "read": false },
-    { "id": "notif-003", "personId": "person-010", "type": "memorial_reminder", "title": "Nhắc ngày giỗ tổ", "message": "Lễ giỗ tổ Nguyễn Văn Hiếu sẽ diễn ra sau 30 ngày", "date": "2026-01-16", "read": false },
-    { "id": "notif-004", "personId": "person-010", "type": "member_joins", "title": "Thành viên mới", "message": "Nguyễn Thị E đã tham gia họ tộc", "date": "2025-03-01", "read": true }
+    {
+      "id": "notif-001",
+      "personId": "person-010",
+      "type": "fund_change",
+      "title": "Biến động số dư quỹ",
+      "message": "Quỹ họ Nguyễn đã giảm 25.000.000 VND - Chi phí lễ giỗ tổ",
+      "date": "2025-02-15",
+      "read": true
+    },
+    {
+      "id": "notif-002",
+      "personId": "person-010",
+      "type": "new_event",
+      "title": "Sự kiện mới",
+      "message": "Lễ giỗ tổ 2026 đã được thêm vào lịch",
+      "date": "2025-12-20",
+      "read": false
+    },
+    {
+      "id": "notif-003",
+      "personId": "person-010",
+      "type": "memorial_reminder",
+      "title": "Nhắc ngày giỗ tổ",
+      "message": "Lễ giỗ tổ Nguyễn Văn Hiếu sẽ diễn ra sau 30 ngày",
+      "date": "2026-01-16",
+      "read": false
+    },
+    {
+      "id": "notif-004",
+      "personId": "person-010",
+      "type": "member_joins",
+      "title": "Thành viên mới",
+      "message": "Nguyễn Thị E đã tham gia họ tộc",
+      "date": "2025-03-01",
+      "read": true
+    }
   ]
 }

@@ -21,7 +21,7 @@ class ClanInfoComponent {
                 <h2 class="text-xl sm:text-2xl font-bold text-gray-800">${clan.name}</h2>
                 <p class="text-sm text-gray-500 mt-1">${this.t.clan.lineage[clan.lineage]}</p>
               </div>
-              ${(this.store.getCurrentPerson()?.role === 'editor' || this.store.getCurrentPerson()?.role === 'admin') ? `<button class="clan-edit-btn px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-medium flex-shrink-0 transition-colors">✏️ ${this.t.clan.editClan}</button>` : ''}
+              ${(this.store.getCurrentPerson()?.data.role === 'editor' || this.store.getCurrentPerson()?.data.role === 'admin') ? `<button class="clan-edit-btn px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-medium flex-shrink-0 transition-colors">✏️ ${this.t.clan.editClan}</button>` : ''}
             </div>
           </div>
         <div class="p-4 sm:p-6 lg:p-8 space-y-6">
@@ -43,7 +43,7 @@ class ClanInfoComponent {
                   <div class="flex items-start gap-4 p-4 bg-yellow-50 rounded-xl border border-yellow-100">
                     <div class="w-12 h-12 bg-yellow-200 rounded-full flex items-center justify-center text-xl flex-shrink-0">⭐</div>
                     <div class="min-w-0">
-                      <button class="clan-member-link font-semibold text-yellow-800 hover:text-yellow-900" data-id="${f.person.id}">${f.person.name}</button>
+                      <button class="clan-member-link font-semibold text-yellow-800 hover:text-yellow-900" data-id="${f.person.id}">${f.person.data['first name'] + ' ' + f.person.data['last name']}</button>
                       <p class="text-sm text-yellow-600 mt-1">${f.achievement}</p>
                     </div>
                   </div>
