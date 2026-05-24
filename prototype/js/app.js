@@ -4,6 +4,7 @@ import { SidebarComponent } from './components/sidebar.js';
 import { MemberCardComponent } from './components/member-card.js';
 import { ClanInfoComponent } from './components/clan-info.js';
 import { EventsComponent } from './components/events.js';
+import { CalendarComponent } from './components/calendar.js';
 import { FundComponent } from './components/fund.js';
 import { AdminComponent } from './components/admin.js';
 import { NotificationsComponent } from './components/notifications.js';
@@ -100,6 +101,7 @@ class App {
       'members': MembersListComponent,
       'clan-info': ClanInfoComponent,
       'events': EventsComponent,
+      'calendar': CalendarComponent,
       'funds': FundComponent,
       'admin': AdminComponent,
       'notifications': NotificationsComponent,
@@ -128,12 +130,31 @@ class App {
   }
 
   subscribeToStore() {
-    let authenticated = false, page, clan, selected, lang, darkMode;
+    let authenticated = false, page, clan, selected, lang, darkMode, calMonth, calYear, calType;
 
     store.subscribe((state) => {
       if (state._authenticated && !authenticated) {
         authenticated = true;
         this.renderMain();
+        return;
+      }
+
+      if (state.calendarMonth !== calMonth || state.calendarYear !== calYear || state.calendarType !== calType) {
+        calMonth = state.calendarMonth;
+        calYear = state.calendarYear;
+        calType = state.calendarType;
+        if (this.components.sidebar) {
+          this.components.sidebar.render();
+          this.components.sidebar.bindEvents();
+        }
+        if (this.components.events) {
+          this.components.events.render();
+          this.components.events.bindEvents();
+        }
+        if (this.components.calendar) {
+          this.components.calendar.render();
+          this.components.calendar.bindEvents();
+        }
         return;
       }
 

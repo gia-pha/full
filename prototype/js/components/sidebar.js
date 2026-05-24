@@ -3,6 +3,7 @@ class SidebarComponent {
     this.container = container;
     this.store = store;
     this.t = t;
+    this.store.initCalendar();
     this.render();
     this.bindEvents();
   }
@@ -14,6 +15,7 @@ class SidebarComponent {
       { id: 'members', icon: '👥', label: this.t.app.sidebar.members },
       { id: 'clan-info', icon: '🏛️', label: this.t.app.sidebar.clanInfo },
       { id: 'events', icon: '📅', label: this.t.app.sidebar.events },
+      { id: 'calendar', icon: '🗓️', label: this.t.app.sidebar.calendar },
       { id: 'funds', icon: '💰', label: this.t.app.sidebar.funds },
     ];
     if (person?.data.role === 'admin') items.push({ id: 'admin', icon: '⚙️', label: this.t.app.sidebar.admin });
