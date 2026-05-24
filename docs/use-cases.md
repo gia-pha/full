@@ -13,7 +13,10 @@ là một thành viên trong họ tộc:
 * tôi muốn xóa thông tin trong hệ thống khi cần
 * tôi muốn chia sẻ liên kết trang công khai của họ tộc cho người quen để họ tìm hiểu và gia nhập
 * tôi muốn chỉnh sửa thông tin cá nhân: tên, năm sinh, giới tính, người phối ngẫu
-* tôi muốn thay đổi ngôn ngữ từ mặc định (tiếng Việt) sang tiếng Anh
+* tôi muốn xem lịch của các sự kiện trong năm, trong tháng
+* tôi có thể chuyển đổi giữa lịch âm và lịch dương
+* tôi có thể chuyển đổi ngôn ngữ giữa mặc định (tiếng Việt) và tiếng Anh
+* tôi có thể chuyển đổi giữa giao diện sáng và tối
 
 
 là người tạo nên họ tộc trong hệ thống:
