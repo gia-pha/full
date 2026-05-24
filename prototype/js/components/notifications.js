@@ -13,7 +13,7 @@ class NotificationsComponent {
 
   render() {
     const notifs = this.store.state.notifications;
-    const prefs = this.store.getCurrentPerson()?.notificationPreferences || {};
+    const prefs = this.store.getCurrentPerson()?.data.notificationPreferences || {};
     const icons = { fund_change: '💰', new_event: '📅', memorial_reminder: '🕯️', member_joins: '👤' };
 
     this.container.innerHTML = `

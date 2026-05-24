@@ -15,62 +15,71 @@ function buildGedcom(data) {
     idMap[person.id] = gedcomId;
 
     gedcom += `0 ${gedcomId} INDI\n`;
-    gedcom += `1 NAME ${person.firstName} /${person.lastName}/\n`;
-    gedcom += `1 SEX ${person.gender === 'male' ? 'M' : 'F'}\n`;
+    gedcom += `1 NAME ${person.data['first name']} /${person.data['last name']}/\n`;
+    gedcom += `1 SEX ${person.data.gender === 'M' ? 'M' : 'F'}\n`;
 
-    if (person.birthYear) {
+    if (person.data.birthday) {
       gedcom += `1 BIRT\n`;
-      gedcom += `2 DATE ${person.birthYear}\n`;
+      gedcom += `2 DATE ${person.data.birthday}\n`;
     }
 
-    if (person.deathYear) {
+    if (person.data['death year']) {
       gedcom += `1 DEAT\n`;
-      gedcom += `2 DATE ${person.deathYear}\n`;
+      gedcom += `2 DATE ${person.data['death year']}\n`;
     }
 
-    if (person.notes) {
-      gedcom += `1 NOTE ${person.notes}\n`;
+    if (person.data.notes) {
+      gedcom += `1 NOTE ${person.data.notes}\n`;
     }
 
     gedcom += '\n';
   });
 
   const families = new Set();
-  persons.forEach((person, idx) => {
-    if (person.spouseId && person.parentId) {
-      const spouse = persons.find(p => p.id === person.spouseId);
+  const familyMap = {};
+  const byId = {};
+  persons.forEach(p => byId[p.id] = p);
+
+  persons.forEach((person) => {
+    if (person.rels.spouses[0]) {
+      const spouse = persons.find(p => p.id === person.rels.spouses[0]);
       if (spouse) {
-        const familyKey = [person.id, person.spouseId].sort().join('|');
+        const familyKey = [person.id, person.rels.spouses[0]].sort().join('|');
         if (!families.has(familyKey)) {
           families.add(familyKey);
           const familyIdx = families.size;
           const familyId = `@F${familyIdx}@`;
-          const p1Idx = persons.findIndex(p => p.id === person.id);
-          const p2Idx = persons.findIndex(p => p.id === person.spouseId);
+          familyMap[familyKey] = familyId;
 
-          gedcom += `0 ${familyId} FAMS\n`;
-          gedcom += `1 HUSB ${idMap[person.id] || '@UNKNOWN@'}\n`;
-          gedcom += `1 WIFE ${idMap[person.spouseId] || '@UNKNOWN@'}\n`;
+          const male = person.data.gender === 'M' ? person : spouse;
+          const female = person.data.gender === 'F' ? person : spouse;
 
-          const childrenIds = person.childrenIds || [];
+          gedcom += `0 ${familyId} FAM\n`;
+          gedcom += `1 HUSB ${idMap[male.id] || '@UNKNOWN@'}\n`;
+          gedcom += `1 WIFE ${idMap[female.id] || '@UNKNOWN@'}\n`;
+
+          const childrenIds = person.rels.children || [];
           childrenIds.forEach(childId => {
-            const childIdx = persons.findIndex(p => p.id === childId);
-            if (childIdx >= 0) {
+            if (idMap[childId]) {
               gedcom += `1 CHIL ${idMap[childId]}\n`;
             }
           });
 
           gedcom += '\n';
+        }
+      }
+    }
+  });
 
-          const p1 = persons[p1Idx];
-          const p2 = persons[p2Idx];
-          if (p1.parentId) {
-            const parentIdx = persons.findIndex(p => p.id === p1.parentId);
-            if (parentIdx >= 0) {
-              gedcom += `0 ${familyId} FAMC\n`;
-              gedcom += `1 FAMS @F999@\n\n`;
-            }
-          }
+  persons.forEach((person) => {
+    if (person.rels.parents && person.rels.parents.length > 0) {
+      const parentIds = person.rels.parents.map(pid => byId[pid]?.id).filter(Boolean);
+      if (parentIds.length >= 2) {
+        const familyKey = [...parentIds].sort().join('|');
+        const familyId = familyMap[familyKey];
+        if (familyId) {
+          gedcom += `0 ${idMap[person.id]} FAMC\n`;
+          gedcom += `1 FAMC ${familyId}\n\n`;
         }
       }
     }
@@ -85,6 +94,8 @@ function parseGedcom(text) {
   const families = [];
   let currentRecord = null;
   let currentType = null;
+  const idMap = {};
+  let personCounter = 0;
 
   for (const line of lines) {
     const parts = line.match(/^(\d+)\s+(.+)$/);
@@ -95,16 +106,46 @@ function parseGedcom(text) {
 
     if (level === 0) {
       if (currentRecord && currentType === 'INDI') {
-        persons.push(currentRecord);
-      } else if (currentRecord && currentType === 'FAMS') {
+        const newId = `imported-person-${personCounter++}`;
+        idMap[currentRecord.id] = newId;
+        persons.push({
+          id: newId,
+          data: {
+            'first name': currentRecord.firstName || '',
+            'last name': currentRecord.lastName || '',
+            gender: currentRecord.gender === 'male' ? 'M' : 'F',
+            birthday: currentRecord.birthYear ? String(currentRecord.birthYear) : '',
+            'death year': currentRecord.deathYear ? String(currentRecord.deathYear) : '',
+            generation: 0,
+            role: 'member',
+            notes: currentRecord.notes || '',
+            avatar: '',
+            clanId: ''
+          },
+          rels: {
+            spouses: currentRecord.spouses || [],
+            children: currentRecord.children || [],
+            parents: currentRecord.parents || []
+          }
+        });
+      } else if (currentRecord && (currentType === 'FAMS' || currentType === 'FAM')) {
         families.push(currentRecord);
       }
-      const match = content.match(/^(.+?)\s+(INDI|FAMS|FAMC|SUBM)$/);
+      const match = content.match(/^(.+?)\s+(INDI|FAMS|FAM|FAMC|SUBM)$/);
       if (match) {
-        currentRecord = { id: match[1], name: '', gender: 'male', birthYear: null, deathYear: null, notes: '' };
+        currentRecord = {
+          id: match[1],
+          firstName: '',
+          lastName: '',
+          gender: 'male',
+          birthYear: null,
+          deathYear: null,
+          notes: '',
+          spouses: [],
+          children: [],
+          parents: []
+        };
         currentType = match[2];
-        if (match[2] === 'FAMS') currentRecord.children = [];
-        if (match[2] === 'FAMC') currentRecord.children = [];
       } else {
         currentRecord = null;
         currentType = null;
@@ -116,9 +157,8 @@ function parseGedcom(text) {
           if (nameMatch) {
             currentRecord.firstName = nameMatch[1];
             currentRecord.lastName = nameMatch[2];
-            currentRecord.name = `${nameMatch[1]} ${nameMatch[2]}`;
           } else {
-            currentRecord.name = content.substring(5);
+            currentRecord.lastName = content.substring(5);
           }
         } else if (content === 'SEX M') {
           currentRecord.gender = 'male';
@@ -135,8 +175,11 @@ function parseGedcom(text) {
         } else if (content.startsWith('WIFE ')) {
           currentRecord.wifeId = content.substring(5);
         } else if (content.startsWith('CHIL ')) {
-          if (!currentRecord.children) currentRecord.children = [];
           currentRecord.children.push(content.substring(5));
+        } else if (content.startsWith('FAMC ')) {
+          currentRecord._familyC = content.substring(5);
+        } else if (content.startsWith('FAMS ')) {
+          currentRecord._familyS = content.substring(5);
         }
       } else if (level === 2 && currentRecord._expectDate) {
         if (content.startsWith('DATE ')) {
@@ -152,8 +195,66 @@ function parseGedcom(text) {
   }
 
   if (currentRecord && currentType === 'INDI') {
-    persons.push(currentRecord);
+    const newId = `imported-person-${personCounter++}`;
+    idMap[currentRecord.id] = newId;
+    persons.push({
+      id: newId,
+      data: {
+        'first name': currentRecord.firstName || '',
+        'last name': currentRecord.lastName || '',
+        gender: currentRecord.gender === 'male' ? 'M' : 'F',
+        birthday: currentRecord.birthYear ? String(currentRecord.birthYear) : '',
+        'death year': currentRecord.deathYear ? String(currentRecord.deathYear) : '',
+        generation: 0,
+        role: 'member',
+        notes: currentRecord.notes || '',
+        avatar: '',
+        clanId: ''
+      },
+      rels: {
+        spouses: currentRecord.spouses || [],
+        children: currentRecord.children || [],
+        parents: currentRecord.parents || []
+      }
+    });
   }
+
+  // Resolve family relationships
+  const familyMap = {};
+  families.forEach(fam => {
+    familyMap[fam.id] = fam;
+    if (fam.husbandId) {
+      const husbPerson = persons.find(p => p.id === idMap[fam.husbandId]);
+      const wifePerson = fam.wifeId ? persons.find(p => p.id === idMap[fam.wifeId]) : null;
+      if (husbPerson) {
+        if (wifePerson && !husbPerson.rels.spouses.includes(wifePerson.id)) {
+          husbPerson.rels.spouses.push(wifePerson.id);
+        }
+        fam.children?.forEach(childGedcomId => {
+          const childPerson = persons.find(p => p.id === idMap[childGedcomId]);
+          if (childPerson && !husbPerson.rels.children.includes(childPerson.id)) {
+            husbPerson.rels.children.push(childPerson.id);
+          }
+        });
+      }
+      if (wifePerson) {
+        if (!wifePerson.rels.spouses.includes(husbPerson.id)) {
+          wifePerson.rels.spouses.push(husbPerson.id);
+        }
+        fam.children?.forEach(childGedcomId => {
+          const childPerson = persons.find(p => p.id === idMap[childGedcomId]);
+          if (childPerson && !wifePerson.rels.children.includes(childPerson.id)) {
+            wifePerson.rels.children.push(childPerson.id);
+          }
+        });
+      }
+    }
+  });
+
+  // Link children to parents via FAMC
+  persons.forEach(p => {
+    const gedcomRecord = families.find(f => f._familyC === p._familyC || false);
+  });
 
   return { persons, families };
 }

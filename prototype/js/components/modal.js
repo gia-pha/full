@@ -66,9 +66,9 @@ class ModalComponent {
     if (!p) return '<p class="text-gray-400 text-sm">Khong co du lieu</p>';
     return `
       <div class="space-y-3 sm:space-y-4">
-        ${this.input(this.t.member.name, 'modal-person-name', p.name)}
-        <div class="grid grid-cols-2 gap-3">${this.input(this.t.member.birthYear, 'modal-person-birth', p.birthYear || '', 'number')}${this.input(this.t.member.deathYear, 'modal-person-death', p.deathYear || '', 'number')}</div>
-        ${this.textarea(this.t.member.notes, 'modal-person-notes', p.notes || '')}
+        ${this.input(this.t.member.name, 'modal-person-name', p.data['first name'] + ' ' + p.data['last name'])}
+        <div class="grid grid-cols-2 gap-3">${this.input(this.t.member.birthYear, 'modal-person-birth', p.data.birthday || '', 'number')}${this.input(this.t.member.deathYear, 'modal-person-death', p.data['death year'] || '', 'number')}</div>
+        ${this.textarea(this.t.member.notes, 'modal-person-notes', p.data.notes || '')}
         <div class="flex gap-2 pt-2">
           <button class="modal-save-person flex-1 py-2.5 bg-emerald-600 active:bg-emerald-700 text-white rounded-lg text-sm font-medium">${this.t.profile.save}</button>
           <button class="modal-cancel px-4 py-2.5 bg-gray-100 active:bg-gray-200 text-gray-600 rounded-lg text-sm font-medium">${this.t.profile.cancel}</button>
@@ -122,7 +122,7 @@ class ModalComponent {
           ${this.input(this.t.fund.amount, 'modal-txn-amount', '', 'number')}
           ${this.input(this.t.fund.date, 'modal-txn-date', new Date().toISOString().split('T')[0], 'date')}
         </div>
-        <div><label class="text-xs sm:text-sm text-gray-600">${this.t.fund.person}</label><select class="modal-txn-person w-full mt-1 px-3 sm:px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">${members.map(m => `<option value="${m.id}">${m.name}</option>`).join('')}</select></div>
+        <div><label class="text-xs sm:text-sm text-gray-600">${this.t.fund.person}</label><select class="modal-txn-person w-full mt-1 px-3 sm:px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">${members.map(m => `<option value="${m.id}">${m.data['first name'] + ' ' + m.data['last name']}</option>`).join('')}</select></div>
         <div><label class="text-xs sm:text-sm text-gray-600">${this.t.fund.event} (optional)</label><select class="modal-txn-event w-full mt-1 px-3 sm:px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"><option value="">-- Khong co --</option>${events.map(e => `<option value="${e.id}">${e.title}</option>`).join('')}</select></div>
         <div class="flex gap-2 pt-2">
           <button class="modal-save-txn flex-1 py-2.5 ${data.type === 'contribution' ? 'bg-emerald-600 active:bg-emerald-700' : 'bg-red-600 active:bg-red-700'} text-white rounded-lg text-sm font-medium">${data.type === 'contribution' ? 'Dong gap' : 'Chi tieu'}</button>
@@ -139,7 +139,7 @@ class ModalComponent {
       <div class="space-y-4">
         <div class="p-3 sm:p-4 bg-gray-50 rounded-lg">
           <p class="text-xs text-gray-500">${this.t.member.name}</p>
-          <p class="font-medium text-gray-800 text-sm">${person.name}</p>
+          <p class="font-medium text-gray-800 text-sm">${person.data['first name'] + ' ' + person.data['last name']}</p>
           <p class="text-xs text-gray-500 mt-1">${this.t.member.role}: <span class="text-emerald-600">${this.t.admin.roles[data.currentRole]}</span></p>
         </div>
         <div><label class="text-xs sm:text-sm text-gray-600">Vai tro moi</label><select class="modal-new-role w-full mt-1 px-3 sm:px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"><option value="member">${this.t.admin.roles.member}</option><option value="editor">${this.t.admin.roles.editor}</option><option value="treasurer">${this.t.admin.roles.treasurer}</option></select></div>
@@ -165,10 +165,10 @@ class ModalComponent {
         const b = this.container.querySelector('.modal-person-birth');
         const d = this.container.querySelector('.modal-person-death');
         const nt = this.container.querySelector('.modal-person-notes');
-        if (n) p.name = n.value;
-        if (b) p.birthYear = parseInt(b.value) || null;
-        if (d) p.deathYear = parseInt(d.value) || null;
-        if (nt) p.notes = nt.value;
+        if (n) { const parts = n.value.trim().split(' '); p.data['last name'] = parts.pop() || ''; p.data['first name'] = parts.join(' ') || ''; }
+        if (b) p.data.birthday = parseInt(b.value) || null;
+        if (d) p.data['death year'] = parseInt(d.value) || null;
+        if (nt) p.data.notes = nt.value;
       }
       close();
     });
@@ -195,7 +195,7 @@ class ModalComponent {
     this.container.querySelector('.modal-save-role')?.addEventListener('click', () => {
       const sel = this.container.querySelector('.modal-new-role');
       const p = this.store.getPersonById(this.store.state.modalData?.personId);
-      if (p && sel) p.role = sel.value;
+      if (p && sel) p.data.role = sel.value;
       close();
     });
   }

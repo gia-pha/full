@@ -94,7 +94,7 @@ class Store {
   expandAll() {
     if (this._state.data) {
       const clanPersons = this._state.data.persons.filter(
-        p => p.clanId === this._state.currentClanId
+        p => p.data.clanId === this._state.currentClanId
       );
       clanPersons.forEach(p => this._state.expandedNodes.add(p.id));
     }
@@ -139,7 +139,7 @@ class Store {
         p => p.id === this._state.currentPersonId
       );
       if (person) {
-        person.notificationPreferences = { ...person.notificationPreferences, ...prefs };
+        person.data.notificationPreferences = { ...person.data.notificationPreferences, ...prefs };
       }
     }
     this._notify();
@@ -174,7 +174,7 @@ class Store {
   }
 
   getClanMembers(clanId) {
-    return this._state.data?.persons?.filter(p => p.clanId === clanId) || [];
+    return this._state.data?.persons?.filter(p => p.data.clanId === clanId) || [];
   }
 
   getClanEvents(clanId) {

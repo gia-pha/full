@@ -16,8 +16,8 @@ class SidebarComponent {
       { id: 'events', icon: '📅', label: this.t.app.sidebar.events },
       { id: 'funds', icon: '💰', label: this.t.app.sidebar.funds },
     ];
-    if (person?.role === 'admin') items.push({ id: 'admin', icon: '⚙️', label: this.t.app.sidebar.admin });
-    if (person?.role === 'editor' || person?.role === 'admin') items.push({ id: 'invite', icon: '📨', label: this.t.app.sidebar.invite });
+    if (person?.data.role === 'admin') items.push({ id: 'admin', icon: '⚙️', label: this.t.app.sidebar.admin });
+    if (person?.data.role === 'editor' || person?.data.role === 'admin') items.push({ id: 'invite', icon: '📨', label: this.t.app.sidebar.invite });
     return items;
   }
 
@@ -134,8 +134,7 @@ class SidebarComponent {
             <div class="h-full flex flex-col overflow-y-auto">
               <div class="p-5 bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex-shrink-0">
                 <div class="flex items-center gap-4">
-                  <div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center text-2xl">${this.store.getCurrentPerson()?.gender === 'male' ? '♂' : '♀'}</div>
-                  <div><div class="font-bold text-lg">${this.store.getCurrentPerson()?.name || ''}</div><div class="text-sm opacity-80">${this.t.admin.roles[this.store.getCurrentPerson()?.role] || ''}</div></div>
+                  ${(() => { const cp = this.store.getCurrentPerson(); if (!cp) return ''; const fullName = cp.data['first name'] + ' ' + cp.data['last name']; return `<div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center text-2xl">${cp.data.gender === 'M' ? '♂' : '♀'}</div><div><div class="font-bold text-lg">${fullName}</div><div class="text-sm opacity-80">${this.t.admin.roles[cp.data.role] || ''}</div></div>`; })()}
                 </div>
               </div>
               <div class="p-4 border-b flex-shrink-0">
