@@ -1,4 +1,5 @@
 import { formatDate } from '../utils/format.js';
+import { solarToLunar, formatLunarDateVi, formatLunarDateEn } from '../utils/lunar.js';
 
 class EventsComponent {
   constructor(container, store, t) {
@@ -42,6 +43,18 @@ class EventsComponent {
     const allPersons = this.store.state.data?.persons || [];
     const typeColors = { memorial: 'amber', meeting: 'blue', reunion: 'emerald', anniversary: 'purple' };
     const color = typeColors[event.type] || 'gray';
+    const lang = this.store.state.language;
+    const calendarType = this.store.state.calendarType;
+
+    // Get lunar date display
+    let lunarDateDisplay = '';
+    if (event.date) {
+      const [y, m, d] = event.date.split('-').map(Number);
+      const lunar = solarToLunar(y, m, d);
+      lunarDateDisplay = lang === 'vi'
+        ? formatLunarDateVi(lunar.year, lunar.month, lunar.day, lunar.isLeapMonth)
+        : formatLunarDateEn(lunar.year, lunar.month, lunar.day, lunar.isLeapMonth);
+    }
 
     return `
       <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg transition-shadow">
@@ -58,7 +71,9 @@ class EventsComponent {
           </div>
           <p class="text-gray-600 mb-4 leading-relaxed">${event.description}</p>
           <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-4">
-            <div class="flex items-center gap-2"><span>📅</span> ${formatDate(event.date)}</div>
+            <div class="flex items-center gap-2"><span>📅</span> ${calendarType === 'lunar' ? lunarDateDisplay : formatDate(event.date)}</div>
+            ${calendarType === 'solar' && lunarDateDisplay ? `<div class="flex items-center gap-2 text-amber-600"><span>🌙</span> ${lunarDateDisplay}</div>` : ''}
+            ${calendarType === 'lunar' && event.date ? `<div class="flex items-center gap-2 text-blue-600"><span>☀️</span> ${formatDate(event.date)}</div>` : ''}
             <div class="flex items-center gap-2"><span>📍</span> ${event.location}</div>
           </div>
           ${event.mapUrl ? `
@@ -93,7 +108,7 @@ class EventsComponent {
     this.container.querySelectorAll('.events-tab').forEach(tab => tab.addEventListener('click', () => { this.tab = tab.dataset.tab; this.render(); this.bindEvents(); }));
     this.container.querySelector('.events-add')?.addEventListener('click', () => this.store.openModal('add-event', { clanId: this.store.state.currentClanId }));
     this.container.querySelectorAll('.event-edit').forEach(b => b.addEventListener('click', () => { const e = this.store.getClanEvents(this.store.state.currentClanId).find(x => x.id === b.dataset.id); this.store.openModal('edit-event', e); }));
-    this.container.querySelectorAll('.event-delete').forEach(b => b.addEventListener('click', () => {     if (confirm(this.t.events.deleteConfirm)) alert(this.t.events.deleteSuccess); }));
+    this.container.querySelectorAll('.event-delete').forEach(b => b.addEventListener('click', () => { if (confirm(this.t.events.deleteConfirm)) alert(this.t.events.deleteSuccess); }));
     this.container.querySelectorAll('.event-cal').forEach(b => b.addEventListener('click', () => {
       const e = this.store.getClanEvents(this.store.state.currentClanId).find(x => x.id === b.dataset.id);
       if (e) { const d = e.date.replace(/-/g, ''); window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(e.title)}&dates=${d}/${d}&location=${encodeURIComponent(e.location)}`, '_blank'); }

@@ -17,7 +17,11 @@ class Store {
       modalOpen: null,
       modalData: null,
       builderMode: false,
-      darkMode: false
+      darkMode: false,
+      calendarView: 'list',
+      calendarType: 'solar',
+      calendarMonth: null,
+      calendarYear: null
     };
     this._listeners = [];
   }
@@ -198,6 +202,34 @@ class Store {
     this._state.darkMode = !this._state.darkMode;
     document.documentElement.classList.toggle('dark', this._state.darkMode);
     this._notify();
+  }
+
+  setCalendarView(view) {
+    this._state.calendarView = view;
+    this._notify();
+  }
+
+  toggleCalendarType() {
+    this._state.calendarType = this._state.calendarType === 'solar' ? 'lunar' : 'solar';
+    this._notify();
+  }
+
+  setCalendarMonth(month) {
+    this._state.calendarMonth = month;
+    this._notify();
+  }
+
+  setCalendarYear(year) {
+    this._state.calendarYear = year;
+    this._notify();
+  }
+
+  initCalendar() {
+    if (!this._state.calendarMonth || !this._state.calendarYear) {
+      const now = new Date();
+      this._state.calendarMonth = now.getMonth() + 1;
+      this._state.calendarYear = now.getFullYear();
+    }
   }
 }
 

@@ -878,6 +878,102 @@
       "status": "upcoming",
       "images": [],
       "attendees": []
+    },
+    {
+      "id": "event-007",
+      "clanId": "clan-nguyen",
+      "title": "Họp hội họ tộc năm 2025",
+      "description": "Họp hội tổng kết hoạt động năm 2025 và lên kế hoạch 2026",
+      "date": "2025-12-20",
+      "location": "Nhà văn hóa xã Tân Hưng",
+      "mapUrl": "https://maps.example.com/tan-hung",
+      "type": "meeting",
+      "status": "past",
+      "images": [],
+      "attendees": [
+        "person-010",
+        "person-008",
+        "person-009"
+      ]
+    },
+    {
+      "id": "event-008",
+      "clanId": "clan-nguyen",
+      "title": "Lễ Tết Nguyên Đán 2026",
+      "description": "Hội họp đầu năm, chúc Tết tổ tiên và thành viên họ tộc",
+      "date": "2026-01-25",
+      "location": "Nhà thờ họ, Thôn An Đức",
+      "mapUrl": "https://maps.example.com/an-duc",
+      "type": "reunion",
+      "status": "upcoming",
+      "images": [],
+      "attendees": []
+    },
+    {
+      "id": "event-009",
+      "clanId": "clan-nguyen",
+      "title": "Lễ Trung Thu 2025",
+      "description": "Tổ chức lễ Trung Thu cho trẻ em trong họ tộc",
+      "date": "2025-09-02",
+      "location": "Nhà văn hóa xã Tân Hưng",
+      "mapUrl": "https://maps.example.com/tan-hung",
+      "type": "reunion",
+      "status": "past",
+      "images": [
+        "https://placehold.co/400x300/2d5016/ffffff?text=Trung+Thu+2025"
+      ],
+      "attendees": [
+        "person-010",
+        "person-013",
+        "person-014",
+        "person-015"
+      ]
+    },
+    {
+      "id": "event-010",
+      "clanId": "clan-nguyen",
+      "title": "Lễ Thanh Minh 2026",
+      "description": "Quét mộ, dọn dẹp và cúng viếng tổ tiên",
+      "date": "2026-04-05",
+      "location": "Nghĩa trang gia tộc",
+      "mapUrl": "https://maps.example.com/an-duc",
+      "type": "memorial",
+      "status": "upcoming",
+      "images": [],
+      "attendees": []
+    },
+    {
+      "id": "event-011",
+      "clanId": "clan-nguyen",
+      "title": "Lễ hội xuân 2025",
+      "description": "Lễ hội đầu xuân, tổ chức các hoạt động văn hóa thể thao",
+      "date": "2025-03-10",
+      "location": "Sân vận động xã Tân Hưng",
+      "mapUrl": "https://maps.example.com/tan-hung",
+      "type": "reunion",
+      "status": "past",
+      "images": [
+        "https://placehold.co/400x300/2d5016/ffffff?text=Lễ+hội+xuân+2025"
+      ],
+      "attendees": [
+        "person-010",
+        "person-008",
+        "person-011",
+        "person-013"
+      ]
+    },
+    {
+      "id": "event-012",
+      "clanId": "clan-nguyen",
+      "title": "Họp ban chấp hành 2026",
+      "description": "Họp bàn kế hoạch hoạt động nửa đầu năm 2026",
+      "date": "2026-03-15",
+      "location": "Nhà thờ họ, Thôn An Đức",
+      "mapUrl": "https://maps.example.com/an-duc",
+      "type": "meeting",
+      "status": "upcoming",
+      "images": [],
+      "attendees": []
     }
   ],
   "funds": {
