@@ -14,7 +14,7 @@ async function register() {
 
     try {
         // Get registration options from your server. Here, we also receive the challenge.
-        const response = await fetch('/api/passkey/registerStart', {
+        const response = await fetch(AUTH_BACKEND_URL + '/api/passkey/registerStart', {
             method: 'POST', headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({username: username})
         });
@@ -33,7 +33,7 @@ async function register() {
         const attestationResponse = await SimpleWebAuthnBrowser.startRegistration(options.publicKey);
 
         // Send attestationResponse back to server for verification and storage.
-        const verificationResponse = await fetch('/api/passkey/registerFinish', {
+        const verificationResponse = await fetch(AUTH_BACKEND_URL + '/api/passkey/registerFinish', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ async function login() {
 
     try {
         // Get login options from your server. Here, we also receive the challenge.
-        const response = await fetch('/api/passkey/loginStart', {
+        const response = await fetch(AUTH_BACKEND_URL + '/api/passkey/loginStart', {
             method: 'POST', headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({username: username})
         });
@@ -77,7 +77,7 @@ async function login() {
         const assertionResponse = await SimpleWebAuthnBrowser.startAuthentication(options.publicKey);
 
         // Send assertionResponse back to server for verification.
-        const verificationResponse = await fetch('/api/passkey/loginFinish', {
+        const verificationResponse = await fetch(AUTH_BACKEND_URL + '/api/passkey/loginFinish', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
