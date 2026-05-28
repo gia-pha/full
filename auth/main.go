@@ -68,10 +68,10 @@ func main() {
 	http.Handle("/", http.FileServer(http.Dir("./web")))
 
 	// Add auth the routes
-	http.HandleFunc("/api/passkey/registerStart", BeginRegistration)
-	http.HandleFunc("/api/passkey/registerFinish", FinishRegistration)
-	http.HandleFunc("/api/passkey/loginStart", BeginLogin)
-	http.HandleFunc("/api/passkey/loginFinish", FinishLogin)
+	http.HandleFunc("/api/passkey/registerStart", CORSHandler(BeginRegistration))
+	http.HandleFunc("/api/passkey/registerFinish", CORSHandler(FinishRegistration))
+	http.HandleFunc("/api/passkey/loginStart", CORSHandler(BeginLogin))
+	http.HandleFunc("/api/passkey/loginFinish", CORSHandler(FinishLogin))
 
 	http.Handle("/private", LoggedInMiddleware(http.HandlerFunc(PrivatePage)))
 
@@ -336,4 +336,20 @@ func LoggedInMiddleware(next http.Handler) http.Handler {
 
 		next.ServeHTTP(w, r)
 	})
+}
+
+func CORSHandler(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		origin := r.Header.Get("Origin")
+		w.Header().Set("Access-Control-Allow-Origin", origin)
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
+
+		next(w, r)
+	}
 }
