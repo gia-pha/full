@@ -8,6 +8,7 @@ services:
       - PROTO=http
       - HOST=localhost
       - PORT=:8080
+      - EXTRA_ORIGINS=http://localhost:8081
     develop:
       watch:
         - action: rebuild

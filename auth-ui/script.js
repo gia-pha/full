@@ -9,14 +9,12 @@ function showMessage(message, isError = false) {
 }
 
 async function register() {
-    // Retrieve the username from the input field
-    const username = document.getElementById('username').value;
-
     try {
         // Get registration options from your server. Here, we also receive the challenge.
         const response = await fetch(AUTH_BACKEND_URL + '/api/passkey/registerStart', {
-            method: 'POST', headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({username: username})
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            credentials: 'include',
         });
 
         // Check if the registration options are ok.
@@ -38,6 +36,7 @@ async function register() {
             headers: {
                 'Content-Type': 'application/json',
             },
+            credentials: 'include',
             body: JSON.stringify(attestationResponse)
         });
 
@@ -55,14 +54,12 @@ async function register() {
 }
 
 async function login() {
-    // Retrieve the username from the input field
-    const username = document.getElementById('username').value;
-
     try {
         // Get login options from your server. Here, we also receive the challenge.
         const response = await fetch(AUTH_BACKEND_URL + '/api/passkey/loginStart', {
-            method: 'POST', headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({username: username})
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            credentials: 'include',
         });
         // Check if the login options are ok.
         if (!response.ok) {
@@ -82,6 +79,7 @@ async function login() {
             headers: {
                 'Content-Type': 'application/json',
             },
+            credentials: 'include',
             body: JSON.stringify(assertionResponse)
         });
 
