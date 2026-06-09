@@ -104,8 +104,8 @@ func BeginRegistration(w http.ResponseWriter, r *http.Request) {
 
 	user := User{
 		ID:          []byte(userName),
-		DisplayName: "", // not known yet
-		Name:        "", // not known yet
+		DisplayName: "Test User", // not known yet
+		Name:        "test-user", // not known yet
 	}
 
 	opts := []webauthn.RegistrationOption{
