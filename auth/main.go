@@ -20,7 +20,8 @@ var (
 
 	datastore PasskeyStore
 	//sessions  SessionStore
-	l Logger
+	l        Logger
+	isSecure bool
 )
 
 type Logger interface {
@@ -45,13 +46,13 @@ type PasskeyStore interface {
 func main() {
 	l = log.Default()
 
-	proto := getEnv("PROTO", "http")
+	isSecure = getEnv("SECURE", "false") == "true"
 	host := getEnv("HOST", "localhost")
 	port := getEnv("PORT", ":8080")
-	origin := fmt.Sprintf("%s://%s%s", proto, host, port)
+	origin := fmt.Sprintf("%s://%s%s", map[bool]string{true: "https", false: "http"}[isSecure], host, port)
+	extraOrigins := getEnv("EXTRA_ORIGINS", "")
 
 	// Additional origins allowed for WebAuthn (e.g. auth-ui on port 8081)
-	extraOrigins := getEnv("EXTRA_ORIGINS", "")
 	var origins []string
 	origins = append(origins, origin)
 	if extraOrigins != "" {
@@ -62,9 +63,9 @@ func main() {
 
 	l.Printf("[INFO] make webauthn config, origins: %v", origins)
 	wconfig := &webauthn.Config{
-		RPDisplayName: "Go Webauthn",    // Display Name for your site
-		RPID:          host,             // Generally the FQDN for your site
-		RPOrigins:     origins,          // The origin URLs allowed for WebAuthn
+		RPDisplayName: "Go Webauthn", // Display Name for your site
+		RPID:          host,          // Generally the FQDN for your site
+		RPOrigins:     origins,       // The origin URLs allowed for WebAuthn
 	}
 
 	l.Printf("[INFO] create webauthn")
@@ -133,15 +134,7 @@ func BeginRegistration(w http.ResponseWriter, r *http.Request) {
 
 	datastore.SaveSession(t, *session)
 
-	http.SetCookie(w, &http.Cookie{
-		Name:     "sid",
-		Value:    t,
-		Path:     "/",
-		MaxAge:   3600,
-		Secure:   false, // true only over HTTPS
-		HttpOnly: true,
-		SameSite: http.SameSiteLaxMode,
-	})
+	http.SetCookie(w, cookieOptions(t, 3600))
 
 	JSONResponse(w, options, http.StatusOK) // return the options generated with the session key
 	// options.publicKey contain our registration options
@@ -173,13 +166,7 @@ func FinishRegistration(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		msg := fmt.Sprintf("can't finish registration: %s", err.Error())
 		l.Printf("[ERRO] %s", msg)
-		// clean up sid cookie
-		http.SetCookie(w, &http.Cookie{
-			Name:   "sid",
-			Value:  "",
-			Path:   "/",
-			MaxAge: -1,
-		})
+		http.SetCookie(w, cookieOptions("", -1))
 		JSONResponse(w, msg, http.StatusBadRequest)
 
 		return
@@ -190,12 +177,7 @@ func FinishRegistration(w http.ResponseWriter, r *http.Request) {
 	datastore.SaveUser(user)
 	// Delete the session data
 	datastore.DeleteSession(sid.Value)
-	http.SetCookie(w, &http.Cookie{
-		Name:   "sid",
-		Value:  "",
-		Path:   "/",
-		MaxAge: -1,
-	})
+	http.SetCookie(w, cookieOptions("", -1))
 
 	l.Printf("[INFO] finish registration ----------------------/")
 	JSONResponse(w, "Registration Success", http.StatusOK) // Handle next steps
@@ -222,15 +204,7 @@ func BeginLogin(w http.ResponseWriter, r *http.Request) {
 	}
 	datastore.SaveSession(t, *session)
 
-	http.SetCookie(w, &http.Cookie{
-		Name:     "sid",
-		Value:    t,
-		Path:     "/",
-		MaxAge:   3600,
-		Secure:   false, // true only over HTTPS
-		HttpOnly: true,
-		SameSite: http.SameSiteLaxMode,
-	})
+	http.SetCookie(w, cookieOptions(t, 3600))
 
 	JSONResponse(w, options, http.StatusOK) // return the options generated with the session key
 	// options.publicKey contain our registration options
@@ -272,12 +246,7 @@ func FinishLogin(w http.ResponseWriter, r *http.Request) {
 
 	// Delete the login session data
 	datastore.DeleteSession(sid.Value)
-	http.SetCookie(w, &http.Cookie{
-		Name:   "sid",
-		Value:  "",
-		Path:   "/",
-		MaxAge: -1,
-	})
+	http.SetCookie(w, cookieOptions("", -1))
 	t, err := datastore.GenSessionID()
 	if err != nil {
 		l.Printf("[ERRO] can't generate session id: %s", err.Error())
@@ -288,15 +257,7 @@ func FinishLogin(w http.ResponseWriter, r *http.Request) {
 	datastore.SaveSession(t, webauthn.SessionData{
 		Expires: time.Now().Add(time.Hour),
 	})
-	http.SetCookie(w, &http.Cookie{
-		Name:     "sid",
-		Value:    t,
-		Path:     "/",
-		MaxAge:   3600,
-		Secure:   false, // true only over HTTPS
-		HttpOnly: true,
-		SameSite: http.SameSiteLaxMode,
-	})
+	http.SetCookie(w, cookieOptions(t, 3600))
 
 	l.Printf("[INFO] finish login ----------------------/")
 	JSONResponse(w, "Login Success", http.StatusOK)
@@ -321,6 +282,24 @@ func getEnv(key, def string) string {
 	}
 
 	return def
+}
+
+// cookieSecure returns true when running over HTTPS
+func cookieSecure() bool {
+	return isSecure
+}
+
+// cookieOptions returns the common cookie configuration based on environment
+func cookieOptions(value string, maxAge int) *http.Cookie {
+	return &http.Cookie{
+		Name:     "sid",
+		Value:    value,
+		Path:     "/",
+		MaxAge:   maxAge,
+		Secure:   cookieSecure(),
+		HttpOnly: true,
+		SameSite: http.SameSiteStrictMode,
+	}
 }
 
 func LoggedInMiddleware(next http.Handler) http.Handler {

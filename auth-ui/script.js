@@ -14,7 +14,7 @@ async function register() {
         const response = await fetch(AUTH_BACKEND_URL + '/api/passkey/registerStart', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            credentials: 'include',
+            credentials: CREDENTIALS_INCLUDE ? 'include' : 'same-origin',
         });
 
         // Check if the registration options are ok.
@@ -36,7 +36,7 @@ async function register() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            credentials: 'include',
+            credentials: CREDENTIALS_INCLUDE ? 'include' : 'same-origin',
             body: JSON.stringify(attestationResponse)
         });
 
@@ -59,7 +59,7 @@ async function login() {
         const response = await fetch(AUTH_BACKEND_URL + '/api/passkey/loginStart', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            credentials: 'include',
+            credentials: CREDENTIALS_INCLUDE ? 'include' : 'same-origin',
         });
         // Check if the login options are ok.
         if (!response.ok) {
@@ -79,7 +79,7 @@ async function login() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            credentials: 'include',
+            credentials: CREDENTIALS_INCLUDE ? 'include' : 'same-origin',
             body: JSON.stringify(assertionResponse)
         });
 
