@@ -9,11 +9,14 @@ function showMessage(message, isError = false) {
 }
 
 async function register() {
+    // Retrieve the name from the input field
+    const name = document.getElementById('name').value;
+
     try {
         // Get registration options from your server. Here, we also receive the challenge.
         const response = await fetch(AUTH_BACKEND_URL + '/api/passkey/registerStart', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({name: name}),
             credentials: CREDENTIALS_INCLUDE ? 'include' : 'same-origin',
         });
 
@@ -36,8 +39,8 @@ async function register() {
             headers: {
                 'Content-Type': 'application/json',
             },
+            body: JSON.stringify(attestationResponse),
             credentials: CREDENTIALS_INCLUDE ? 'include' : 'same-origin',
-            body: JSON.stringify(attestationResponse)
         });
 
 
@@ -79,8 +82,8 @@ async function login() {
             headers: {
                 'Content-Type': 'application/json',
             },
+            body: JSON.stringify(assertionResponse),
             credentials: CREDENTIALS_INCLUDE ? 'include' : 'same-origin',
-            body: JSON.stringify(assertionResponse)
         });
 
         const msg = await verificationResponse.json();

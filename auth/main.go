@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/rand"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -47,9 +48,10 @@ func main() {
 	l = log.Default()
 
 	isSecure = getEnv("SECURE", "false") == "true"
+	proto := map[bool]string{true: "https", false: "http"}[isSecure]
 	host := getEnv("HOST", "localhost")
 	port := getEnv("PORT", ":8080")
-	origin := fmt.Sprintf("%s://%s%s", map[bool]string{true: "https", false: "http"}[isSecure], host, port)
+	origin := fmt.Sprintf("%s://%s%s", proto, host, port)
 	extraOrigins := getEnv("EXTRA_ORIGINS", "")
 
 	// Additional origins allowed for WebAuthn (e.g. auth-ui on port 8081)
@@ -99,14 +101,19 @@ func main() {
 func BeginRegistration(w http.ResponseWriter, r *http.Request) {
 	l.Printf("[INFO] begin registration ----------------------\\")
 
+	name, err := getName(r)
+	if err != nil || name == "" {
+		name = randomName()
+	}
+
 	// Generate a new user handle (random 64 bytes)
-	userName := make([]byte, 64)
-	rand.Read(userName)
+	id := make([]byte, 64)
+	rand.Read(id)
 
 	user := User{
-		ID:          []byte(userName),
-		DisplayName: "Test User", // not known yet
-		Name:        "test-user", // not known yet
+		ID:          []byte(id),
+		DisplayName: name,
+		Name:        name,
 	}
 
 	opts := []webauthn.RegistrationOption{
@@ -273,6 +280,28 @@ func JSONResponse(w http.ResponseWriter, data interface{}, status int) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 	_ = json.NewEncoder(w).Encode(data)
+}
+
+// getName is a helper function to extract the name from json request
+func getName(r *http.Request) (string, error) {
+	type Name struct {
+		Name string `json:"name"`
+	}
+	var u Name
+	if err := json.NewDecoder(r.Body).Decode(&u); err != nil {
+		return "", err
+	}
+
+	return u.Name, nil
+}
+
+func randomName() string {
+	b := make([]byte, 3) // 3 bytes = 6 hex chars
+	if _, err := rand.Read(b); err != nil {
+		panic(err)
+	}
+
+	return fmt.Sprintf("User %s", hex.EncodeToString(b))
 }
 
 // getEnv is a helper function to get the environment variable
