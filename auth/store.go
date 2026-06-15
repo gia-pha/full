@@ -3,6 +3,7 @@ package main
 import (
 	"crypto/rand"
 	"encoding/base64"
+	"errors"
 
 	"github.com/go-webauthn/webauthn/webauthn"
 )
@@ -36,38 +37,37 @@ func NewInMem(log Logger) *InMem {
 }
 
 func (i *InMem) GetSession(token string) (webauthn.SessionData, bool) {
-	i.log.Printf("[DEBUG] GetSession: %v", i.sessions[token])
+	i.log.Printf("[DEBUG] GetSession: %s", token)
+	i.log.Printf("[DEBUG] GetSession: %+v", i.sessions[token])
 	val, ok := i.sessions[token]
 
 	return val, ok
 }
 
 func (i *InMem) SaveSession(token string, data webauthn.SessionData) {
-	i.log.Printf("[DEBUG] SaveSession: %s - %v", token, data)
+	i.log.Printf("[DEBUG] SaveSession: %s", token)
+	i.log.Printf("[DEBUG] SaveSession: %+v", data)
 	i.sessions[token] = data
 }
 
 func (i *InMem) DeleteSession(token string) {
-	i.log.Printf("[DEBUG] DeleteSession: %v", token)
+	i.log.Printf("[DEBUG] DeleteSession: %s", token)
 	delete(i.sessions, token)
 }
 
-func (i *InMem) GetOrCreateUser(userName string) PasskeyUser {
-	i.log.Printf("[DEBUG] GetOrCreateUser: %v", userName)
+func (i *InMem) GetUser(userName string) (PasskeyUser, error) {
+	i.log.Printf("[DEBUG] GetUser: %s", userName)
 	if _, ok := i.users[userName]; !ok {
-		i.log.Printf("[DEBUG] GetOrCreateUser: creating new user: %v", userName)
-		i.users[userName] = &User{
-			ID:          []byte(userName),
-			DisplayName: userName,
-			Name:        userName,
-		}
+		return nil, UserNotFound
 	}
 
-	return i.users[userName]
+	return i.users[userName], nil
 }
 
 func (i *InMem) SaveUser(user PasskeyUser) {
-	i.log.Printf("[DEBUG] SaveUser: %v", user.WebAuthnName())
-	i.log.Printf("[DEBUG] SaveUser: %v", user)
-	i.users[user.WebAuthnName()] = user
+	i.log.Printf("[DEBUG] SaveUser: %s", string(user.WebAuthnID()))
+	i.log.Printf("[DEBUG] SaveUser: %+v", user)
+	i.users[string(user.WebAuthnID())] = user
 }
+
+var UserNotFound = errors.New("auth: user not found")

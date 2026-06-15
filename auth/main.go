@@ -36,7 +36,7 @@ type PasskeyUser interface {
 }
 
 type PasskeyStore interface {
-	GetOrCreateUser(userName string) PasskeyUser
+	GetUser(userName string) (PasskeyUser, error)
 	SaveUser(PasskeyUser)
 	GenSessionID() (string, error)
 	GetSession(token string) (webauthn.SessionData, bool)
@@ -84,12 +84,14 @@ func main() {
 	http.Handle("/", http.FileServer(http.Dir("./web")))
 
 	// Add auth the routes
-	http.HandleFunc("/api/passkey/registerStart", CORSHandler(BeginRegistration))
-	http.HandleFunc("/api/passkey/registerFinish", CORSHandler(FinishRegistration))
-	http.HandleFunc("/api/passkey/loginStart", CORSHandler(BeginLogin))
-	http.HandleFunc("/api/passkey/loginFinish", CORSHandler(FinishLogin))
+	http.Handle("/api/passkey/registerStart", CORSHandler(BeginRegistration))
+	http.Handle("/api/passkey/registerFinish", CORSHandler(FinishRegistration))
+	http.Handle("/api/passkey/loginStart", CORSHandler(BeginLogin))
+	http.Handle("/api/passkey/loginFinish", CORSHandler(FinishLogin))
+	http.Handle("/api/user-info", CORSHandler(UserInfo))
+	http.Handle("/api/logout", CORSHandler(Logout))
 
-	http.Handle("/private", LoggedInMiddleware(http.HandlerFunc(PrivatePage)))
+	http.Handle("GET /private", LoggedInMiddleware(http.HandlerFunc(PrivatePage)))
 
 	// Start the server
 	l.Printf("[INFO] start server at %s", origin)
@@ -111,7 +113,7 @@ func BeginRegistration(w http.ResponseWriter, r *http.Request) {
 	rand.Read(id)
 
 	user := User{
-		ID:          []byte(id),
+		ID:          id,
 		DisplayName: name,
 		Name:        name,
 	}
@@ -125,7 +127,7 @@ func BeginRegistration(w http.ResponseWriter, r *http.Request) {
 	options, session, err := webAuthn.BeginRegistration(&user, opts...)
 	if err != nil {
 		msg := fmt.Sprintf("can't begin registration: %s", err.Error())
-		l.Printf("[ERRO] %s", msg)
+		l.Printf("[ERROR] %s", msg)
 		JSONResponse(w, msg, http.StatusBadRequest)
 
 		return
@@ -134,11 +136,12 @@ func BeginRegistration(w http.ResponseWriter, r *http.Request) {
 	// Make a session key and store the sessionData values
 	t, err := datastore.GenSessionID()
 	if err != nil {
-		l.Printf("[ERRO] can't generate session id: %s", err.Error())
+		l.Printf("[ERROR] can't generate session id: %s", err.Error())
 
 		panic(err) // FIXME: handle error
 	}
 
+	datastore.SaveUser(&user)
 	datastore.SaveSession(t, *session)
 
 	http.SetCookie(w, cookieOptions(t, 3600))
@@ -151,7 +154,7 @@ func FinishRegistration(w http.ResponseWriter, r *http.Request) {
 	// Get the session key from cookie
 	sid, err := r.Cookie("sid")
 	if err != nil {
-		l.Printf("[ERRO] can't get session id: %s", err.Error())
+		l.Printf("[ERROR] can't get session id: %s", err.Error())
 
 		panic(err) // FIXME: handle error
 	}
@@ -161,18 +164,23 @@ func FinishRegistration(w http.ResponseWriter, r *http.Request) {
 	// Get the session data stored from the function above
 	session, ok := datastore.GetSession(sid.Value)
 	if !ok {
-		l.Printf("[ERRO] session not found for key: %q", sid.Value)
+		l.Printf("[ERROR] session not found for key: %q", sid.Value)
 		JSONResponse(w, "Session not found", http.StatusNotFound)
 		return
 	}
 
 	// In out example username == userID, but in real world it should be different
-	user := datastore.GetOrCreateUser(string(session.UserID)) // Get the user
+	user, err := datastore.GetUser(string(session.UserID)) // Get the user
+	if err != nil {
+		l.Printf("[INFO] user not found: %s", session.UserID)
+		JSONResponse(w, "Invalid user", http.StatusBadRequest)
+		return
+	}
 
 	credential, err := webAuthn.FinishRegistration(user, session, r)
 	if err != nil {
 		msg := fmt.Sprintf("can't finish registration: %s", err.Error())
-		l.Printf("[ERRO] %s", msg)
+		l.Printf("[ERROR] %s", msg)
 		http.SetCookie(w, cookieOptions("", -1))
 		JSONResponse(w, msg, http.StatusBadRequest)
 
@@ -196,7 +204,7 @@ func BeginLogin(w http.ResponseWriter, r *http.Request) {
 	options, session, err := webAuthn.BeginDiscoverableLogin()
 	if err != nil {
 		msg := fmt.Sprintf("can't begin login: %s", err.Error())
-		l.Printf("[ERRO] %s", msg)
+		l.Printf("[ERROR] %s", msg)
 		JSONResponse(w, msg, http.StatusBadRequest)
 
 		return
@@ -205,7 +213,7 @@ func BeginLogin(w http.ResponseWriter, r *http.Request) {
 	// Make a session key and store the sessionData values
 	t, err := datastore.GenSessionID()
 	if err != nil {
-		l.Printf("[ERRO] can't generate session id: %s", err.Error())
+		l.Printf("[ERROR] can't generate session id: %s", err.Error())
 
 		panic(err) // TODO: handle error
 	}
@@ -221,24 +229,39 @@ func FinishLogin(w http.ResponseWriter, r *http.Request) {
 	// Get the session key from cookie
 	sid, err := r.Cookie("sid")
 	if err != nil {
-		l.Printf("[ERRO] can't get session id: %s", err.Error())
+		l.Printf("[ERROR] can't get session id: %s", err.Error())
 
 		panic(err) // FIXME: handle error
 	}
 	// Get the session data stored from the function above
-	session, _ := datastore.GetSession(sid.Value) // FIXME: cover invalid session
+	session, ok := datastore.GetSession(sid.Value)
+	if !ok {
+		l.Printf("[ERROR] session not found for key: %q", sid.Value)
+		JSONResponse(w, "Session not found", http.StatusNotFound)
+		return
+	}
 
 	// Your handler: given credential rawID and userHandle, look up the user
-	loadUser := func(rawID, userHandle []byte) (webauthn.User, error) {
-		return datastore.GetOrCreateUser(string(userHandle)), nil
+	loadUser := func(user *PasskeyUser) func(rawID, userHandle []byte) (webauthn.User, error) {
+		return func(rawID, userHandle []byte) (webauthn.User, error) {
+			// just in case
+			if *user != nil {
+				return nil, fmt.Errorf(`user already found`)
+			}
+			u, err := datastore.GetUser(string(userHandle))
+			if err == nil {
+				*user = u
+			}
+			return u, err
+		}
 	}
 
 	// In out example username == userID, but in real world it should be different
-	user := datastore.GetOrCreateUser(string(session.UserID)) // Get the user
+	var user PasskeyUser
 
-	credential, err := webAuthn.FinishDiscoverableLogin(loadUser, session, r)
+	credential, err := webAuthn.FinishDiscoverableLogin(loadUser(&user), session, r)
 	if err != nil {
-		l.Printf("[ERRO] can't finish login: %s", err.Error())
+		l.Printf("[ERROR] can't finish login: %s", err.Error())
 		panic(err)
 	}
 
@@ -256,18 +279,58 @@ func FinishLogin(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, cookieOptions("", -1))
 	t, err := datastore.GenSessionID()
 	if err != nil {
-		l.Printf("[ERRO] can't generate session id: %s", err.Error())
+		l.Printf("[ERROR] can't generate session id: %s", err.Error())
 
 		panic(err) // TODO: handle error
 	}
 
-	datastore.SaveSession(t, webauthn.SessionData{
-		Expires: time.Now().Add(time.Hour),
-	})
+	session.Expires = time.Now().Add(time.Hour)
+	session.UserID = user.WebAuthnID()
+	datastore.SaveSession(t, session)
 	http.SetCookie(w, cookieOptions(t, 3600))
 
 	l.Printf("[INFO] finish login ----------------------/")
 	JSONResponse(w, "Login Success", http.StatusOK)
+}
+
+func UserInfo(w http.ResponseWriter, r *http.Request) {
+	l.Printf("[INFO] user info ----------------------\\")
+
+	sid, err := r.Cookie("sid")
+	if err != nil {
+		JSONResponse(w, "Not authenticated", http.StatusUnauthorized)
+		return
+	}
+
+	session, ok := datastore.GetSession(sid.Value)
+	if !ok {
+		l.Printf("[ERROR] can't get session id: %s", session)
+		JSONResponse(w, "Not authenticated", http.StatusUnauthorized)
+		return
+	}
+
+	user, err := datastore.GetUser(string(session.UserID))
+	if err != nil {
+		l.Printf("[INFO] user not found: %s", session.UserID)
+		JSONResponse(w, "Invalid user", http.StatusUnauthorized)
+		return
+	}
+
+	l.Printf("[INFO] current user information ----------------------/")
+	JSONResponse(w, user.WebAuthnName(), http.StatusOK)
+}
+
+func Logout(w http.ResponseWriter, r *http.Request) {
+	// Get the session key from cookie
+	sid, err := r.Cookie("sid")
+	if err != nil {
+		l.Printf("[ERROR] can't get session id: %s", err.Error())
+
+		panic(err) // FIXME: handle error
+	}
+	datastore.DeleteSession(sid.Value)
+	http.SetCookie(w, cookieOptions("", -1))
+	w.WriteHeader(http.StatusNoContent)
 }
 
 func PrivatePage(w http.ResponseWriter, r *http.Request) {

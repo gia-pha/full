@@ -1,6 +1,28 @@
 document.getElementById('registerButton').addEventListener('click', register);
 document.getElementById('loginButton').addEventListener('click', login);
+document.getElementById('logoutButton').addEventListener('click', logout);
 
+async function checkAuth() {
+    try {
+        const res = await fetch(AUTH_BACKEND_URL + '/api/user-info', {
+            credentials: CREDENTIALS_INCLUDE ? 'include' : 'same-origin',
+        });
+        if (res.ok) {
+            const userName = await res.text();
+            document.getElementById('userNameDisplay').textContent = userName;
+            document.getElementById('loggedInView').classList.remove('d-none');
+            document.getElementById('authView').classList.add('d-none');
+            return;
+        }
+    } catch
+        (error) {
+        showMessage('Error: ' + error.message, true);
+    }
+    document.getElementById('loggedInView').classList.add('d-none');
+    document.getElementById('authView').classList.remove('d-none');
+}
+
+checkAuth();
 
 function showMessage(message, isError = false) {
     const messageElement = document.getElementById('message');
@@ -89,10 +111,22 @@ async function login() {
         const msg = await verificationResponse.json();
         if (verificationResponse.ok) {
             showMessage(msg, false);
+            checkAuth();
         } else {
             showMessage(msg, true);
         }
     } catch (error) {
         showMessage('Error: ' + error.message, true);
     }
+}
+
+async function logout() {
+    try {
+        await fetch(AUTH_BACKEND_URL + '/api/logout', {
+            method: 'POST',
+            credentials: CREDENTIALS_INCLUDE ? 'include' : 'same-origin',
+        });
+    } catch {}
+    document.getElementById('loggedInView').classList.add('d-none');
+    document.getElementById('authView').classList.remove('d-none');
 }
