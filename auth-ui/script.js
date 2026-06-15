@@ -1,6 +1,28 @@
 document.getElementById('registerButton').addEventListener('click', register);
 document.getElementById('loginButton').addEventListener('click', login);
+document.getElementById('logoutButton').addEventListener('click', logout);
 
+async function checkAuth() {
+    try {
+        const res = await fetch(AUTH_BACKEND_URL + '/api/user-info', {
+            credentials: CREDENTIALS_INCLUDE ? 'include' : 'same-origin',
+        });
+        if (res.ok) {
+            const userName = await res.text();
+            document.getElementById('userNameDisplay').textContent = userName;
+            document.getElementById('loggedInView').classList.remove('d-none');
+            document.getElementById('authView').classList.add('d-none');
+            return;
+        }
+    } catch
+        (error) {
+        showMessage('Error: ' + error.message, true);
+    }
+    document.getElementById('loggedInView').classList.add('d-none');
+    document.getElementById('authView').classList.remove('d-none');
+}
+
+checkAuth();
 
 function showMessage(message, isError = false) {
     const messageElement = document.getElementById('message');
@@ -9,14 +31,15 @@ function showMessage(message, isError = false) {
 }
 
 async function register() {
-    // Retrieve the username from the input field
-    const username = document.getElementById('username').value;
+    // Retrieve the name from the input field
+    const name = document.getElementById('name').value;
 
     try {
         // Get registration options from your server. Here, we also receive the challenge.
         const response = await fetch(AUTH_BACKEND_URL + '/api/passkey/registerStart', {
             method: 'POST', headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({username: username})
+            body: JSON.stringify({name: name}),
+            credentials: CREDENTIALS_INCLUDE ? 'include' : 'same-origin',
         });
 
         // Check if the registration options are ok.
@@ -38,7 +61,8 @@ async function register() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(attestationResponse)
+            body: JSON.stringify(attestationResponse),
+            credentials: CREDENTIALS_INCLUDE ? 'include' : 'same-origin',
         });
 
 
@@ -55,14 +79,12 @@ async function register() {
 }
 
 async function login() {
-    // Retrieve the username from the input field
-    const username = document.getElementById('username').value;
-
     try {
         // Get login options from your server. Here, we also receive the challenge.
         const response = await fetch(AUTH_BACKEND_URL + '/api/passkey/loginStart', {
-            method: 'POST', headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({username: username})
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            credentials: CREDENTIALS_INCLUDE ? 'include' : 'same-origin',
         });
         // Check if the login options are ok.
         if (!response.ok) {
@@ -82,16 +104,29 @@ async function login() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(assertionResponse)
+            body: JSON.stringify(assertionResponse),
+            credentials: CREDENTIALS_INCLUDE ? 'include' : 'same-origin',
         });
 
         const msg = await verificationResponse.json();
         if (verificationResponse.ok) {
             showMessage(msg, false);
+            checkAuth();
         } else {
             showMessage(msg, true);
         }
     } catch (error) {
         showMessage('Error: ' + error.message, true);
     }
+}
+
+async function logout() {
+    try {
+        await fetch(AUTH_BACKEND_URL + '/api/logout', {
+            method: 'POST',
+            credentials: CREDENTIALS_INCLUDE ? 'include' : 'same-origin',
+        });
+    } catch {}
+    document.getElementById('loggedInView').classList.add('d-none');
+    document.getElementById('authView').classList.remove('d-none');
 }
