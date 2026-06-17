@@ -8,15 +8,29 @@ services:
       - PROTO=http
       - HOST=localhost
       - PORT=:8080
+    develop:
+      watch:
+        - action: rebuild
+          path: ./auth
 
   auth-ui:
     build:
       context: ./auth-ui
     ports:
       - "8081:80"
+    develop:
+      watch:
+        - action: sync
+          path: ./auth-ui
+          target: /usr/share/nginx/html
 
   prototype:
     build:
       context: ./prototype
     ports:
       - "8082:80"
+    develop:
+      watch:
+        - action: sync
+          path: ./prototype
+          target: /usr/share/nginx/html
