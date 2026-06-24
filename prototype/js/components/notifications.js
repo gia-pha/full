@@ -1,77 +1,38 @@
+import { GpComponent } from './base.js';
 import { formatDate } from '../utils/format.js';
 import { store } from '../store.js';
 
-class NotificationsComponent {
-  constructor(container, store, t) {
-    this.container = container;
-    this.store = store;
-    this.t = t;
-    this.showPrefs = false;
-    this.render();
-    this.bindEvents();
-  }
+class GpNotifications extends GpComponent {
+  get showPrefs() { return this.hasAttribute('show-prefs'); }
+  set showPrefs(v) { v ? this.setAttribute('show-prefs', '') : this.removeAttribute('show-prefs'); }
 
   render() {
     const notifs = this.store.state.notifications;
     const prefs = this.store.getCurrentPerson()?.data.notificationPreferences || {};
     const icons = { fund_change: '💰', new_event: '📅', memorial_reminder: '🕯️', member_joins: '👤' };
 
-    this.container.innerHTML = `
+    this.innerHTML = `
       <div class="h-full overflow-y-auto bg-white">
         <div class="p-4 sm:p-6 lg:p-8 border-b border-gray-200 flex items-center justify-between">
           <h2 class="text-xl sm:text-2xl font-bold text-gray-800">${this.t.notifications.title}</h2>
-          <div class="flex gap-3">
-            <button class="notif-all-read px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium transition-colors">${this.t.notifications.markAllRead}</button>
-            <button class="notif-prefs-btn px-4 py-2 ${this.showPrefs ? 'bg-emerald-600 text-white' : 'bg-gray-100 hover:bg-gray-200'} rounded-lg text-sm font-medium transition-colors">⚙️ ${this.t.notifications.preferences}</button>
-          </div>
+          <div class="flex gap-3"><button class="notif-all-read px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium transition-colors">${this.t.notifications.markAllRead}</button><button class="notif-prefs-btn px-4 py-2 ${this.showPrefs ? 'bg-emerald-600 text-white' : 'bg-gray-100 hover:bg-gray-200'} rounded-lg text-sm font-medium transition-colors">⚙️ ${this.t.notifications.preferences}</button></div>
         </div>
-        ${this.showPrefs ? `
-          <div class="px-4 sm:px-6 lg:px-8 py-5 bg-gray-50 border-b border-gray-200">
-            <div class="max-w-lg space-y-4">${[
-              { key: 'fundChanges', label: this.t.notifications.fundChanges },
-              { key: 'newEvents', label: this.t.notifications.newEvents },
-              { key: 'memberJoins', label: this.t.notifications.memberJoins },
-              { key: 'memorialDates', label: this.t.notifications.memorialDates }
-            ].map(p => `<label class="flex items-center justify-between cursor-pointer py-2"><span class="text-gray-700">${p.label}</span><input type="checkbox" class="toggle notif-pref" data-pref="${p.key}" ${prefs[p.key] ? 'checked' : ''} /></label>`).join('')}
-            </div>
-          </div>
-        ` : ''}
+        ${this.showPrefs ? `<div class="px-4 sm:px-6 lg:px-8 py-5 bg-gray-50 border-b border-gray-200"><div class="max-w-lg space-y-4">${[{ key: 'fundChanges', label: this.t.notifications.fundChanges }, { key: 'newEvents', label: this.t.notifications.newEvents }, { key: 'memberJoins', label: this.t.notifications.memberJoins }, { key: 'memorialDates', label: this.t.notifications.memorialDates }].map(p => `<label class="flex items-center justify-between cursor-pointer py-2"><span class="text-gray-700">${p.label}</span><input type="checkbox" class="toggle notif-pref" data-pref="${p.key}" ${prefs[p.key] ? 'checked' : ''} /></label>`).join('')}</div></div>` : ''}
         <div class="p-4 sm:p-6 lg:p-8">
-          ${notifs.length === 0 ? '<div class="text-center py-16 text-gray-400"><div class="text-5xl mb-4">🔕</div><p class="text-base">Khong co thong bao</p></div>' : `
-            <div class="space-y-3 max-w-3xl">
-              ${notifs.map(n => `
-                <div class="flex items-start gap-4 p-4 lg:p-5 rounded-xl border ${n.read ? 'bg-white border-gray-200' : 'bg-emerald-50/50 border-emerald-200'}">
-                  <div class="text-2xl flex-shrink-0 mt-0.5">${icons[n.type] || '📌'}</div>
-                  <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between gap-3">
-                      <h4 class="font-semibold text-gray-800 truncate">${n.title}</h4>
-                      <div class="flex items-center gap-2 flex-shrink-0">
-                        <span class="text-xs text-gray-400">${formatDate(n.date)}</span>
-                        ${!n.read ? '<span class="w-2.5 h-2.5 bg-emerald-500 rounded-full"></span>' : ''}
-                        <button class="notif-delete p-1 text-gray-300 hover:text-red-500 transition-colors" data-id="${n.id}">✕</button>
-                      </div>
-                    </div>
-                    <p class="text-sm text-gray-600 mt-1 leading-relaxed">${n.message}</p>
-                    ${!n.read ? `<button class="notif-mark-read mt-2 text-xs text-emerald-600 hover:text-emerald-700 font-medium" data-id="${n.id}">${this.t.notifications.markRead}</button>` : ''}
-                  </div>
-                </div>
-              `).join('')}
-            </div>
-          `}
+          ${notifs.length === 0 ? '<div class="text-center py-16 text-gray-400"><div class="text-5xl mb-4">🔕</div><p class="text-base">Khong co thong bao</p></div>' : `<div class="space-y-3 max-w-3xl">${notifs.map(n => `<div class="flex items-start gap-4 p-4 lg:p-5 rounded-xl border ${n.read ? 'bg-white border-gray-200' : 'bg-emerald-50/50 border-emerald-200'}"><div class="text-2xl flex-shrink-0 mt-0.5">${icons[n.type] || '📌'}</div><div class="flex-1 min-w-0"><div class="flex items-center justify-between gap-3"><h4 class="font-semibold text-gray-800 truncate">${n.title}</h4><div class="flex items-center gap-2 flex-shrink-0"><span class="text-xs text-gray-400">${formatDate(n.date)}</span>${!n.read ? '<span class="w-2.5 h-2.5 bg-emerald-500 rounded-full"></span>' : ''}<button class="notif-delete p-1 text-gray-300 hover:text-red-500 transition-colors" data-id="${n.id}">✕</button></div></div><p class="text-sm text-gray-600 mt-1 leading-relaxed">${n.message}</p>${!n.read ? `<button class="notif-mark-read mt-2 text-xs text-emerald-600 hover:text-emerald-700 font-medium" data-id="${n.id}">${this.t.notifications.markRead}</button>` : ''}</div></div>`).join('')}</div>`}
         </div>
       </div>
     `;
   }
 
   bindEvents() {
-    this.container.querySelector('.notif-all-read')?.addEventListener('click', () => this.store.markAllNotificationsRead());
-    this.container.querySelector('.notif-prefs-btn')?.addEventListener('click', () => { this.showPrefs = !this.showPrefs; this.render(); this.bindEvents(); });
-    this.container.querySelectorAll('.notif-pref').forEach(t => t.addEventListener('change', e => store.setNotificationPreferences({ [e.target.dataset.pref]: e.target.checked })));
-    this.container.querySelectorAll('.notif-mark-read').forEach(b => b.addEventListener('click', () => this.store.markNotificationRead(b.dataset.id)));
-    this.container.querySelectorAll('.notif-delete').forEach(b => b.addEventListener('click', () => this.store.deleteNotification(b.dataset.id)));
+    this.querySelector('.notif-all-read')?.addEventListener('click', () => this.store.markAllNotificationsRead());
+    this.querySelector('.notif-prefs-btn')?.addEventListener('click', () => { this.showPrefs = !this.showPrefs; this.render(); this.bindEvents(); });
+    this.querySelectorAll('.notif-pref').forEach(t => t.onchange = e => store.setNotificationPreferences({ [e.target.dataset.pref]: e.target.checked }));
+    this.querySelectorAll('.notif-mark-read').forEach(b => b.onclick = () => this.store.markNotificationRead(b.dataset.id));
+    this.querySelectorAll('.notif-delete').forEach(b => b.onclick = () => this.store.deleteNotification(b.dataset.id));
   }
-
-  updateTranslations(t) { this.t = t; this.render(); this.bindEvents(); }
 }
 
-export { NotificationsComponent };
+customElements.define('gp-notifications', GpNotifications);
+export { GpNotifications };

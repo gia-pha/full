@@ -1,19 +1,19 @@
 import { store } from './store.js';
 import { TreeRenderer } from './tree/tree-renderer.js';
-import { SidebarComponent } from './components/sidebar.js';
-import { MemberCardComponent } from './components/member-card.js';
-import { ClanInfoComponent } from './components/clan-info.js';
-import { EventsComponent } from './components/events.js';
-import { CalendarComponent } from './components/calendar.js';
-import { FundComponent } from './components/fund.js';
-import { AdminComponent } from './components/admin.js';
-import { NotificationsComponent } from './components/notifications.js';
-import { MembersListComponent } from './components/members-list.js';
-import { ProfileComponent } from './components/profile.js';
-import { InviteComponent } from './components/invite.js';
-import { AuthComponent } from './components/auth.js';
-import { PublicPageComponent } from './components/public-page.js';
-import { ModalComponent } from './components/modal.js';
+import { GpSidebar } from './components/sidebar.js';
+import { GpMemberCard } from './components/member-card.js';
+import { GpClanInfo } from './components/clan-info.js';
+import { GpEvents } from './components/events.js';
+import { GpCalendar } from './components/calendar.js';
+import { GpFund } from './components/fund.js';
+import { GpAdmin } from './components/admin.js';
+import { GpNotifications } from './components/notifications.js';
+import { GpMembersList } from './components/members-list.js';
+import { GpProfile } from './components/profile.js';
+import { GpInvite } from './components/invite.js';
+import { GpAuth } from './components/auth.js';
+import { GpPublicPage } from './components/public-page.js';
+import { GpModal } from './components/modal.js';
 
 class App {
   constructor() {
@@ -45,87 +45,111 @@ class App {
   setupApp() {
     const root = document.getElementById('app');
     root.innerHTML = `
-      <div id="auth-root" class="hidden"></div>
-      <div id="main-root" class="h-screen w-screen flex flex-col lg:flex-row overflow-hidden">
-        <div id="sidebar-root" class="lg:flex-shrink-0"></div>
+      <gp-auth id="auth-root" class="hidden"></gp-auth>
+      <div id="main-root" class="hidden h-screen w-screen flex flex-col lg:flex-row overflow-hidden">
+        <gp-sidebar id="sidebar-root" class="lg:flex-shrink-0"></gp-sidebar>
         <div id="content-wrapper" class="flex-1 flex lg:flex-row flex-col overflow-hidden min-w-0 lg:pt-0 pt-[60px] lg:pb-0 pb-[70px]">
           <div id="content-root" class="flex-1 overflow-hidden min-h-0"></div>
-          <div id="membercard-root" class="hidden"></div>
+          <gp-member-card id="membercard-root" class="hidden"></gp-member-card>
         </div>
-        <div id="modal-root"></div>
+        <gp-modal id="modal-root"></gp-modal>
       </div>
     `;
     this.renderAuth();
   }
 
   renderAuth() {
-    document.getElementById('auth-root').classList.remove('hidden');
+    const el = document.getElementById('auth-root');
+    el.classList.remove('hidden');
     document.getElementById('main-root').classList.add('hidden');
-    this.components.auth = new AuthComponent(
-      document.getElementById('auth-root'), store, this.t()
-    );
+    el.store = store;
+    el.t = this.t();
+    if (!el._connected) el.connectedCallback();
   }
 
   renderMain() {
     document.getElementById('auth-root').classList.add('hidden');
     document.getElementById('main-root').classList.remove('hidden');
 
-    this.components.sidebar = new SidebarComponent(
-      document.getElementById('sidebar-root'), store, this.t()
-    );
-    this.components.modal = new ModalComponent(
-      document.getElementById('modal-root'), store, this.t()
-    );
+    const sidebar = document.getElementById('sidebar-root');
+    sidebar.store = store;
+    sidebar.t = this.t();
+    if (!sidebar._connected) sidebar.connectedCallback();
+
+    const modal = document.getElementById('modal-root');
+    modal.store = store;
+    modal.t = this.t();
+    if (!modal._connected) modal.connectedCallback();
+
     this.renderContent();
     this.renderMemberCard();
   }
 
+  createComponent(tag, container, t) {
+    const el = document.createElement(tag);
+    el.store = store;
+    el.t = t;
+    container.innerHTML = '';
+    container.appendChild(el);
+    return el;
+  }
+
   renderContent() {
     const root = document.getElementById('content-root');
-    root.innerHTML = '';
     const page = store.state.currentPage;
     const t = this.t();
 
-    // Only these pages are centered on large screens
     const centeredPages = new Set(['notifications', 'profile', 'invite']);
     let container = root;
     if (centeredPages.has(page)) {
+      root.innerHTML = '';
       const wrapper = document.createElement('div');
       wrapper.className = 'h-full max-w-4xl mx-auto w-full';
       root.appendChild(wrapper);
       container = wrapper;
     }
 
-    const constructors = {
-      'tree': TreeRenderer,
-      'members': MembersListComponent,
-      'clan-info': ClanInfoComponent,
-      'events': EventsComponent,
-      'calendar': CalendarComponent,
-      'funds': FundComponent,
-      'admin': AdminComponent,
-      'notifications': NotificationsComponent,
-      'profile': ProfileComponent,
-      'invite': InviteComponent,
-      'public-page': PublicPageComponent
+    const tagMap = {
+      'tree': null,
+      'members': 'gp-members-list',
+      'clan-info': 'gp-clan-info',
+      'events': 'gp-events',
+      'calendar': 'gp-calendar',
+      'funds': 'gp-fund',
+      'admin': 'gp-admin',
+      'notifications': 'gp-notifications',
+      'profile': 'gp-profile',
+      'invite': 'gp-invite',
+      'public-page': 'gp-public-page'
     };
 
-    const Ctor = constructors[page];
-    if (Ctor) {
-      this.components[page] = new Ctor(container, store, t);
+    if (page === 'tree') {
+      root.innerHTML = '';
+      const wrapper = document.createElement('div');
+      wrapper.className = 'h-full w-full';
+      root.appendChild(wrapper);
+      this.components.tree = new TreeRenderer(wrapper, store, t);
     } else {
-      root.innerHTML = '<div class="flex items-center justify-center h-full text-gray-400">Trang khong ton tai</div>';
+      const tag = tagMap[page];
+      if (tag) {
+        this.components[page] = this.createComponent(tag, container, t);
+      } else {
+        root.innerHTML = '<div class="flex items-center justify-center h-full text-gray-400">Trang khong ton tai</div>';
+      }
     }
   }
 
   renderMemberCard() {
-    const root = document.getElementById('membercard-root');
+    const el = document.getElementById('membercard-root');
     if (store.state.selectedPersonId) {
-      root.classList.remove('hidden');
-      this.components.memberCard = new MemberCardComponent(root, store, this.t());
+      el.classList.remove('hidden');
+      el.store = store;
+      el.t = this.t();
+      el.render();
+      el.bindEvents();
     } else {
-      root.classList.add('hidden');
-      root.innerHTML = '';
+      el.classList.add('hidden');
+      el.innerHTML = '';
     }
   }
 
@@ -143,27 +167,15 @@ class App {
         calMonth = state.calendarMonth;
         calYear = state.calendarYear;
         calType = state.calendarType;
-        if (this.components.sidebar) {
-          this.components.sidebar.render();
-          this.components.sidebar.bindEvents();
-        }
-        if (this.components.events) {
-          this.components.events.render();
-          this.components.events.bindEvents();
-        }
-        if (this.components.calendar) {
-          this.components.calendar.render();
-          this.components.calendar.bindEvents();
-        }
+        if (this.components.sidebar) { this.components.sidebar.render(); this.components.sidebar.bindEvents(); }
+        if (this.components.events) { this.components.events.render(); this.components.events.bindEvents(); }
+        if (this.components.calendar) { this.components.calendar.render(); this.components.calendar.bindEvents(); }
         return;
       }
 
       if (state.darkMode !== darkMode) {
         darkMode = state.darkMode;
-        if (this.components.sidebar) {
-          this.components.sidebar.render();
-          this.components.sidebar.bindEvents();
-        }
+        if (this.components.sidebar) { this.components.sidebar.render(); this.components.sidebar.bindEvents(); }
         return;
       }
 
@@ -182,10 +194,8 @@ class App {
       if (state.currentPage !== page) {
         page = state.currentPage;
         this.renderContent();
-        if (this.components.sidebar) {
-          this.components.sidebar.render();
-          this.components.sidebar.bindEvents();
-        }
+        const sidebar = document.getElementById('sidebar-root');
+        if (sidebar) { sidebar.render(); sidebar.bindEvents(); }
         return;
       }
 
@@ -196,20 +206,20 @@ class App {
         return;
       }
 
-      if (this.components.modal) {
-        this.components.modal.render();
-        this.components.modal.bindEvents();
-      }
+      const modal = document.getElementById('modal-root');
+      if (modal) { modal.render(); modal.bindEvents(); }
 
-      if (this.components.sidebar) {
-        this.components.sidebar.render();
-        this.components.sidebar.bindEvents();
-      }
+      const sidebar = document.getElementById('sidebar-root');
+      if (sidebar) { sidebar.render(); sidebar.bindEvents(); }
     });
   }
 
   updateAllTranslations() {
     const t = this.t();
+    ['sidebar-root', 'modal-root', 'membercard-root', 'auth-root'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.t = t; el.updateTranslations?.(t); }
+    });
     Object.entries(this.components).forEach(([name, comp]) => {
       comp?.updateTranslations?.(t);
     });
