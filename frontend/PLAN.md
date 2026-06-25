@@ -14,6 +14,8 @@
 | Persistence | idb-keyval | latest | IndexedDB wrapper, ~1KB, async, offline-first |
 | CSS | Tailwind CSS | latest | Utility-first, matches prototype |
 | Family tree | family-chart | latest | Existing library from prototype |
+| Testing | Vitest + jsdom | latest | Native Vite integration, fast, zero-config, shares transformer |
+| i18n | Custom (nanostores + JSON) | — | No runtime dependency, reactive via `$language` store, tree-shakeable per locale |
 
 ### Why nanostores over redux
 
@@ -149,37 +151,42 @@ frontend/
 4. Set up nanorouter with route definitions and auth guards
 5. Create app shell layout: sidebar root, content root, member card root, modal root
 6. Wire store subscriptions → re-render pattern
+7. **Test**: Init Vitest + jsdom, `vitest.config.ts`, smoke test for each store
 
 ### Phase 2 — Auth & Passkey
-7. Create `passkey.ts` service wrapping `@simplewebauthn/browser`
-8. Connect to Go backend `/api/passkey/registerStart`, `/registerFinish`, `/loginStart`, `/loginFinish`
-9. Build `AuthComponent`: login/register tabs, passkey flow, error handling
-10. Persist auth state, protect routes
+8. Create `passkey.ts` service wrapping `@simplewebauthn/browser`
+9. Connect to Go backend `/api/passkey/registerStart`, `/registerFinish`, `/loginStart`, `/loginFinish`
+10. Build `AuthComponent`: login/register tabs, passkey flow, error handling
+11. Persist auth state, protect routes
+12. **Test**: `auth.test.ts` — state transitions, route guards; `passkey.test.ts` — mocked WebAuthn flow
 
 ### Phase 3 — Core Pages
-11. `TreeRenderer` — port family tree, `family-chart` integration, search, zoom/pan
-12. `MembersListComponent` — search, honorifics, distance sorting, click → select
-13. `ClanInfoComponent` — clan details, notable figures, image gallery
-14. `EventsComponent` — upcoming/past tabs, event cards, CRUD modals, Google Calendar
-15. `CalendarComponent` — solar/lunar grid, event dots, month navigation
-16. `FundComponent` — balance cards, bar chart, transaction table, CRUD
+13. `TreeRenderer` — port family tree, `family-chart` integration, search, zoom/pan
+14. `MembersListComponent` — search, honorifics, distance sorting, click → select
+15. `ClanInfoComponent` — clan details, notable figures, image gallery
+16. `EventsComponent` — upcoming/past tabs, event cards, CRUD modals, Google Calendar
+17. `CalendarComponent` — solar/lunar grid, event dots, month navigation
+18. `FundComponent` — balance cards, bar chart, transaction table, CRUD
+19. **Test**: `honorifics.test.ts`, `lunar.test.ts`, `format.test.ts` — full coverage on utils; component render tests for each page
 
 ### Phase 4 — Remaining Pages
-17. `AdminComponent` — member list, role management, GEDCOM import/export
-18. `NotificationsComponent` — inbox, mark read/all, preferences
-19. `ProfileComponent` — view/edit profile, clan membership, delete account
-20. `InviteComponent` — QR code, copy link, native share, invite history
-21. `PublicPageComponent` — public clan landing page
-22. `ModalComponent` — generic modal: edit person, edit clan, event, fund, role
-23. `SidebarComponent` — desktop sidebar + mobile drawer + bottom nav
-24. `MemberCardComponent` — detail panel for selected person
+20. `AdminComponent` — member list, role management, GEDCOM import/export
+21. `NotificationsComponent` — inbox, mark read/all, preferences
+22. `ProfileComponent` — view/edit profile, clan membership, delete account
+23. `InviteComponent` — QR code, copy link, native share, invite history
+24. `PublicPageComponent` — public clan landing page
+25. `ModalComponent` — generic modal: edit person, edit clan, event, fund, role
+26. `SidebarComponent` — desktop sidebar + mobile drawer + bottom nav
+27. `MemberCardComponent` — detail panel for selected person
+28. **Test**: `gedcom.test.ts` — round-trip build/parse; `api.test.ts`, `storage.test.ts`; remaining component tests
 
 ### Phase 5 — Polish
-25. i18n reactivity: store subscription → re-render all components on language change
-26. Dark mode: CSS class toggle, persisted
-27. Responsive polish: mobile gestures, safe areas
-28. IndexedDB persistence: auto-save on data mutation, load on init
-29. Build optimization: code splitting per route, lazy-load heavy components (tree, calendar)
+29. i18n reactivity: store subscription → re-render all components on language change
+30. Dark mode: CSS class toggle, persisted
+31. Responsive polish: mobile gestures, safe areas
+32. IndexedDB persistence: auto-save on data mutation, load on init
+33. Build optimization: code splitting per route, lazy-load heavy components (tree, calendar)
+34. **Test**: `i18n.test.ts` — key parity vi/en, fallback, interpolation; `stores/i18n.test.ts`; coverage gate at CI (≥80%)
 
 ## Component Pattern
 
@@ -217,6 +224,186 @@ export class MembersListComponent {
   }
 }
 ```
+
+## Testing
+
+### Framework
+
+- **Vitest** — shares Vite's config and transformer, no extra setup, native ESM
+- **jsdom** — lightweight DOM environment for component rendering tests
+- No Playwright/Cypress — the app is data-driven with clear store → render boundaries; unit + integration tests cover the surface efficiently
+
+### Test Structure
+
+```
+frontend/
+├── src/
+│   ├── __tests__/                  # Tests mirror src/ structure
+│   │   ├── stores/
+│   │   │   ├── data.test.ts        # Store mutations, computed values
+│   │   │   ├── ui.test.ts          # Page navigation, modal state
+│   │   │   ├── auth.test.ts        # Auth state transitions
+│   │   │   ├── i18n.test.ts        # Translation lookup, fallback, missing keys
+│   │   │   ├── calendar.test.ts    # Month/year transitions
+│   │   │   └── tree.test.ts        # Expanded nodes, zoom/pan state
+│   │   │
+│   │   ├── components/
+│   │   │   ├── sidebar.test.ts     # Render links, active state, mobile toggle
+│   │   │   ├── member-card.test.ts # Person data display, honorifics
+│   │   │   ├── modal.test.ts       # Open/close, data pass-through
+│   │   │   ├── auth.test.ts        # Login/register tabs, error display
+│   │   │   ├── members-list.test.ts# Search filter, sort order, click select
+│   │   │   ├── events.test.ts      # CRUD flow, tab switching
+│   │   │   ├── calendar.test.ts    # Grid render, lunar/solar toggle
+│   │   │   ├── fund.test.ts        # Balance cards, transaction table
+│   │   │   └── ...
+│   │   │
+│   │   ├── services/
+│   │   │   ├── api.test.ts         # Fetch wrapper, interceptors, error handling
+│   │   │   └── storage.test.ts     # IndexedDB save/load, sync strategy
+│   │   │
+│   │   └── utils/
+│   │       ├── honorifics.test.ts  # Relationship calculation, edge cases
+│   │       ├── lunar.test.ts       # Solar↔lunar conversion, boundary dates
+│   │       ├── gedcom.test.ts      # Build/parse round-trip, malformed input
+│   │       ├── format.test.ts      # Currency, date formatting, debounce
+│   │       └── data-converter.test.ts # toFamilyChartData correctness
+│   │
+│   └── i18n/
+│       └── __tests__/
+│           └── translations.test.ts # Key parity (vi ↔ en), no missing keys
+│
+└── vitest.config.ts                 # Extends vite.config.ts
+```
+
+### Strategy
+
+| Layer | What | How |
+|---|---|---|
+| **Utils** | Pure functions: honorifics, lunar, gedcom, format | Unit tests, 100% coverage target |
+| **Stores** | State transitions, computed values | Unit tests, assert store `.get()` after mutations |
+| **Services** | API calls, storage, passkey flow | Unit tests with `vi.fn()` mocks, no real network |
+| **Components** | Render output, event handlers, store reactivity | Render in jsdom, assert DOM output, simulate clicks, verify store calls |
+| **i18n** | Key parity, fallback behavior | Snapshot all keys, assert vi/en parity at CI time |
+
+### CI
+
+```bash
+pnpm test          # Run all tests
+pnpm test:watch    # Watch mode for dev
+pnpm test:coverage # Coverage report
+```
+
+### What NOT to test
+
+- `family-chart` rendering — black box, trust the library
+- Passkey hardware flow — mock `@simplewebauthn/browser` at the service layer
+- CSS/layout — visual, not testable in jsdom
+
+## i18n
+
+### Architecture
+
+```
+src/i18n/
+├── vi.json          # Vietnamese translations (primary, default)
+├── en.json          # English translations
+└── index.ts         # loadTranslations(), getT() factory
+```
+
+### Translation File Format
+
+Nested keys matching the UI structure:
+
+```json
+{
+  "sidebar": {
+    "tree": "Cây gia phả",
+    "members": "Thành viên",
+    "events": "Sự kiện",
+    "funds": "Quỹ"
+  },
+  "members": {
+    "searchPlaceholder": "Tìm kiếm thành viên...",
+    "noResults": "Không tìm thấy thành viên nào",
+    "relationship": {
+      "father": "Cha",
+      "mother": "Mẹ",
+      "spouse": "Vợ/Chồng"
+    }
+  },
+  "common": {
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "delete": "Xóa",
+    "loading": "Đang tải..."
+  }
+}
+```
+
+### Store (`stores/i18n.ts`)
+
+```typescript
+import { atom, computed } from 'nanostores';
+import { getT } from '../i18n/index.js';
+
+export const $language = atom<'vi' | 'en'>('vi');
+export const $translations = atom<Record<string, any>>({});
+
+// Reactive translation function — triggers re-render when language changes
+export const $t = computed($language, $translations, (lang, translations) => {
+  return getT(translations, lang);
+});
+```
+
+### `getT()` Function
+
+Returns a function `t(path: string, params?: Record<string, string>) => string`:
+
+- **Dot notation**: `t('sidebar.tree')` → "Cây gia phả"
+- **Interpolation**: `t('greeting.hello', { name: 'An' })` → "Xin chào, An" (uses `{name}` placeholder)
+- **Fallback**: Missing key returns the key itself in dev (`[MISSING: sidebar.unknown]`), empty string in prod
+- **Default to vi**: If key missing in `en`, falls back to `vi`
+
+### Reactivity
+
+Each component subscribes to `$language` (or `$t`) to re-render on switch:
+
+```typescript
+private subscribe() {
+  $currentPage.subscribe(() => this.render());
+  $language.subscribe(() => this.render());  // Re-render on language change
+}
+
+private render() {
+  const t = $t.get();
+  render(html`<button>${t('common.save')}</button>`, this.container);
+}
+```
+
+### Implementation Details
+
+- **Persistence**: Language choice saved to `localStorage` under key `gp-language`
+- **Init**: `app.ts` loads persisted language on startup, sets `$language`, loads corresponding JSON
+- **Lazy load**: Only load the active locale JSON; load second locale on demand when user switches
+- **SSR-ready**: `getT()` is a pure function, works without stores for server-side rendering if needed later
+
+### Key Parity Enforcement
+
+`i18n/__tests__/translations.test.ts` runs in CI:
+1. Flatten all keys from `vi.json` and `en.json`
+2. Assert every key in `vi` exists in `en` (vi is the source of truth)
+3. Fail CI if keys diverge — prevents untranslated strings in production
+
+### Phase Assignment
+
+i18n work is split across phases:
+
+| Phase | Task |
+|---|---|
+| Phase 1 | Create `stores/i18n.ts`, `src/i18n/index.ts`, stub `vi.json`/`en.json` |
+| Phase 3 | Add translation keys as each page component is built |
+| Phase 5 | Step 25: i18n reactivity, language switcher UI, parity tests, polish |
 
 ## Auth Backend Integration
 
