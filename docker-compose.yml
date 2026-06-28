@@ -34,3 +34,14 @@ services:
         - action: sync
           path: ./prototype
           target: /usr/share/nginx/html
+
+  prototype2:
+    build:
+      context: ./prototype2
+    ports:
+      - "8083:80"
+    develop:
+      watch:
+        - action: sync
+          path: ./prototype2
+          target: /usr/share/nginx/html

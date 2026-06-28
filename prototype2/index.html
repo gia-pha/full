@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#7C3AED" />
+  <title>Gia Phả</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'heritage-cream': '#FFFBEB',
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/family-chart@latest/dist/styles/family-chart.css" />
+  <script type="module" src="https://unpkg.com/family-chart@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Vietnamese:ital,wght@0,400;0,700;0,900;1,400&family=Noto+Sans+Vietnamese:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/main.css" />
+  <style>
+    .hidden { display: none !important; }
+    .f3-card { cursor: pointer; }
+    .f3-card:hover { filter: brightness(0.95); }
+    .f3-card rect { rx: 8; ry: 8; }
+    * { transition-property: transform, opacity; transition-duration: 150ms; }
+    #FamilyChart, #FamilyChart * { transition: none !important; }
+  </style>
+</head>
+<body class="bg-heritage-cream">
+  <div id="app"></div>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
