@@ -7,12 +7,19 @@ settings:
 importers:
 
   .:
+    dependencies:
+      lit-html:
+        specifier: ^3.3.3
+        version: 3.3.3
     devDependencies:
       typescript:
         specifier: 7.0.1-rc
         version: 7.0.1-rc
 
 packages:
+
+  '@types/trusted-types@2.0.7':
+    resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
 
   '@typescript/typescript-aix-ppc64@7.0.1-rc':
     resolution: {integrity: sha512-oqq2ZfEJ7BQuufcC3QBQndZLPNyamYNHLao8lKRBeeSkZKypBqxPSgkzrcFZtbYcIaBvpiyUnQP9MT7DEYHWbw==}
@@ -134,12 +141,17 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  lit-html@3.3.3:
+    resolution: {integrity: sha512-el8M6jK2o3RXBnrSHX3ZKrsN8zEV63pSExTO1wYJz7QndGYZ8353e2a5PPX+qHe2aGayfnchQmkAojaWAREOIA==}
+
   typescript@7.0.1-rc:
     resolution: {integrity: sha512-drEP77wK7CCDlPfXZH4e008UUQOsw1DFmHmZOZjuNA+yoDLLnSNMZRXi90NbV/1LVo7SbNLq1bs3jjvk49TEqQ==}
     engines: {node: '>=16.20.0'}
     hasBin: true
 
 snapshots:
+
+  '@types/trusted-types@2.0.7': {}
 
   '@typescript/typescript-aix-ppc64@7.0.1-rc':
     optional: true
@@ -200,6 +212,10 @@ snapshots:
 
   '@typescript/typescript-win32-x64@7.0.1-rc':
     optional: true
+
+  lit-html@3.3.3:
+    dependencies:
+      '@types/trusted-types': 2.0.7
 
   typescript@7.0.1-rc:
     optionalDependencies:
