@@ -12,5 +12,8 @@
   "type": "module",
   "devDependencies": {
     "typescript": "7.0.1-rc"
+  },
+  "dependencies": {
+    "lit-html": "^3.3.3"
   }
 }
