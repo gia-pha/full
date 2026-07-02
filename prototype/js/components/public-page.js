@@ -33,7 +33,7 @@ class PublicPageComponent {
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">${notable.map(f => `
                 <div class="flex items-start gap-4 p-5 lg:p-6 bg-yellow-50 rounded-2xl border border-yellow-100">
                   <div class="w-12 h-12 lg:w-14 lg:h-14 bg-yellow-200 rounded-full flex items-center justify-center text-xl lg:text-2xl flex-shrink-0">⭐</div>
-                  <div><h3 class="font-bold text-gray-800 text-lg">${f.person.data['first name'] + ' ' + f.person.data['last name']}</h3><p class="text-sm lg:text-base text-gray-600 mt-1">${f.achievement}</p><p class="text-xs text-gray-400 mt-1">${f.person.data.birthday}${f.person.data['death year'] ? ' - ' + f.person.data['death year'] : ''}</p></div>
+                  <div><h3 class="font-bold text-gray-800 text-lg">${f.person.data.firstName + ' ' + f.person.data.lastName}</h3><p class="text-sm lg:text-base text-gray-600 mt-1">${f.achievement}</p><p class="text-xs text-gray-400 mt-1">${f.person.data.birthYear}${f.person.data.deathYear ? ' - ' + f.person.data.deathYear : ''}</p></div>
                 </div>
               `).join('')}</div>
             </section>

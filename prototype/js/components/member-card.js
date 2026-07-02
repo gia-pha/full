@@ -22,7 +22,7 @@ class MemberCardComponent {
     const spouse = person.rels.spouses[0] ? allPersons.find(p => p.id === person.rels.spouses[0]) : null;
     const parent = person.rels.parents[0] ? allPersons.find(p => p.id === person.rels.parents[0]) : null;
     const children = (person.rels.children || []).map(id => allPersons.find(p => p.id === id)).filter(Boolean);
-    const isDeceased = person.data['death year'] != null;
+    const isDeceased = person.data.deathYear != null;
 
     this.container.innerHTML = `
       <!-- Mobile: Bottom Sheet -->
@@ -61,7 +61,7 @@ class MemberCardComponent {
        <div class="flex items-center gap-4">
             <div class="w-16 h-16 lg:w-20 lg:h-20 rounded-2xl ${person.data.gender === 'M' ? 'bg-blue-100 text-blue-600' : 'bg-pink-100 text-pink-600'} flex items-center justify-center text-3xl flex-shrink-0">${person.data.gender === 'M' ? '♂' : '♀'}</div>
           <div class="flex-1 min-w-0">
-            <h2 class="font-bold text-gray-800 text-lg lg:text-xl truncate">${person.data['first name'] + ' ' + person.data['last name']}</h2>
+            <h2 class="font-bold text-gray-800 text-lg lg:text-xl truncate">${person.data.firstName + ' ' + person.data.lastName}</h2>
             ${honorific ? `<p class="text-emerald-600 text-sm font-medium mt-0.5">${this.t.member.honorific}: ${honorific}</p>` : ''}
             <div class="flex items-center gap-2 mt-1.5">
               ${rel?.type === 'self' ? `<span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-xs rounded-full font-medium">${this.t.tree.currentPerson}</span>` : ''}
@@ -71,7 +71,7 @@ class MemberCardComponent {
         </div>
 
         <div class="grid grid-cols-2 gap-3">
-          ${this.infoCard(this.t.member.birthYear, person.data.birthday || '-', 'blue')}
+          ${this.infoCard(this.t.member.birthYear, person.data.birthYear || '-', 'blue')}
           ${this.infoCard(this.t.member.gender, person.data.gender === 'M' ? this.t.member.male : this.t.member.female, person.data.gender === 'M' ? 'blue' : 'pink')}
           ${this.infoCard(this.t.member.generation, String(person.data.generation), 'purple')}
           ${this.infoCard(this.t.member.role, this.t.admin.roles[person.data.role] || person.data.role, 'amber')}
@@ -83,7 +83,7 @@ class MemberCardComponent {
         ${children.length > 0 ? `
           <div>
             <p class="text-sm text-gray-400 mb-3">${this.t.member.children} (${children.length})</p>
-            <div class="space-y-2">${children.map(c => `<button class="member-link w-full flex items-center gap-3 p-3 bg-gray-50 hover:bg-gray-100 rounded-xl transition-colors" data-id="${c.id}"><span class="text-lg ${c.data.gender === 'M' ? 'text-blue-500' : 'text-pink-500'}">${c.data.gender === 'M' ? '♂' : '♀'}</span><span class="flex-1 text-left font-medium text-gray-700 truncate">${c.data['first name'] + ' ' + c.data['last name']}</span><span class="text-sm text-gray-400">${c.data.birthday}</span></button>`).join('')}</div>
+            <div class="space-y-2">${children.map(c => `<button class="member-link w-full flex items-center gap-3 p-3 bg-gray-50 hover:bg-gray-100 rounded-xl transition-colors" data-id="${c.id}"><span class="text-lg ${c.data.gender === 'M' ? 'text-blue-500' : 'text-pink-500'}">${c.data.gender === 'M' ? '♂' : '♀'}</span><span class="flex-1 text-left font-medium text-gray-700 truncate">${c.data.firstName + ' ' + c.data.lastName}</span><span class="text-sm text-gray-400">${c.data.birthYear}</span></button>`).join('')}</div>
           </div>
         ` : ''}
 
@@ -106,7 +106,7 @@ class MemberCardComponent {
   relationCard(label, person, color) {
     const bc = { pink: 'border-pink-200 bg-pink-50', blue: 'border-blue-200 bg-blue-50' };
     const tc = { pink: 'text-pink-500 text-pink-700', blue: 'text-blue-500 text-blue-700' };
-    return `<div class="p-4 rounded-xl border ${bc[color]}"><p class="text-xs ${tc[color].split(' ')[0]} mb-2">${label}</p><button class="member-link font-semibold ${tc[color].split(' ')[1]} hover:underline" data-id="${person.id}">${person.data['first name'] + ' ' + person.data['last name']} (${person.data.birthday}${person.data['death year'] ? ' - ' + person.data['death year'] : ''})</button></div>`;
+    return `<div class="p-4 rounded-xl border ${bc[color]}"><p class="text-xs ${tc[color].split(' ')[0]} mb-2">${label}</p><button class="member-link font-semibold ${tc[color].split(' ')[1]} hover:underline" data-id="${person.id}">${person.data.firstName + ' ' + person.data.lastName} (${person.data.birthYear}${person.data.deathYear ? ' - ' + person.data.deathYear : ''})</button></div>`;
   }
 
   bindEvents() {

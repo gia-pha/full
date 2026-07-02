@@ -93,8 +93,8 @@ function getVietnameseHonorific(relationship, currentPerson, targetPerson, t) {
 
   if (genDiff === 0) {
     if (viaSpouse) {
-      if (isMale) return targetPerson.data.birthday < currentPerson.data.birthday ? h.brotherInLawOlder : h.brotherInLawYounger;
-      return targetPerson.data.birthday < currentPerson.data.birthday ? h.sisterInLawOlder : h.sisterInLawYounger;
+      if (isMale) return targetPerson.data.birthYear < currentPerson.data.birthYear ? h.brotherInLawOlder : h.brotherInLawYounger;
+      return targetPerson.data.birthYear < currentPerson.data.birthYear ? h.sisterInLawOlder : h.sisterInLawYounger;
     }
     const siblingOrder = getSiblingOrder(currentPerson, targetPerson);
     if (isMale) {
@@ -134,7 +134,7 @@ function getVietnameseHonorific(relationship, currentPerson, targetPerson, t) {
 function getSiblingOrder(personA, personB, allPersons) {
   const commonParent = personA.rels.parents.find(pid => personB.rels.parents.includes(pid));
   if (!commonParent) return '';
-  return personA.data.birthday > personB.data.birthday ? 'younger' : 'older';
+  return personA.data.birthYear > personB.data.birthYear ? 'younger' : 'older';
 }
 
 function getRelationshipLabel(relationship, t) {
