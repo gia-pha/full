@@ -1,6 +1,7 @@
 import { buildGedcom, parseGedcom } from '../utils/gedcom.js';
 import { downloadFile } from '../utils/format.js';
 import { store } from '../store.js';
+import { getGenderIcon } from '../utils/avatar.js';
 
 class AdminComponent {
   constructor(container, store, t) {
@@ -34,7 +35,7 @@ class AdminComponent {
   renderMembers(members) {
     return `<div class="space-y-3">${members.map(m => { const fullName = m.data.firstName + ' ' + m.data.lastName; return `
       <div class="flex items-center gap-4 p-4 lg:p-5 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
-        <div class="w-12 h-12 lg:w-14 lg:h-14 rounded-full ${m.data.gender === 'M' ? 'bg-blue-100 text-blue-600' : 'bg-pink-100 text-pink-600'} flex items-center justify-center text-lg font-bold flex-shrink-0">${fullName.split(' ').pop()?.charAt(0)}</div>
+        ${m.data.avatar ? `<img src="${m.data.avatar}" alt="${fullName}" class="w-12 h-12 lg:w-14 lg:h-14 rounded-full object-cover flex-shrink-0" />` : `<div class="w-12 h-12 lg:w-14 lg:h-14 rounded-full ${m.data.gender === 'M' ? 'bg-blue-100 text-blue-600' : 'bg-pink-100 text-pink-600'} flex items-center justify-center flex-shrink-0" style="padding: 0.5rem">${getGenderIcon(m.data.gender)}</div>`}
         <div class="flex-1 min-w-0">
           <button class="admin-member-link font-semibold text-gray-800 hover:text-emerald-600 transition-colors" data-id="${m.id}">${fullName} ${m.data.deathYear ? '<span class="text-gray-400 text-sm">✝</span>' : ''}</button>
           <p class="text-sm text-gray-400 mt-0.5">${m.data.birthYear || '-'} · ${this.t.tree.generation} ${m.data.generation}</p>

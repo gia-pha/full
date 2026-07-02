@@ -1,4 +1,5 @@
 import { calculateRelationship, getVietnameseHonorific } from '../utils/honorifics.js';
+import { getGenderIcon } from '../utils/avatar.js';
 
 class MembersListComponent {
   constructor(container, store, t) {
@@ -29,7 +30,7 @@ class MembersListComponent {
             ${sorted.map(m => { const fullName = m.data.firstName + ' ' + m.data.lastName; return `
               <button class="member-item w-full text-left p-4 lg:p-5 rounded-xl border border-gray-200 hover:border-emerald-300 hover:bg-emerald-50/50 transition-all ${m.id === current?.id ? 'bg-emerald-50 border-emerald-300' : 'bg-white'}" data-id="${m.id}">
                 <div class="flex items-center gap-4">
-                  <div class="w-12 h-12 lg:w-14 lg:h-14 rounded-full ${m.data.gender === 'M' ? 'bg-blue-100 text-blue-600' : 'bg-pink-100 text-pink-600'} flex items-center justify-center text-lg font-bold flex-shrink-0">${fullName.split(' ').pop()?.charAt(0)}</div>
+                  ${m.data.avatar ? `<img src="${m.data.avatar}" alt="${fullName}" class="w-12 h-12 lg:w-14 lg:h-14 rounded-full object-cover flex-shrink-0" />` : `<div class="w-12 h-12 lg:w-14 lg:h-14 rounded-full ${m.data.gender === 'M' ? 'bg-blue-100 text-blue-600' : 'bg-pink-100 text-pink-600'} flex items-center justify-center flex-shrink-0" style="padding: 0.5rem">${getGenderIcon(m.data.gender)}</div>`}
                   <div class="flex-1 min-w-0">
                     <div class="flex items-center gap-2">
                       <span class="font-semibold text-gray-800 text-base truncate">${fullName}</span>

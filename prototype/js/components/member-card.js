@@ -1,4 +1,5 @@
 import { calculateRelationship, getVietnameseHonorific } from '../utils/honorifics.js';
+import { getGenderIcon } from '../utils/avatar.js';
 
 class MemberCardComponent {
   constructor(container, store, t) {
@@ -59,7 +60,7 @@ class MemberCardComponent {
     return `
       <div class="p-5 lg:p-6 space-y-5">
        <div class="flex items-center gap-4">
-            <div class="w-16 h-16 lg:w-20 lg:h-20 rounded-2xl ${person.data.gender === 'M' ? 'bg-blue-100 text-blue-600' : 'bg-pink-100 text-pink-600'} flex items-center justify-center text-3xl flex-shrink-0">${person.data.gender === 'M' ? '♂' : '♀'}</div>
+             ${person.data.avatar ? `<img src="${person.data.avatar}" alt="${person.data.firstName + ' ' + person.data.lastName}" class="w-16 h-16 lg:w-20 lg:h-20 rounded-2xl object-cover flex-shrink-0" />` : `<div class="w-16 h-16 lg:w-20 lg:h-20 rounded-2xl ${person.data.gender === 'M' ? 'bg-blue-100 text-blue-600' : 'bg-pink-100 text-pink-600'} flex items-center justify-center flex-shrink-0" style="padding: 0.5rem">${getGenderIcon(person.data.gender)}</div>`}
           <div class="flex-1 min-w-0">
             <h2 class="font-bold text-gray-800 text-lg lg:text-xl truncate">${person.data.firstName + ' ' + person.data.lastName}</h2>
             ${honorific ? `<p class="text-emerald-600 text-sm font-medium mt-0.5">${this.t.member.honorific}: ${honorific}</p>` : ''}
