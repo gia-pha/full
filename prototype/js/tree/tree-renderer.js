@@ -77,8 +77,8 @@ class TreeRenderer {
 
         this.card = this.chart.setCardHtml()
           .setCardDisplay([
-            ['first name', 'last name'],
-            ['birth year', 'death year'],
+            ['firstName', 'lastName'],
+            ['birthYear', 'deathYear'],
             ['generation']
           ])
           .setDefaultPersonIcon((d) => {
@@ -160,7 +160,7 @@ class TreeRenderer {
 
         this.editTree = this.chart.editTree()
           .fixed(true)
-          .setFields(['first name', 'last name', 'birth year', 'death year', 'gender', 'notes'])
+          .setFields(['firstName', 'lastName', 'birthYear', 'deathYear', 'gender', 'notes'])
           .setEditFirst(true);
         this.editTree.setEdit();
 

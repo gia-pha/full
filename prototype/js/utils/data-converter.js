@@ -16,7 +16,6 @@ function toFamilyChartData(clanId) {
         data: {
           id: p.id,
           ...rest,
-          'birth year': p.data.birthday || '',
           photo: p.data.avatar || '',
           isCurrentUser: p.id === currentPersonId
         },

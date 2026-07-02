@@ -136,7 +136,7 @@ class SidebarComponent {
             <div class="h-full flex flex-col overflow-y-auto">
               <div class="p-5 bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex-shrink-0">
                 <div class="flex items-center gap-4">
-                  ${(() => { const cp = this.store.getCurrentPerson(); if (!cp) return ''; const fullName = cp.data['first name'] + ' ' + cp.data['last name']; return `<div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center text-2xl">${cp.data.gender === 'M' ? '♂' : '♀'}</div><div><div class="font-bold text-lg">${fullName}</div><div class="text-sm opacity-80">${this.t.admin.roles[cp.data.role] || ''}</div></div>`; })()}
+                  ${(() => { const cp = this.store.getCurrentPerson(); if (!cp) return ''; const fullName = cp.data.firstName + ' ' + cp.data.lastName; return `<div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center text-2xl">${cp.data.gender === 'M' ? '♂' : '♀'}</div><div><div class="font-bold text-lg">${fullName}</div><div class="text-sm opacity-80">${this.t.admin.roles[cp.data.role] || ''}</div></div>`; })()}
                 </div>
               </div>
               <div class="p-4 border-b flex-shrink-0">

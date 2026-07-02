@@ -94,7 +94,7 @@ class EventsComponent {
             <div class="flex items-center gap-3">
               <div class="flex -space-x-2">${event.attendees.slice(0, 5).map(id => {
                 const p = allPersons.find(x => x.id === id);
-                return p ? `<div class="w-8 h-8 rounded-full ${p.data.gender === 'M' ? 'bg-blue-400' : 'bg-pink-400'} border-2 border-white flex items-center justify-center text-white text-xs font-bold" title="${p.data['first name'] + ' ' + p.data['last name']}">${p.data['first name'] + ' ' + p.data['last name'].split(' ').pop()?.charAt(0)}</div>` : '';
+                return p ? `<div class="w-8 h-8 rounded-full ${p.data.gender === 'M' ? 'bg-blue-400' : 'bg-pink-400'} border-2 border-white flex items-center justify-center text-white text-xs font-bold" title="${p.data.firstName + ' ' + p.data.lastName}">${p.data.firstName + ' ' + p.data.lastName.split(' ').pop()?.charAt(0)}</div>` : '';
               }).join('')}</div>
               <span class="text-sm text-gray-400">${event.attendees.length} ${this.t.events.attendeesCount}</span>
             </div>

@@ -43,7 +43,7 @@ class ClanInfoComponent {
                   <div class="flex items-start gap-4 p-4 bg-yellow-50 rounded-xl border border-yellow-100">
                     <div class="w-12 h-12 bg-yellow-200 rounded-full flex items-center justify-center text-xl flex-shrink-0">⭐</div>
                     <div class="min-w-0">
-                      <button class="clan-member-link font-semibold text-yellow-800 hover:text-yellow-900" data-id="${f.person.id}">${f.person.data['first name'] + ' ' + f.person.data['last name']}</button>
+                      <button class="clan-member-link font-semibold text-yellow-800 hover:text-yellow-900" data-id="${f.person.id}">${f.person.data.firstName + ' ' + f.person.data.lastName}</button>
                       <p class="text-sm text-yellow-600 mt-1">${f.achievement}</p>
                     </div>
                   </div>
