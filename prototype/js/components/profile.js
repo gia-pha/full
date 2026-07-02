@@ -1,4 +1,5 @@
 import { store } from '../store.js';
+import { getGenderIcon } from '../utils/avatar.js';
 
 class ProfileComponent {
   constructor(container, store, t) {
@@ -24,7 +25,7 @@ class ProfileComponent {
           ${!this.editing ? `<button class="profile-edit-btn px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-medium transition-colors">✏️ ${this.t.profile.edit}</button>` : `<button class="profile-cancel px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-lg text-sm font-medium transition-colors mr-2">${this.t.profile.cancel}</button><button class="profile-save px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-medium transition-colors">${this.t.profile.save}</button>`}
         </div>
         <div class="px-4 sm:px-6 lg:px-8 py-6 pb-8">
-          <div class="w-20 h-20 rounded-2xl bg-white shadow-lg flex items-center justify-center text-3xl border-2 border-gray-100 ${person.data.gender === 'M' ? 'text-blue-500' : 'text-pink-500'} mb-4">${person.data.gender === 'M' ? '♂' : '♀'}</div>
+          ${person.data.avatar ? `<img src="${person.data.avatar}" alt="${person.data.firstName + ' ' + person.data.lastName}" class="w-20 h-20 rounded-2xl object-cover shadow-lg border-2 border-gray-100 mb-4" />` : `<div class="w-20 h-20 rounded-2xl bg-white shadow-lg flex items-center justify-center border-2 border-gray-100 ${person.data.gender === 'M' ? 'text-blue-500' : 'text-pink-500'} mb-4" style="padding: 0.5rem">${getGenderIcon(person.data.gender)}</div>`}
           <div class="max-w-2xl space-y-6">
             <div>
               <label class="text-sm text-gray-400">${this.t.profile.name}</label>
