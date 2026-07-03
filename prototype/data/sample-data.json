@@ -333,7 +333,7 @@
         "notes": "Cố sở học sinh",
         "avatar": "https://randomuser.me/api/portraits/men/14.jpg",
         "clanId": "clan-nguyen",
-        "death year": ""
+        "deathYear": ""
       },
       "rels": {
         "spouses": [
@@ -361,7 +361,7 @@
         "notes": "",
         "avatar": "https://randomuser.me/api/portraits/women/87.jpg",
         "clanId": "clan-nguyen",
-        "death year": ""
+        "deathYear": ""
       },
       "rels": {
         "spouses": [
@@ -415,7 +415,7 @@
           "memorialDates": true
         },
         "clanId": "clan-nguyen",
-        "death year": ""
+        "deathYear": ""
       },
       "rels": {
         "spouses": [
@@ -449,7 +449,7 @@
           "memorialDates": true
         },
         "clanId": "clan-nguyen",
-        "death year": ""
+        "deathYear": ""
       },
       "rels": {
         "spouses": [
@@ -474,7 +474,7 @@
         "notes": "Anh hùng của Nguyễn Văn A",
         "avatar": "https://randomuser.me/api/portraits/men/76.jpg",
         "clanId": "clan-nguyen",
-        "death year": ""
+        "deathYear": ""
       },
       "rels": {
         "spouses": [
@@ -501,7 +501,7 @@
         "notes": "",
         "avatar": "",
         "clanId": "clan-nguyen",
-        "death year": ""
+        "deathYear": ""
       },
       "rels": {
         "spouses": [
@@ -525,7 +525,7 @@
         "notes": "Cháu gái của Nguyễn Văn A",
         "avatar": "",
         "clanId": "clan-nguyen",
-        "death year": ""
+        "deathYear": ""
       },
       "rels": {
         "parents": [
@@ -548,7 +548,7 @@
         "notes": "Con trai lớn",
         "avatar": "",
         "clanId": "clan-nguyen",
-        "death year": ""
+        "deathYear": ""
       },
       "rels": {
         "parents": [
@@ -571,7 +571,7 @@
         "notes": "Con gái",
         "avatar": "",
         "clanId": "clan-nguyen",
-        "death year": ""
+        "deathYear": ""
       },
       "rels": {
         "parents": [
@@ -594,7 +594,7 @@
         "notes": "Bé của Nguyễn Văn D",
         "avatar": "",
         "clanId": "clan-nguyen",
-        "death year": ""
+        "deathYear": ""
       },
       "rels": {
         "parents": [
@@ -665,7 +665,7 @@
         "notes": "Bố vợ của Nguyễn Văn A",
         "avatar": "",
         "clanId": "clan-tran",
-        "death year": ""
+        "deathYear": ""
       },
       "rels": {
         "spouses": [
@@ -690,7 +690,7 @@
         "notes": "",
         "avatar": "",
         "clanId": "clan-tran",
-        "death year": ""
+        "deathYear": ""
       },
       "rels": {
         "spouses": [
