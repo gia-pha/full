@@ -82,7 +82,7 @@ class TreeRenderer {
             ['birthYear', 'deathYear'],
             ['generation']
           ])
-          .setDefaultPersonIcon((d) => getGenderIcon(d.data.gender));
+          .setDefaultPersonIcon((d) => getGenderIcon(d.data.data.gender));
 
         if (this.showCardButtons) {
           const self = this;
