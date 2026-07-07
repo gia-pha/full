@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   resolve: {
@@ -7,7 +8,7 @@ export default defineConfig({
   esbuild: {
     include: ['**/*.ts'],
   },
-  test: {
-    environment: 'jsdom',
-  },
+  plugins: [
+    tailwindcss(),
+  ],
 });
