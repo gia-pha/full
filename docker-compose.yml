@@ -34,3 +34,13 @@ services:
         - action: sync
           path: ./prototype
           target: /usr/share/nginx/html
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "8083:80"
+    develop:
+      watch:
+        - action: rebuild
+          path: ./frontend
