@@ -1,16 +1,37 @@
-import { describe, it, expect } from 'vitest';
-import { PersonAvatar } from '../../components/person-avatar.js';
+import { describe, expect, it } from 'vitest';
+import '../../components/person-avatar.js';
+import type {
+  AvatarShape,
+  AvatarSize,
+  PersonAvatar,
+} from '../../components/person-avatar.js';
 import type { Person } from '../../types/index.js';
 
-const makePerson = (overrides?: Partial<Person['data']> & { gender?: 'M' | 'F' }): Person => ({
+const makePerson = (
+  overrides?: Partial<Person['data']> & { gender?: 'M' | 'F' },
+): Person => ({
   id: 'test-1',
-  data: { firstName: 'Văn', lastName: 'Nguyễn', gender: 'M', generation: 1, ...overrides },
+  data: {
+    firstName: 'Văn',
+    lastName: 'Nguyễn',
+    gender: 'M',
+    generation: 1,
+    ...overrides,
+  },
   rels: { parents: [], spouses: [], children: [] },
 });
 
 const mockPerson = makePerson();
 
-async function renderComponent(person: Person, opts?: { size?: string; shape?: string; showDeceased?: boolean; withName?: boolean }): Promise<PersonAvatar> {
+async function renderComponent(
+  person: Person,
+  opts?: {
+    size?: AvatarSize;
+    shape?: AvatarShape;
+    showDeceased?: boolean;
+    withName?: boolean;
+  },
+): Promise<PersonAvatar> {
   const el = document.createElement('person-avatar');
   el.person = person;
   if (opts?.size) el.size = opts.size;
