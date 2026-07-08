@@ -10,7 +10,9 @@ export function isDeceased(person: Person): boolean {
 }
 
 export function getInitials(person: Person): string {
-  return person.data.lastName?.charAt(0) || person.data.firstName?.charAt(0) || '?';
+  return (
+    person.data.lastName?.charAt(0) || person.data.firstName?.charAt(0) || '?'
+  );
 }
 
 export function getGenderSymbol(person: Person): string {

@@ -7,13 +7,18 @@
     "dev": "vite",
     "build": "vite build",
     "test": "vitest",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome lint src/",
+    "format": "biome format src/ --write",
+    "check": "biome check src/"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "devDependencies": {
+    "@biomejs/biome": "^2.5.2",
     "@types/node": "^26.0.1",
     "jsdom": "^29.1.1",
     "tailwindcss": "^4.3.1",
