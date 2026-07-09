@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import '../../components/person-avatar.js';
+import '../../src/components/person-avatar.js';
 import type {
   AvatarShape,
   AvatarSize,
   PersonAvatar,
-} from '../../components/person-avatar.js';
-import type { Person } from '../../types/index.js';
+} from '../../src/components/person-avatar.js';
+import type { Person } from '../../src/types/index.js';
 
 const makePerson = (
   overrides?: Partial<Person['data']> & { gender?: 'M' | 'F' },
