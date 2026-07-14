@@ -35,10 +35,7 @@ export class PersonAvatar extends LitElement {
 
   static override styles = css`
     :host {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.25rem;
+      @apply flex flex-col items-center gap-1;
     }
   `;
 

@@ -12,82 +12,15 @@ export class MemberItem extends LitElement {
 
   static override styles = css`
     :host {
-      display: block;
-    }
-
-    .item {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.5rem 0.75rem;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      transition: background-color 0.15s;
-    }
-
-    .item:hover {
-      background-color: rgb(243 244 246 / 1);
-    }
-
-    .dark .item:hover {
-      background-color: rgb(55 65 81 / 1);
+      @apply block;
     }
 
     .item[selected] {
-      background-color: rgb(219 234 254 / 1);
+      @apply bg-blue-100;
     }
 
     .dark .item[selected] {
-      background-color: rgb(30 58 138 / 1);
-    }
-
-    .info {
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-    }
-
-    .name {
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: rgb(31 41 55 / 1);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .dark .name {
-      color: rgb(229 231 235 / 1);
-    }
-
-    .meta {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.75rem;
-      color: rgb(107 114 128 / 1);
-    }
-
-    .dark .meta {
-      color: rgb(156 163 175 / 1);
-    }
-
-    .role {
-      padding: 0.125rem 0.375rem;
-      border-radius: 0.25rem;
-      font-size: 0.6875rem;
-      font-weight: 500;
-      background-color: rgb(219 234 254 / 1);
-      color: rgb(37 99 235 / 1);
-    }
-
-    .dark .role {
-      background-color: rgb(30 58 138 / 1);
-      color: rgb(147 197 253 / 1);
-    }
-
-    .deceased {
-      color: rgb(156 163 175 / 1);
+      @apply bg-blue-900;
     }
   `;
 
@@ -98,24 +31,27 @@ export class MemberItem extends LitElement {
     const deceased = isDeceased(person);
 
     return html`
-      <div class="item" ?selected=${this.selected}>
+      <div
+        class="item flex items-center gap-3 p-2 rounded-lg cursor-pointer transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
+        ?selected=${this.selected}
+      >
         <person-avatar
           .person=${person}
           size="sm"
           shape="circle"
           ?show-deceased=${false}
         ></person-avatar>
-        <div class="info">
-          <span class="name">${getFullName(person)}</span>
-          <div class="meta">
+        <div class="flex flex-col min-w-0">
+          <span class="text-sm font-medium text-gray-800 dark:text-gray-200 truncate">${getFullName(person)}</span>
+          <div class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
             ${
               this.showRole && person.data.role
-                ? html`<span class="role">${person.data.role}</span>`
+                ? html`<span class="px-1.5 py-0.5 rounded text-[0.6875rem] font-medium bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300">${person.data.role}</span>`
                 : ''
             }
             ${
               deceased
-                ? html`<span class="deceased">✝ ${person.data.deathYear}</span>`
+                ? html`<span class="text-gray-400">✝ ${person.data.deathYear}</span>`
                 : ''
             }
           </div>
