@@ -30,45 +30,45 @@ async function renderComponent(
   return el;
 }
 
-function getShadowContent(el: MemberItem): string {
-  return el.shadowRoot?.innerHTML || '';
+function getContent(el: MemberItem): string {
+  return el.innerHTML;
 }
 
 describe('MemberItem', () => {
   it('renders person full name', async () => {
     const el = await renderComponent(makePerson());
-    const rendered = getShadowContent(el);
+    const rendered = getContent(el);
     expect(rendered).toContain('Văn Nguyễn');
   });
 
   it('renders person-avatar element', async () => {
     const el = await renderComponent(makePerson());
-    expect(el.shadowRoot?.querySelector('person-avatar')).not.toBeNull();
+    expect(el.querySelector('person-avatar')).not.toBeNull();
   });
 
   it('passes person to avatar', async () => {
     const person = makePerson({ firstName: 'Test' });
     const el = await renderComponent(person);
-    const avatar = el.shadowRoot?.querySelector('person-avatar');
+    const avatar = el.querySelector('person-avatar');
     expect(avatar).not.toBeNull();
     expect(avatar?.person).toBe(person);
   });
 
   it('uses sm size for avatar', async () => {
     const el = await renderComponent(makePerson());
-    const avatar = el.shadowRoot?.querySelector('person-avatar');
+    const avatar = el.querySelector('person-avatar');
     expect(avatar?.size).toBe('sm');
   });
 
   it('uses circle shape for avatar', async () => {
     const el = await renderComponent(makePerson());
-    const avatar = el.shadowRoot?.querySelector('person-avatar');
+    const avatar = el.querySelector('person-avatar');
     expect(avatar?.shape).toBe('circle');
   });
 
   it('does not show role by default', async () => {
     const el = await renderComponent(makePerson({ role: 'Admin' }));
-    const rendered = getShadowContent(el);
+    const rendered = getContent(el);
     expect(rendered).not.toContain('Admin');
   });
 
@@ -76,7 +76,7 @@ describe('MemberItem', () => {
     const el = await renderComponent(makePerson({ role: 'Admin' }), {
       showRole: true,
     });
-    const rendered = getShadowContent(el);
+    const rendered = getContent(el);
     expect(rendered).toContain('Admin');
   });
 
@@ -84,51 +84,51 @@ describe('MemberItem', () => {
     const el = await renderComponent(makePerson({ role: 'Admin' }), {
       showRole: false,
     });
-    const rendered = getShadowContent(el);
+    const rendered = getContent(el);
     expect(rendered).not.toContain('Admin');
   });
 
   it('shows deceased indicator for deceased person', async () => {
     const el = await renderComponent(makePerson({ deathYear: '2020' }));
-    const rendered = getShadowContent(el);
+    const rendered = getContent(el);
     expect(rendered).toContain('✝');
     expect(rendered).toContain('2020');
   });
 
   it('does not show deceased indicator for living person', async () => {
     const el = await renderComponent(makePerson());
-    const rendered = getShadowContent(el);
+    const rendered = getContent(el);
     expect(rendered).not.toContain('✝');
   });
 
   it('does not show deceased when deathYear is empty', async () => {
     const el = await renderComponent(makePerson({ deathYear: '' }));
-    const rendered = getShadowContent(el);
+    const rendered = getContent(el);
     expect(rendered).not.toContain('✝');
   });
 
-  it('applies selected attribute to item when selected is true', async () => {
+  it('applies selected styles when selected is true', async () => {
     const el = await renderComponent(makePerson(), { selected: true });
-    const item = el.shadowRoot?.querySelector('.item');
-    expect(item?.hasAttribute('selected')).toBe(true);
+    const rootDiv = el.querySelector('div');
+    expect(rootDiv?.classList.contains('bg-blue-100')).toBe(true);
   });
 
-  it('does not apply selected attribute when selected is false', async () => {
+  it('does not apply selected styles when selected is false', async () => {
     const el = await renderComponent(makePerson(), { selected: false });
-    const item = el.shadowRoot?.querySelector('.item');
-    expect(item?.hasAttribute('selected')).toBe(false);
+    const rootDiv = el.querySelector('div');
+    expect(rootDiv?.classList.contains('bg-blue-100')).toBe(false);
   });
 
-  it('renders with shadow DOM', async () => {
+  it('renders without shadow DOM', async () => {
     const el = await renderComponent(makePerson());
-    expect(el.shadowRoot).not.toBeNull();
+    expect(el.shadowRoot).toBeNull();
   });
 
   it('renders female person name', async () => {
     const el = await renderComponent(
       makePerson({ gender: 'F', firstName: 'Hương', lastName: 'Trần' }),
     );
-    const rendered = getShadowContent(el);
+    const rendered = getContent(el);
     expect(rendered).toContain('Hương Trần');
   });
 

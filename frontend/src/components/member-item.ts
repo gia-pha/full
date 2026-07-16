@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit';
+import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { Person } from '../types/index.js';
 import { getFullName, isDeceased } from '../utils/format.js';
@@ -10,19 +10,9 @@ export class MemberItem extends LitElement {
   @property({ type: Boolean, reflect: true }) selected = false;
   @property({ type: Boolean }) showRole = false;
 
-  static override styles = css`
-    :host {
-      @apply block;
-    }
-
-    .item[selected] {
-      @apply bg-blue-100;
-    }
-
-    .dark .item[selected] {
-      @apply bg-blue-900;
-    }
-  `;
+  override createRenderRoot() {
+    return this;
+  }
 
   override render() {
     const person = this.person;
@@ -32,8 +22,7 @@ export class MemberItem extends LitElement {
 
     return html`
       <div
-        class="item flex items-center gap-3 p-2 rounded-lg cursor-pointer transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
-        ?selected=${this.selected}
+        class="flex items-center gap-3 p-2 rounded-lg cursor-pointer transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 ${this.selected ? 'bg-blue-100 dark:bg-blue-900' : ''}"
       >
         <person-avatar
           .person=${person}

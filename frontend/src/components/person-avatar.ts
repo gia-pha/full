@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit';
+import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { Person } from '../types/index.js';
 import { getGenderSymbol, getInitials, isDeceased } from '../utils/format.js';
@@ -33,34 +33,34 @@ export class PersonAvatar extends LitElement {
   @property({ type: Boolean, reflect: true }) showDeceased = false;
   @property({ type: Boolean, reflect: true }) withName = false;
 
-  static override styles = css`
-    :host {
-      @apply flex flex-col items-center gap-1;
-    }
-  `;
+  override createRenderRoot() {
+    return this;
+  }
 
   override render() {
     const s = sizes[this.size];
     const isDeceasedPerson = isDeceased(this.person);
 
     return html`
-      <div class="relative ${s.dim} ${shapes[this.shape]} ${getColors(this.person.data.gender)} flex items-center justify-center font-bold flex-shrink-0">
+      <div class="flex flex-col items-center gap-1">
+        <div class="relative ${s.dim} ${shapes[this.shape]} ${getColors(this.person.data.gender)} flex items-center justify-center font-bold flex-shrink-0">
+          ${
+            this.shape === 'rounded'
+              ? html`<span class="${s.symbol}">${getGenderSymbol(this.person)}</span>`
+              : html`<span class="${s.font}">${getInitials(this.person)}</span>`
+          }
+          ${
+            this.showDeceased && isDeceasedPerson
+              ? html`<span class="absolute -top-1 -right-1 w-4 h-4 bg-gray-700 text-white text-[10px] rounded-full flex items-center justify-center">✝</span>`
+              : ''
+          }
+        </div>
         ${
-          this.shape === 'rounded'
-            ? html`<span class="${s.symbol}">${getGenderSymbol(this.person)}</span>`
-            : html`<span class="${s.font}">${getInitials(this.person)}</span>`
-        }
-        ${
-          this.showDeceased && isDeceasedPerson
-            ? html`<span class="absolute -top-1 -right-1 w-4 h-4 bg-gray-700 text-white text-[10px] rounded-full flex items-center justify-center">✝</span>`
+          this.withName
+            ? html`<span class="text-xs text-gray-600 dark:text-gray-400 truncate">${this.person.data.firstName} ${this.person.data.lastName}</span>`
             : ''
         }
       </div>
-      ${
-        this.withName
-          ? html`<span class="text-xs text-gray-600 dark:text-gray-400 truncate">${this.person.data.firstName} ${this.person.data.lastName}</span>`
-          : ''
-      }
     `;
   }
 }
