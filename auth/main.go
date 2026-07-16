@@ -18,7 +18,7 @@ func main() {
 	// Đọc cấu hình từ biến môi trường
 	proto := getEnv("PROTO", "http")
 	host := getEnv("HOST", "localhost")
-	port := getEnv("PORT", ":9090")
+	port := getEnv("PORT", ":8080")
 	origin := fmt.Sprintf("%s://%s%s", proto, host, port)
 
 	// Khởi tạo WebAuthn
