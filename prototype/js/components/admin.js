@@ -1,6 +1,7 @@
 import { buildGedcom, parseGedcom } from '../utils/gedcom.js';
 import { downloadFile } from '../utils/format.js';
 import { store } from '../store.js';
+import { getGenderIcon } from '../utils/avatar.js';
 
 class AdminComponent {
   constructor(container, store, t) {
@@ -32,12 +33,12 @@ class AdminComponent {
   }
 
   renderMembers(members) {
-    return `<div class="space-y-3">${members.map(m => { const fullName = m.data['first name'] + ' ' + m.data['last name']; return `
+    return `<div class="space-y-3">${members.map(m => { const fullName = m.data.firstName + ' ' + m.data.lastName; return `
       <div class="flex items-center gap-4 p-4 lg:p-5 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
-        <div class="w-12 h-12 lg:w-14 lg:h-14 rounded-full ${m.data.gender === 'M' ? 'bg-blue-100 text-blue-600' : 'bg-pink-100 text-pink-600'} flex items-center justify-center text-lg font-bold flex-shrink-0">${fullName.split(' ').pop()?.charAt(0)}</div>
+        ${m.data.avatar ? `<img src="${m.data.avatar}" alt="${fullName}" class="w-12 h-12 lg:w-14 lg:h-14 rounded-full object-cover flex-shrink-0" />` : `<div class="w-12 h-12 lg:w-14 lg:h-14 rounded-full ${m.data.gender === 'M' ? 'bg-blue-100 text-blue-600' : 'bg-pink-100 text-pink-600'} flex items-center justify-center flex-shrink-0" style="padding: 0.5rem">${getGenderIcon(m.data.gender)}</div>`}
         <div class="flex-1 min-w-0">
-          <button class="admin-member-link font-semibold text-gray-800 hover:text-emerald-600 transition-colors" data-id="${m.id}">${fullName} ${m.data['death year'] ? '<span class="text-gray-400 text-sm">✝</span>' : ''}</button>
-          <p class="text-sm text-gray-400 mt-0.5">${m.data.birthday || '-'} · ${this.t.tree.generation} ${m.data.generation}</p>
+          <button class="admin-member-link font-semibold text-gray-800 hover:text-emerald-600 transition-colors" data-id="${m.id}">${fullName} ${m.data.deathYear ? '<span class="text-gray-400 text-sm">✝</span>' : ''}</button>
+          <p class="text-sm text-gray-400 mt-0.5">${m.data.birthYear || '-'} · ${this.t.tree.generation} ${m.data.generation}</p>
         </div>
         <div class="flex items-center gap-2 flex-shrink-0">
           <span class="px-3 py-1 rounded-full text-xs font-medium ${this.roleClass(m.data.role)}">${this.t.admin.roles[m.data.role]}</span>
@@ -51,7 +52,7 @@ class AdminComponent {
     const groups = { admin: { l: this.t.admin.roleLabels.admin, c: 'bg-red-50 border-red-200' }, treasurer: { l: this.t.admin.roleLabels.treasurer, c: 'bg-amber-50 border-amber-200' }, editor: { l: this.t.admin.roleLabels.editor, c: 'bg-blue-50 border-blue-200' }, member: { l: this.t.admin.roleLabels.member, c: 'bg-gray-50 border-gray-200' } };
     return `<div class="space-y-4">${Object.entries(groups).map(([role, info]) => {
       const ms = members.filter(m => m.data.role === role);
-      return `<div class="border rounded-2xl overflow-hidden ${info.c}"><div class="px-5 py-3 border-b flex items-center justify-between"><span class="font-semibold text-sm">${info.l}</span><span class="text-sm text-gray-400">${ms.length}</span></div><div class="p-4">           ${ms.length === 0 ? `<p class="text-sm text-gray-400 text-center py-3">${this.t.admin.noMembers}</p>` : `<div class="flex flex-wrap gap-2">${ms.map(m => { const fullName = m.data['first name'] + ' ' + m.data['last name']; return `<div class="flex items-center gap-2 px-4 py-2.5 bg-white/70 rounded-xl text-sm"><span class="${m.data.gender === 'M' ? 'text-blue-500' : 'text-pink-500'}">${m.data.gender === 'M' ? '♂' : '♀'}</span><span class="font-medium">${fullName}</span>${role !== 'admin' && role !== 'member' ? `<button class="admin-change-role ml-1 text-gray-400 hover:text-emerald-600" data-id="${m.id}" data-role="${role}">↓</button>` : ''}</div>`; }).join('')}</div>`}</div></div>`;
+      return `<div class="border rounded-2xl overflow-hidden ${info.c}"><div class="px-5 py-3 border-b flex items-center justify-between"><span class="font-semibold text-sm">${info.l}</span><span class="text-sm text-gray-400">${ms.length}</span></div><div class="p-4">           ${ms.length === 0 ? `<p class="text-sm text-gray-400 text-center py-3">${this.t.admin.noMembers}</p>` : `<div class="flex flex-wrap gap-2">${ms.map(m => { const fullName = m.data.firstName + ' ' + m.data.lastName; return `<div class="flex items-center gap-2 px-4 py-2.5 bg-white/70 rounded-xl text-sm"><span class="${m.data.gender === 'M' ? 'text-blue-500' : 'text-pink-500'}">${m.data.gender === 'M' ? '♂' : '♀'}</span><span class="font-medium">${fullName}</span>${role !== 'admin' && role !== 'member' ? `<button class="admin-change-role ml-1 text-gray-400 hover:text-emerald-600" data-id="${m.id}" data-role="${role}">↓</button>` : ''}</div>`; }).join('')}</div>`}</div></div>`;
     }).join('')}</div>`;
   }
 

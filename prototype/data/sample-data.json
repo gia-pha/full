@@ -100,14 +100,14 @@
       "id": "person-001",
       "data": {
         "gender": "M",
-        "first name": "Nguyễn Văn",
-        "last name": "Hiếu",
-        "birthday": "1850",
-        "death year": "1920",
+        "firstName": "Nguyễn Văn",
+        "lastName": "Hiếu",
+        "birthYear": "1850",
+        "deathYear": "1920",
         "generation": 1,
         "role": "admin",
         "notes": "Tiến khoa, ngoại giao sứ thời Lê",
-        "avatar": "https://placehold.co/150x150/2d5016/ffffff?text=NVH",
+        "avatar": "https://xsgames.co/randomusers/avatar.php?g=male",
         "clanId": "clan-nguyen"
       },
       "rels": {
@@ -125,14 +125,14 @@
       "id": "person-002",
       "data": {
         "gender": "F",
-        "first name": "Trần Thị",
-        "last name": "Lan",
-        "birthday": "1855",
-        "death year": "1930",
+        "firstName": "Trần Thị",
+        "lastName": "Lan",
+        "birthYear": "1855",
+        "deathYear": "1930",
         "generation": 1,
         "role": "member",
         "notes": "",
-        "avatar": "https://placehold.co/150x150/2d5016/ffffff?text=MTL",
+        "avatar": "https://xsgames.co/randomusers/avatar.php?g=female",
         "clanId": "clan-nguyen"
       },
       "rels": {
@@ -150,14 +150,14 @@
       "id": "person-003",
       "data": {
         "gender": "M",
-        "first name": "Nguyễn Văn",
-        "last name": "Cường",
-        "birthday": "1880",
-        "death year": "1950",
+        "firstName": "Nguyễn Văn",
+        "lastName": "Cường",
+        "birthYear": "1880",
+        "deathYear": "1950",
         "generation": 1,
         "role": "member",
         "notes": "Em út của Nguyễn Văn Hiếu",
-        "avatar": "https://placehold.co/150x150/2d5016/ffffff?text=NVC",
+        "avatar": "https://xsgames.co/randomusers/avatar.php?g=male",
         "clanId": "clan-nguyen"
       },
       "rels": {
@@ -170,14 +170,14 @@
       "id": "person-005",
       "data": {
         "gender": "M",
-        "first name": "Nguyễn Văn",
-        "last name": "Tú",
-        "birthday": "1880",
-        "death year": "1945",
+        "firstName": "Nguyễn Văn",
+        "lastName": "Tú",
+        "birthYear": "1880",
+        "deathYear": "1945",
         "generation": 2,
         "role": "member",
         "notes": "Nguyên súy, thời Nguyễn Minh Mạng",
-        "avatar": "https://placehold.co/150x150/2d5016/ffffff?text=NVT",
+        "avatar": "https://xsgames.co/randomusers/avatar.php?g=male",
         "clanId": "clan-nguyen"
       },
       "rels": {
@@ -198,14 +198,14 @@
       "id": "person-004",
       "data": {
         "gender": "F",
-        "first name": "Lê Thị",
-        "last name": "Hòa",
-        "birthday": "1885",
-        "death year": "1960",
+        "firstName": "Lê Thị",
+        "lastName": "Hòa",
+        "birthYear": "1885",
+        "deathYear": "1960",
         "generation": 2,
         "role": "member",
         "notes": "",
-        "avatar": "https://placehold.co/150x150/2d5016/ffffff?text=LTH",
+        "avatar": "https://xsgames.co/randomusers/avatar.php?g=female",
         "clanId": "clan-nguyen"
       },
       "rels": {
@@ -223,14 +223,14 @@
       "id": "person-006",
       "data": {
         "gender": "M",
-        "first name": "Nguyễn Văn",
-        "last name": "Sơn",
-        "birthday": "1890",
-        "death year": "1960",
+        "firstName": "Nguyễn Văn",
+        "lastName": "Sơn",
+        "birthYear": "1890",
+        "deathYear": "1960",
         "generation": 2,
         "role": "member",
         "notes": "Em út của Nguyễn Văn Tú",
-        "avatar": "https://placehold.co/150x150/2d5016/ffffff?text=NVS",
+        "avatar": "https://xsgames.co/randomusers/avatar.php?g=male",
         "clanId": "clan-nguyen"
       },
       "rels": {
@@ -250,14 +250,14 @@
       "id": "person-003b",
       "data": {
         "gender": "F",
-        "first name": "Phạm Thị",
-        "last name": "Mai",
-        "birthday": "1895",
-        "death year": "1970",
+        "firstName": "Phạm Thị",
+        "lastName": "Mai",
+        "birthYear": "1895",
+        "deathYear": "1970",
         "generation": 2,
         "role": "member",
         "notes": "",
-        "avatar": "https://placehold.co/150x150/2d5016/ffffff?text=PTM",
+        "avatar": "https://xsgames.co/randomusers/avatar.php?g=female",
         "clanId": "clan-nguyen"
       },
       "rels": {
@@ -274,14 +274,14 @@
       "id": "person-007",
       "data": {
         "gender": "M",
-        "first name": "Nguyễn Văn",
-        "last name": "Đức",
-        "birthday": "1915",
-        "death year": "1985",
+        "firstName": "Nguyễn Văn",
+        "lastName": "Đức",
+        "birthYear": "1915",
+        "deathYear": "1985",
         "generation": 3,
         "role": "member",
         "notes": "Cô giáo",
-        "avatar": "https://placehold.co/150x150/2d5016/ffffff?text=NVD",
+        "avatar": "https://xsgames.co/randomusers/avatar.php?g=male",
         "clanId": "clan-nguyen"
       },
       "rels": {
@@ -301,14 +301,14 @@
       "id": "person-008b",
       "data": {
         "gender": "F",
-        "first name": "Hoàng Thị",
-        "last name": "Xuân",
-        "birthday": "1920",
-        "death year": "1995",
+        "firstName": "Hoàng Thị",
+        "lastName": "Xuân",
+        "birthYear": "1920",
+        "deathYear": "1995",
         "generation": 3,
         "role": "member",
         "notes": "",
-        "avatar": "https://placehold.co/150x150/2d5016/ffffff?text=HTX",
+        "avatar": "https://xsgames.co/randomusers/avatar.php?g=female",
         "clanId": "clan-nguyen"
       },
       "rels": {
@@ -325,15 +325,15 @@
       "id": "person-008",
       "data": {
         "gender": "M",
-        "first name": "Nguyễn Văn",
-        "last name": "Phúc",
-        "birthday": "1920",
+        "firstName": "Nguyễn Văn",
+        "lastName": "Phúc",
+        "birthYear": "1920",
         "generation": 3,
         "role": "treasurer",
         "notes": "Cố sở học sinh",
-        "avatar": "https://placehold.co/150x150/2d5016/ffffff?text=NVP",
+        "avatar": "https://xsgames.co/randomusers/avatar.php?g=male",
         "clanId": "clan-nguyen",
-        "death year": ""
+        "deathYear": ""
       },
       "rels": {
         "spouses": [
@@ -353,15 +353,15 @@
       "id": "person-008c",
       "data": {
         "gender": "F",
-        "first name": "Vũ Thị",
-        "last name": "Ngọc",
-        "birthday": "1925",
+        "firstName": "Vũ Thị",
+        "lastName": "Ngọc",
+        "birthYear": "1925",
         "generation": 3,
         "role": "member",
         "notes": "",
-        "avatar": "https://placehold.co/150x150/2d5016/ffffff?text=VTN",
+        "avatar": "https://xsgames.co/randomusers/avatar.php?g=female",
         "clanId": "clan-nguyen",
-        "death year": ""
+        "deathYear": ""
       },
       "rels": {
         "spouses": [
@@ -378,14 +378,14 @@
       "id": "person-009",
       "data": {
         "gender": "M",
-        "first name": "Nguyễn Văn",
-        "last name": "Khoa",
-        "birthday": "1925",
-        "death year": "2000",
+        "firstName": "Nguyễn Văn",
+        "lastName": "Khoa",
+        "birthYear": "1925",
+        "deathYear": "2000",
         "generation": 3,
         "role": "editor",
         "notes": "Nhà văn",
-        "avatar": "https://placehold.co/150x150/2d5016/ffffff?text=NVK",
+        "avatar": "https://xsgames.co/randomusers/avatar.php?g=male",
         "clanId": "clan-nguyen"
       },
       "rels": {
@@ -401,13 +401,13 @@
       "id": "person-010",
       "data": {
         "gender": "M",
-        "first name": "Nguyễn Văn",
-        "last name": "A",
-        "birthday": "1950",
+        "firstName": "Nguyễn Văn",
+        "lastName": "A",
+        "birthYear": "1950",
         "generation": 4,
         "role": "admin",
         "notes": "Người dùng hiện tại",
-        "avatar": "https://placehold.co/150x150/2d5016/ffffff?text=NVA",
+        "avatar": "https://xsgames.co/randomusers/avatar.php?g=male",
         "notificationPreferences": {
           "fundChanges": true,
           "newEvents": true,
@@ -415,7 +415,7 @@
           "memorialDates": true
         },
         "clanId": "clan-nguyen",
-        "death year": ""
+        "deathYear": ""
       },
       "rels": {
         "spouses": [
@@ -435,13 +435,13 @@
       "id": "person-020",
       "data": {
         "gender": "F",
-        "first name": "Trần Thị",
-        "last name": "B",
-        "birthday": "1955",
+        "firstName": "Trần Thị",
+        "lastName": "B",
+        "birthYear": "1955",
         "generation": 4,
         "role": "member",
         "notes": "Vợ của Nguyễn Văn A",
-        "avatar": "https://placehold.co/150x150/16427b/ffffff?text=TTB",
+        "avatar": "https://xsgames.co/randomusers/avatar.php?g=female",
         "notificationPreferences": {
           "fundChanges": true,
           "newEvents": true,
@@ -449,7 +449,7 @@
           "memorialDates": true
         },
         "clanId": "clan-nguyen",
-        "death year": ""
+        "deathYear": ""
       },
       "rels": {
         "spouses": [
@@ -466,15 +466,15 @@
       "id": "person-011",
       "data": {
         "gender": "M",
-        "first name": "Nguyễn Văn",
-        "last name": "Bình",
-        "birthday": "1948",
+        "firstName": "Nguyễn Văn",
+        "lastName": "Bình",
+        "birthYear": "1948",
         "generation": 4,
         "role": "member",
         "notes": "Anh hùng của Nguyễn Văn A",
-        "avatar": "https://placehold.co/150x150/2d5016/ffffff?text=NVB",
+        "avatar": "https://xsgames.co/randomusers/avatar.php?g=male",
         "clanId": "clan-nguyen",
-        "death year": ""
+        "deathYear": ""
       },
       "rels": {
         "spouses": [
@@ -493,15 +493,15 @@
       "id": "person-011b",
       "data": {
         "gender": "F",
-        "first name": "Đặng Thị",
-        "last name": "C",
-        "birthday": "1950",
+        "firstName": "Đặng Thị",
+        "lastName": "C",
+        "birthYear": "1950",
         "generation": 4,
         "role": "member",
         "notes": "",
         "avatar": "",
         "clanId": "clan-nguyen",
-        "death year": ""
+        "deathYear": ""
       },
       "rels": {
         "spouses": [
@@ -517,15 +517,15 @@
       "id": "person-012",
       "data": {
         "gender": "F",
-        "first name": "Nguyễn Thị",
-        "last name": "Hùng",
-        "birthday": "1952",
+        "firstName": "Nguyễn Thị",
+        "lastName": "Hùng",
+        "birthYear": "1952",
         "generation": 4,
         "role": "member",
         "notes": "Cháu gái của Nguyễn Văn A",
         "avatar": "",
         "clanId": "clan-nguyen",
-        "death year": ""
+        "deathYear": ""
       },
       "rels": {
         "parents": [
@@ -540,15 +540,15 @@
       "id": "person-013",
       "data": {
         "gender": "M",
-        "first name": "Nguyễn Văn",
-        "last name": "D",
-        "birthday": "1980",
+        "firstName": "Nguyễn Văn",
+        "lastName": "D",
+        "birthYear": "1980",
         "generation": 5,
         "role": "member",
         "notes": "Con trai lớn",
         "avatar": "",
         "clanId": "clan-nguyen",
-        "death year": ""
+        "deathYear": ""
       },
       "rels": {
         "parents": [
@@ -563,15 +563,15 @@
       "id": "person-014",
       "data": {
         "gender": "F",
-        "first name": "Nguyễn Thị",
-        "last name": "E",
-        "birthday": "1985",
+        "firstName": "Nguyễn Thị",
+        "lastName": "E",
+        "birthYear": "1985",
         "generation": 5,
         "role": "member",
         "notes": "Con gái",
         "avatar": "",
         "clanId": "clan-nguyen",
-        "death year": ""
+        "deathYear": ""
       },
       "rels": {
         "parents": [
@@ -586,15 +586,15 @@
       "id": "person-015",
       "data": {
         "gender": "M",
-        "first name": "Nguyễn Văn",
-        "last name": "F",
-        "birthday": "1978",
+        "firstName": "Nguyễn Văn",
+        "lastName": "F",
+        "birthYear": "1978",
         "generation": 5,
         "role": "member",
         "notes": "Bé của Nguyễn Văn D",
         "avatar": "",
         "clanId": "clan-nguyen",
-        "death year": ""
+        "deathYear": ""
       },
       "rels": {
         "parents": [
@@ -609,10 +609,10 @@
       "id": "person-021",
       "data": {
         "gender": "M",
-        "first name": "Trần Văn",
-        "last name": "G",
-        "birthday": "1920",
-        "death year": "1990",
+        "firstName": "Trần Văn",
+        "lastName": "G",
+        "birthYear": "1920",
+        "deathYear": "1990",
         "generation": 1,
         "role": "admin",
         "notes": "Ông trong họ Trần",
@@ -633,10 +633,10 @@
       "id": "person-022",
       "data": {
         "gender": "F",
-        "first name": "Hoàng Thị",
-        "last name": "H",
-        "birthday": "1925",
-        "death year": "1995",
+        "firstName": "Hoàng Thị",
+        "lastName": "H",
+        "birthYear": "1925",
+        "deathYear": "1995",
         "generation": 1,
         "role": "member",
         "notes": "",
@@ -657,15 +657,15 @@
       "id": "person-023",
       "data": {
         "gender": "M",
-        "first name": "Trần Văn",
-        "last name": "I",
-        "birthday": "1950",
+        "firstName": "Trần Văn",
+        "lastName": "I",
+        "birthYear": "1950",
         "generation": 2,
         "role": "member",
         "notes": "Bố vợ của Nguyễn Văn A",
         "avatar": "",
         "clanId": "clan-tran",
-        "death year": ""
+        "deathYear": ""
       },
       "rels": {
         "spouses": [
@@ -682,15 +682,15 @@
       "id": "person-024",
       "data": {
         "gender": "F",
-        "first name": "Nguyễn Thị",
-        "last name": "J",
-        "birthday": "1952",
+        "firstName": "Nguyễn Thị",
+        "lastName": "J",
+        "birthYear": "1952",
         "generation": 2,
         "role": "member",
         "notes": "",
         "avatar": "",
         "clanId": "clan-tran",
-        "death year": ""
+        "deathYear": ""
       },
       "rels": {
         "spouses": [
@@ -704,10 +704,10 @@
       "id": "person-030",
       "data": {
         "gender": "M",
-        "first name": "Lê Văn",
-        "last name": "K",
-        "birthday": "1900",
-        "death year": "1970",
+        "firstName": "Lê Văn",
+        "lastName": "K",
+        "birthYear": "1900",
+        "deathYear": "1970",
         "generation": 1,
         "role": "admin",
         "notes": "Ông trong họ Lê",
@@ -728,10 +728,10 @@
       "id": "person-032",
       "data": {
         "gender": "F",
-        "first name": "Nguyễn Thị",
-        "last name": "M",
-        "birthday": "1905",
-        "death year": "1985",
+        "firstName": "Nguyễn Thị",
+        "lastName": "M",
+        "birthYear": "1905",
+        "deathYear": "1985",
         "generation": 1,
         "role": "member",
         "notes": "Bà trong họ Lê",
@@ -752,10 +752,10 @@
       "id": "person-031",
       "data": {
         "gender": "M",
-        "first name": "Lê Văn",
-        "last name": "L",
-        "birthday": "1930",
-        "death year": "2000",
+        "firstName": "Lê Văn",
+        "lastName": "L",
+        "birthYear": "1930",
+        "deathYear": "2000",
         "generation": 2,
         "role": "member",
         "notes": "Bố vợ",

@@ -1,4 +1,5 @@
 import { calculateRelationship, getVietnameseHonorific } from '../utils/honorifics.js';
+import { getGenderIcon } from '../utils/avatar.js';
 
 class MembersListComponent {
   constructor(container, store, t) {
@@ -14,7 +15,7 @@ class MembersListComponent {
     const members = this.store.getClanMembers(this.store.state.currentClanId);
     const current = this.store.getCurrentPerson();
     const allPersons = this.store.state.data?.persons || [];
-    const filtered = this.query ? members.filter(m => (m.data['first name'] + ' ' + m.data['last name']).toLowerCase().includes(this.query.toLowerCase())) : members;
+    const filtered = this.query ? members.filter(m => (m.data.firstName + ' ' + m.data.lastName).toLowerCase().includes(this.query.toLowerCase())) : members;
     const sorted = filtered.map(m => { const rel = calculateRelationship(current, m, allPersons); return { ...m, rel, honorific: getVietnameseHonorific(rel, current, m, this.t), dist: rel?.distance || 99 }; }).sort((a, b) => a.dist - b.dist);
 
     this.container.innerHTML = `
@@ -26,19 +27,19 @@ class MembersListComponent {
         <div class="p-4 sm:p-6 lg:p-8">
           <p class="text-sm text-gray-400 mb-4">${filtered.length} ${this.t.member.count}</p>
           <div class="space-y-3">
-            ${sorted.map(m => { const fullName = m.data['first name'] + ' ' + m.data['last name']; return `
+            ${sorted.map(m => { const fullName = m.data.firstName + ' ' + m.data.lastName; return `
               <button class="member-item w-full text-left p-4 lg:p-5 rounded-xl border border-gray-200 hover:border-emerald-300 hover:bg-emerald-50/50 transition-all ${m.id === current?.id ? 'bg-emerald-50 border-emerald-300' : 'bg-white'}" data-id="${m.id}">
                 <div class="flex items-center gap-4">
-                  <div class="w-12 h-12 lg:w-14 lg:h-14 rounded-full ${m.data.gender === 'M' ? 'bg-blue-100 text-blue-600' : 'bg-pink-100 text-pink-600'} flex items-center justify-center text-lg font-bold flex-shrink-0">${fullName.split(' ').pop()?.charAt(0)}</div>
+                  ${m.data.avatar ? `<img src="${m.data.avatar}" alt="${fullName}" class="w-12 h-12 lg:w-14 lg:h-14 rounded-full object-cover flex-shrink-0" />` : `<div class="w-12 h-12 lg:w-14 lg:h-14 rounded-full ${m.data.gender === 'M' ? 'bg-blue-100 text-blue-600' : 'bg-pink-100 text-pink-600'} flex items-center justify-center flex-shrink-0" style="padding: 0.5rem">${getGenderIcon(m.data.gender)}</div>`}
                   <div class="flex-1 min-w-0">
                     <div class="flex items-center gap-2">
                       <span class="font-semibold text-gray-800 text-base truncate">${fullName}</span>
                       ${m.id === current?.id ? `<span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-xs rounded-full font-medium flex-shrink-0">${this.t.member.you}</span>` : ''}
-                      ${m.data['death year'] ? '<span class="text-gray-400 flex-shrink-0">✝</span>' : ''}
+                      ${m.data.deathYear ? '<span class="text-gray-400 flex-shrink-0">✝</span>' : ''}
                     </div>
                     <div class="flex items-center gap-3 mt-1">
                       ${m.honorific ? `<span class="text-xs text-emerald-600 font-medium">${m.honorific}</span>` : ''}
-                      <span class="text-xs text-gray-400">${m.data.birthday}${m.data['death year'] ? '-' + m.data['death year'] : ''}</span>
+                      <span class="text-xs text-gray-400">${m.data.birthYear}${m.data.deathYear ? '-' + m.data.deathYear : ''}</span>
                       <span class="text-xs text-gray-400">${this.t.tree.generation} ${m.data.generation}</span>
                     </div>
                   </div>

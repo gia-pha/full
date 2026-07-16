@@ -94,30 +94,7 @@ html, body {
 }
 
 /* Dark mode */
-.dark .tree-viewport {
-  background: #111827 !important;
-}
-
-.dark #FamilyChart {
-  background: #111827 !important;
-}
-
-.dark .f3-card-inner,
-.dark .card-inner {
-  background: #1f2937 !important;
-  color: #f9fafb !important;
-  border-color: #374151 !important;
-}
-
-.dark .cards_view .card {
-  color: #f9fafb !important;
-}
-
-.dark .f3-nav-cont button {
-  background: #374151 !important;
-  color: #f9fafb !important;
-  border-color: #4b5563 !important;
-}
+/* Family tree keeps light mode colors in both themes */
 
 .dark body,
 .dark .gp-mobile header,
@@ -249,54 +226,7 @@ html, body {
   color: #f9fafb !important;
 }
 
-.dark .tree-search-input,
-.dark .tree-search-input-mobile {
-  background: #374151 !important;
-  border-color: #4b5563 !important;
-  color: #f9fafb !important;
-}
-
-/* Toolbar */
-.dark .tree-toolbar-desktop {
-  background: #1f2937 !important;
-  border-color: #374151 !important;
-}
-
-/* Form container */
-.dark .f3-form-cont {
-  background: #1f2937 !important;
-  color: #f9fafb !important;
-  border-color: #374151 !important;
-}
-
-.dark .f3-form-cont label {
-  color: #d1d5db !important;
-}
-
-.dark .f3-close-btn {
-  color: #f9fafb !important;
-}
-
-.dark .f3-form-cont .f3-btn-cancel,
-.dark .f3-form-cont button[type="button"] {
-  background: #374151 !important;
-  color: #d1d5db !important;
-}
-
-/* Relationship lines - dark mode */
-.dark .f3 svg path,
-.dark .f3 svg line,
-.dark .f3 svg polyline {
-  stroke: #6b7280 !important;
-}
-
-.dark .f3-form-cont input,
-.dark .f3-form-cont textarea,
-.dark .f3-form-cont select {
-  background: #374151 !important;
-  border-color: #4b5563 !important;
-  color: #f9fafb !important;
-}
+/* Family tree search/toolbar keep light mode colors */
 
 /* Member card / sheet */
 .dark .member-sheet,

@@ -15,17 +15,17 @@ function buildGedcom(data) {
     idMap[person.id] = gedcomId;
 
     gedcom += `0 ${gedcomId} INDI\n`;
-    gedcom += `1 NAME ${person.data['first name']} /${person.data['last name']}/\n`;
+    gedcom += `1 NAME ${person.data.firstName} /${person.data.lastName}/\n`;
     gedcom += `1 SEX ${person.data.gender === 'M' ? 'M' : 'F'}\n`;
 
-    if (person.data.birthday) {
+    if (person.data.birthYear) {
       gedcom += `1 BIRT\n`;
-      gedcom += `2 DATE ${person.data.birthday}\n`;
+      gedcom += `2 DATE ${person.data.birthYear}\n`;
     }
 
-    if (person.data['death year']) {
+    if (person.data.deathYear) {
       gedcom += `1 DEAT\n`;
-      gedcom += `2 DATE ${person.data['death year']}\n`;
+      gedcom += `2 DATE ${person.data.deathYear}\n`;
     }
 
     if (person.data.notes) {
@@ -111,11 +111,11 @@ function parseGedcom(text) {
         persons.push({
           id: newId,
           data: {
-            'first name': currentRecord.firstName || '',
-            'last name': currentRecord.lastName || '',
+            firstName: currentRecord.firstName || '',
+            lastName: currentRecord.lastName || '',
             gender: currentRecord.gender === 'male' ? 'M' : 'F',
-            birthday: currentRecord.birthYear ? String(currentRecord.birthYear) : '',
-            'death year': currentRecord.deathYear ? String(currentRecord.deathYear) : '',
+            birthYear: currentRecord.birthYear ? String(currentRecord.birthYear) : '',
+            deathYear: currentRecord.deathYear ? String(currentRecord.deathYear) : '',
             generation: 0,
             role: 'member',
             notes: currentRecord.notes || '',
@@ -200,11 +200,11 @@ function parseGedcom(text) {
     persons.push({
       id: newId,
       data: {
-        'first name': currentRecord.firstName || '',
-        'last name': currentRecord.lastName || '',
+        firstName: currentRecord.firstName || '',
+        lastName: currentRecord.lastName || '',
         gender: currentRecord.gender === 'male' ? 'M' : 'F',
-        birthday: currentRecord.birthYear ? String(currentRecord.birthYear) : '',
-        'death year': currentRecord.deathYear ? String(currentRecord.deathYear) : '',
+        birthYear: currentRecord.birthYear ? String(currentRecord.birthYear) : '',
+        deathYear: currentRecord.deathYear ? String(currentRecord.deathYear) : '',
         generation: 0,
         role: 'member',
         notes: currentRecord.notes || '',

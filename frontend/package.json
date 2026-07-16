@@ -1,0 +1,32 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "fix": "biome check src/ --fix",
+    "check": "biome check src/"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.2",
+    "@types/node": "^26.0.1",
+    "jsdom": "^29.1.1",
+    "tailwindcss": "^4.3.1",
+    "typescript": "7.0.1-rc",
+    "vite": "^8.1.0",
+    "vitest": "^4.1.9"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.3.2",
+    "lit": "^3.3.0"
+  }
+}
