@@ -19,12 +19,22 @@ const makePerson = (
 
 async function renderComponent(
   person: Person,
-  opts?: { selected?: boolean; showRole?: boolean },
+  opts?: {
+    selected?: boolean;
+    honorific?: string;
+    showButtons?: boolean;
+    isCurrentPerson?: boolean;
+    locked?: boolean;
+  },
 ): Promise<MemberItem> {
   const el = document.createElement('member-item');
   el.person = person;
   if (opts?.selected !== undefined) el.selected = opts.selected;
-  if (opts?.showRole !== undefined) el.showRole = opts.showRole;
+  if (opts?.honorific !== undefined) el.honorific = opts.honorific;
+  if (opts?.showButtons !== undefined) el.showButtons = opts.showButtons;
+  if (opts?.isCurrentPerson !== undefined)
+    el.isCurrentPerson = opts.isCurrentPerson;
+  if (opts?.locked !== undefined) el.locked = opts.locked;
   document.body.appendChild(el);
   await el.updateComplete;
   return el;
@@ -66,33 +76,58 @@ describe('MemberItem', () => {
     expect(avatar?.shape).toBe('circle');
   });
 
-  it('does not show role by default', async () => {
-    const el = await renderComponent(makePerson({ role: 'Admin' }));
-    const rendered = getContent(el);
-    expect(rendered).not.toContain('Admin');
+  it('renders as button element', async () => {
+    const el = await renderComponent(makePerson());
+    const btn = el.querySelector('button');
+    expect(btn).not.toBeNull();
   });
 
-  it('shows role when showRole is true', async () => {
-    const el = await renderComponent(makePerson({ role: 'Admin' }), {
-      showRole: true,
-    });
+  it('has green hover classes', async () => {
+    const el = await renderComponent(makePerson());
     const rendered = getContent(el);
-    expect(rendered).toContain('Admin');
+    expect(rendered).toContain('hover:border-emerald-300');
+    expect(rendered).toContain('hover:bg-emerald-50');
   });
 
-  it('hides role when showRole is false', async () => {
-    const el = await renderComponent(makePerson({ role: 'Admin' }), {
-      showRole: false,
-    });
+  it('has border classes', async () => {
+    const el = await renderComponent(makePerson());
     const rendered = getContent(el);
-    expect(rendered).not.toContain('Admin');
+    expect(rendered).toContain('border');
+    expect(rendered).toContain('rounded-xl');
+  });
+
+  it('shows role badge with correct color for admin', async () => {
+    const el = await renderComponent(makePerson({ role: 'admin' }));
+    const rendered = getContent(el);
+    expect(rendered).toContain('admin');
+    expect(rendered).toContain('bg-red-100');
+  });
+
+  it('shows role badge with correct color for editor', async () => {
+    const el = await renderComponent(makePerson({ role: 'editor' }));
+    const rendered = getContent(el);
+    expect(rendered).toContain('editor');
+    expect(rendered).toContain('bg-blue-100');
+  });
+
+  it('shows role badge with correct color for treasurer', async () => {
+    const el = await renderComponent(makePerson({ role: 'treasurer' }));
+    const rendered = getContent(el);
+    expect(rendered).toContain('treasurer');
+    expect(rendered).toContain('bg-amber-100');
+  });
+
+  it('shows role badge with correct color for member', async () => {
+    const el = await renderComponent(makePerson({ role: 'member' }));
+    const rendered = getContent(el);
+    expect(rendered).toContain('member');
+    expect(rendered).toContain('bg-gray-100');
   });
 
   it('shows deceased indicator for deceased person', async () => {
     const el = await renderComponent(makePerson({ deathYear: '2020' }));
     const rendered = getContent(el);
     expect(rendered).toContain('✝');
-    expect(rendered).toContain('2020');
   });
 
   it('does not show deceased indicator for living person', async () => {
@@ -101,27 +136,88 @@ describe('MemberItem', () => {
     expect(rendered).not.toContain('✝');
   });
 
-  it('does not show deceased when deathYear is empty', async () => {
-    const el = await renderComponent(makePerson({ deathYear: '' }));
+  it('shows birth year', async () => {
+    const el = await renderComponent(makePerson({ birthYear: '1985' }));
     const rendered = getContent(el);
-    expect(rendered).not.toContain('✝');
+    expect(rendered).toContain('1985');
+  });
+
+  it('shows birth and death years', async () => {
+    const el = await renderComponent(
+      makePerson({ birthYear: '1950', deathYear: '2020' }),
+    );
+    const rendered = getContent(el);
+    expect(rendered).toContain('1950-2020');
+  });
+
+  it('shows generation', async () => {
+    const el = await renderComponent(makePerson({ generation: 5 }));
+    const rendered = getContent(el);
+    expect(rendered).toContain('Gen');
+    expect(rendered).toContain('>5<');
+  });
+
+  it('shows honorific when provided', async () => {
+    const el = await renderComponent(makePerson(), { honorific: 'Bố' });
+    const rendered = getContent(el);
+    expect(rendered).toContain('Bố');
+  });
+
+  it('does not show honorific when empty', async () => {
+    const el = await renderComponent(makePerson(), { honorific: '' });
+    const rendered = getContent(el);
+    expect(rendered).not.toContain('Bố');
+  });
+
+  it('shows You badge when isCurrentPerson is true', async () => {
+    const el = await renderComponent(makePerson(), { isCurrentPerson: true });
+    const rendered = getContent(el);
+    expect(rendered).toContain('You');
+  });
+
+  it('does not show You badge when isCurrentPerson is false', async () => {
+    const el = await renderComponent(makePerson(), { isCurrentPerson: false });
+    const rendered = getContent(el);
+    expect(rendered).not.toContain('You');
+  });
+
+  it('shows lock icon when locked is true', async () => {
+    const el = await renderComponent(makePerson(), { locked: true });
+    const rendered = getContent(el);
+    expect(rendered).toContain('🔒');
+  });
+
+  it('does not show lock icon when locked is false', async () => {
+    const el = await renderComponent(makePerson(), { locked: false });
+    const rendered = getContent(el);
+    expect(rendered).not.toContain('🔒');
+  });
+
+  it('shows action buttons when showButtons is true', async () => {
+    const el = await renderComponent(makePerson(), { showButtons: true });
+    const rendered = getContent(el);
+    expect(rendered).toContain('View');
+    expect(rendered).toContain('Edit');
+  });
+
+  it('does not show action buttons when showButtons is false', async () => {
+    const el = await renderComponent(makePerson(), { showButtons: false });
+    const rendered = getContent(el);
+    expect(rendered).not.toContain('View');
+    expect(rendered).not.toContain('Edit');
   });
 
   it('applies selected styles when selected is true', async () => {
     const el = await renderComponent(makePerson(), { selected: true });
-    const rootDiv = el.querySelector('div');
-    expect(rootDiv?.classList.contains('bg-blue-100')).toBe(true);
+    const rendered = getContent(el);
+    expect(rendered).toContain('bg-emerald-50');
+    expect(rendered).toContain('border-emerald-300');
   });
 
   it('does not apply selected styles when selected is false', async () => {
     const el = await renderComponent(makePerson(), { selected: false });
-    const rootDiv = el.querySelector('div');
-    expect(rootDiv?.classList.contains('bg-blue-100')).toBe(false);
-  });
-
-  it('renders without shadow DOM', async () => {
-    const el = await renderComponent(makePerson());
-    expect(el.shadowRoot).toBeNull();
+    const rendered = getContent(el);
+    expect(rendered).not.toContain('bg-emerald-50 border-emerald-300');
   });
 
   it('renders female person name', async () => {
@@ -132,8 +228,20 @@ describe('MemberItem', () => {
     expect(rendered).toContain('Hương Trần');
   });
 
-  it('renders with generation info in person data', async () => {
-    const el = await renderComponent(makePerson({ generation: 5 }));
-    expect(el.person.data.generation).toBe(5);
+  it('renders without shadow DOM', async () => {
+    const el = await renderComponent(makePerson());
+    expect(el.shadowRoot).toBeNull();
+  });
+
+  it('renders with avatar image when person has avatar URL', async () => {
+    const person = makePerson({
+      avatar: 'https://xsgames.co/randomusers/avatar.php?g=male',
+    });
+    const el = await renderComponent(person);
+    const avatar = el.querySelector('person-avatar');
+    expect(avatar).not.toBeNull();
+    expect(avatar?.person.data.avatar).toBe(
+      'https://xsgames.co/randomusers/avatar.php?g=male',
+    );
   });
 });

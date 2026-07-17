@@ -8,6 +8,7 @@ export interface Person {
     deathYear?: string;
     generation: number;
     role?: string;
+    avatar?: string;
     [key: string]: string | number | undefined;
   };
   rels: {
