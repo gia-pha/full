@@ -13,7 +13,6 @@ interface PlaygroundState {
   selected: boolean;
   honorific: string;
   showButtons: boolean;
-  isCurrentPerson: boolean;
   locked: boolean;
   personGender: 'M' | 'F';
   firstName: string;
@@ -30,7 +29,6 @@ const state: PlaygroundState = {
   selected: false,
   honorific: 'Bố',
   showButtons: true,
-  isCurrentPerson: false,
   locked: false,
   personGender: 'M',
   firstName: 'Nguyễn',
@@ -124,7 +122,6 @@ function renderPlayground() {
                 ?selected=${state.selected}
                 .honorific=${state.honorific}
                 ?show-buttons=${state.showButtons}
-                ?is-current-person=${state.isCurrentPerson}
                 ?locked=${state.locked}
               ></member-item>
             </div>
@@ -142,22 +139,6 @@ function renderPlayground() {
                   class="rounded border-gray-300"
                 />
                 <label for="selected" class="text-sm text-gray-700 dark:text-gray-300">Selected</label>
-              </div>
-
-              <div class="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  id="isCurrentPerson"
-                  ?checked=${state.isCurrentPerson}
-                  @change=${(e: Event) => {
-                    state.isCurrentPerson = (
-                      e.target as HTMLInputElement
-                    ).checked;
-                    renderPlayground();
-                  }}
-                  class="rounded border-gray-300"
-                />
-                <label for="isCurrentPerson" class="text-sm text-gray-700 dark:text-gray-300">Is Current Person</label>
               </div>
 
               <div class="flex items-center gap-2">

@@ -23,7 +23,6 @@ async function renderComponent(
     selected?: boolean;
     honorific?: string;
     showButtons?: boolean;
-    isCurrentPerson?: boolean;
     locked?: boolean;
   },
 ): Promise<MemberItem> {
@@ -32,8 +31,6 @@ async function renderComponent(
   if (opts?.selected !== undefined) el.selected = opts.selected;
   if (opts?.honorific !== undefined) el.honorific = opts.honorific;
   if (opts?.showButtons !== undefined) el.showButtons = opts.showButtons;
-  if (opts?.isCurrentPerson !== undefined)
-    el.isCurrentPerson = opts.isCurrentPerson;
   if (opts?.locked !== undefined) el.locked = opts.locked;
   document.body.appendChild(el);
   await el.updateComplete;
@@ -163,18 +160,6 @@ describe('MemberItem', () => {
     expect(rendered).not.toContain('Bố');
   });
 
-  it('shows You badge when isCurrentPerson is true', async () => {
-    const el = await renderComponent(makePerson(), { isCurrentPerson: true });
-    const rendered = getContent(el);
-    expect(rendered).toContain('You');
-  });
-
-  it('does not show You badge when isCurrentPerson is false', async () => {
-    const el = await renderComponent(makePerson(), { isCurrentPerson: false });
-    const rendered = getContent(el);
-    expect(rendered).not.toContain('You');
-  });
-
   it('shows lock icon when locked is true', async () => {
     const el = await renderComponent(makePerson(), { locked: true });
     const rendered = getContent(el);
@@ -206,12 +191,14 @@ describe('MemberItem', () => {
     const rendered = getContent(el);
     expect(rendered).toContain('bg-emerald-50');
     expect(rendered).toContain('border-emerald-300');
+    expect(rendered).toContain('You');
   });
 
   it('does not apply selected styles when selected is false', async () => {
     const el = await renderComponent(makePerson(), { selected: false });
     const rendered = getContent(el);
     expect(rendered).not.toContain('bg-emerald-50 border-emerald-300');
+    expect(rendered).not.toContain('You');
   });
 
   it('renders female person name', async () => {

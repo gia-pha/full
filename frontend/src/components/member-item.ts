@@ -19,7 +19,6 @@ export class MemberItem extends LitElement {
   @property({ type: String }) honorific = '';
   @property({ type: String }) roleLabel = '';
   @property({ type: Boolean }) showButtons = false;
-  @property({ type: Boolean }) isCurrentPerson = false;
   @property({ type: Boolean }) locked = false;
 
   override createRenderRoot() {
@@ -57,7 +56,7 @@ export class MemberItem extends LitElement {
             <div class="flex items-center gap-2">
               <span class="font-semibold text-gray-800 text-base truncate dark:text-gray-200">${fullName}</span>
               ${
-                this.isCurrentPerson
+                this.selected
                   ? html`<span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-xs rounded-full font-medium flex-shrink-0 dark:bg-emerald-900 dark:text-emerald-300">You</span>`
                   : ''
               }
