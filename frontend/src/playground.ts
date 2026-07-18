@@ -3,7 +3,7 @@ import './styles/main.css';
 import './components/person-avatar.js';
 import './components/member-item.js';
 import type { AvatarSize } from './components/person-avatar.js';
-import { iconView, iconEdit, iconDelete } from './icons/index.js';
+import { iconDelete, iconEdit, iconView } from './icons/index.js';
 import type { Person } from './types/index.js';
 
 const sizes: AvatarSize[] = ['xs', 'sm', 'md', 'lg', 'xl'];
@@ -122,9 +122,27 @@ function renderPlayground() {
                 .honorific=${state.honorific}
                 ?locked=${state.locked}
                 .actions=${[
-                  { label: 'View', icon: iconView, color: 'bg-emerald-50 hover:bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:hover:bg-emerald-900/50 dark:text-emerald-400', onClick: () => alert('View') },
-                  { label: 'Edit', icon: iconEdit, color: 'bg-blue-50 hover:bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 dark:text-blue-400', onClick: () => alert('Edit') },
-                  { label: 'Delete', icon: iconDelete, color: 'bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-900/30 dark:hover:bg-red-900/50 dark:text-red-400', onClick: () => alert('Delete') },
+                  {
+                    label: 'View',
+                    icon: iconView,
+                    color:
+                      'bg-emerald-50 hover:bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:hover:bg-emerald-900/50 dark:text-emerald-400',
+                    onClick: () => alert('View'),
+                  },
+                  {
+                    label: 'Edit',
+                    icon: iconEdit,
+                    color:
+                      'bg-blue-50 hover:bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 dark:text-blue-400',
+                    onClick: () => alert('Edit'),
+                  },
+                  {
+                    label: 'Delete',
+                    icon: iconDelete,
+                    color:
+                      'bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-900/30 dark:hover:bg-red-900/50 dark:text-red-400',
+                    onClick: () => alert('Delete'),
+                  },
                 ]}
               ></member-item>
             </div>

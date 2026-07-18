@@ -71,7 +71,8 @@ export class MemberItem extends LitElement {
           <div class="flex items-center gap-2 flex-shrink-0">
             <role-badge name="${person.data.role || ''}"></role-badge>
             ${this.locked ? html`<span class="text-gray-400">🔒</span>` : ''}
-            ${this.actions.map((action) => html`
+            ${this.actions.map(
+              (action) => html`
               <button
                 class="p-1.5 rounded-lg transition-colors ${action.color || 'bg-gray-100 hover:bg-gray-200 text-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-300'}"
                 title="${action.label}"
@@ -82,7 +83,8 @@ export class MemberItem extends LitElement {
               >
                 ${action.icon}
               </button>
-            `)}
+            `,
+            )}
           </div>
         </div>
       </div>
