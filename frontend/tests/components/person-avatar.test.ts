@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import '../../src/components/person-avatar.js';
 import type {
-  AvatarShape,
   AvatarSize,
   PersonAvatar,
 } from '../../src/components/person-avatar.js';
@@ -27,13 +26,11 @@ async function renderComponent(
   person: Person,
   opts?: {
     size?: AvatarSize;
-    shape?: AvatarShape;
   },
 ): Promise<PersonAvatar> {
   const el = document.createElement('person-avatar');
   el.person = person;
   if (opts?.size) el.size = opts.size;
-  if (opts?.shape) el.shape = opts.shape;
   document.body.appendChild(el);
   await el.updateComplete;
   return el;
@@ -85,21 +82,8 @@ describe('PersonAvatar', () => {
     expect(rendered).toContain('viewBox="0 0 24 24"');
   });
 
-  it('uses circle shape with rounded-full', async () => {
-    const el = await renderComponent(mockPerson, { shape: 'circle' });
-    const rendered = getContent(el);
-    expect(rendered).toContain('rounded-full');
-  });
-
-  it('uses rounded shape with rounded-2xl', async () => {
-    const el = await renderComponent(mockPerson, { shape: 'rounded' });
-    const rendered = getContent(el);
-    expect(rendered).toContain('rounded-2xl');
-  });
-
-  it('image always uses rounded-full regardless of shape', async () => {
-    const person = makePerson({ avatar: 'https://example.com/avatar.png' });
-    const el = await renderComponent(person, { shape: 'rounded' });
+  it('always uses rounded-full (circle shape)', async () => {
+    const el = await renderComponent(mockPerson);
     const rendered = getContent(el);
     expect(rendered).toContain('rounded-full');
   });

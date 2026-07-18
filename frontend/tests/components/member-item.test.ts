@@ -70,12 +70,6 @@ describe('MemberItem', () => {
     expect(avatar?.size).toBe('sm');
   });
 
-  it('uses circle shape for avatar', async () => {
-    const el = await renderComponent(makePerson());
-    const avatar = el.querySelector('person-avatar');
-    expect(avatar?.shape).toBe('circle');
-  });
-
   it('renders as button element', async () => {
     const el = await renderComponent(makePerson());
     const btn = el.querySelector('button');

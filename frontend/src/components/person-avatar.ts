@@ -4,7 +4,6 @@ import type { Person } from '../types/index.js';
 import { getGenderIcon } from '../utils/avatar.js';
 
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-export type AvatarShape = 'circle' | 'rounded';
 
 const sizes: Record<AvatarSize, { dim: string; icon: string }> = {
   xs: { dim: 'w-6 h-6', icon: 'w-4 h-4' },
@@ -13,8 +12,6 @@ const sizes: Record<AvatarSize, { dim: string; icon: string }> = {
   lg: { dim: 'w-16 h-16', icon: 'w-10 h-10' },
   xl: { dim: 'w-20 h-20', icon: 'w-12 h-12' },
 };
-
-const shapes = { circle: 'rounded-full', rounded: 'rounded-2xl' };
 
 function getColors(gender: string): string {
   if (gender === 'M')
@@ -28,7 +25,6 @@ function getColors(gender: string): string {
 export class PersonAvatar extends LitElement {
   @property({ type: Object }) declare person: Person;
   @property({ type: String, reflect: true }) size: AvatarSize = 'md';
-  @property({ type: String, reflect: true }) shape: AvatarShape = 'circle';
 
   override createRenderRoot() {
     return this;
@@ -40,12 +36,12 @@ export class PersonAvatar extends LitElement {
 
     const avatarContent = avatarUrl
       ? html`<img src="${avatarUrl}" alt="${this.person.data.firstName} ${this.person.data.lastName}" class="w-full h-full rounded-full object-cover" />`
-      : html`<div class="w-full h-full ${shapes[this.shape]} ${getColors(this.person.data.gender)} flex items-center justify-center flex-shrink-0" style="padding: 0.4rem">
+      : html`<div class="w-full h-full rounded-full ${getColors(this.person.data.gender)} flex items-center justify-center flex-shrink-0" style="padding: 0.4rem">
           ${getGenderIcon(this.person.data.gender)}
         </div>`;
 
     return html`
-      <div class="${s.dim} ${avatarUrl ? 'rounded-full' : shapes[this.shape]} flex-shrink-0 overflow-hidden">
+      <div class="${s.dim} rounded-full flex-shrink-0 overflow-hidden">
         ${avatarContent}
       </div>
     `;

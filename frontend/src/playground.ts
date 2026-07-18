@@ -2,16 +2,14 @@ import { html, render } from 'lit';
 import './styles/main.css';
 import './components/person-avatar.js';
 import './components/member-item.js';
-import type { AvatarShape, AvatarSize } from './components/person-avatar.js';
+import type { AvatarSize } from './components/person-avatar.js';
 import type { Person } from './types/index.js';
 
 const sizes: AvatarSize[] = ['xs', 'sm', 'md', 'lg', 'xl'];
-const shapes: AvatarShape[] = ['circle', 'rounded'];
 
 interface PlaygroundState {
   dark: boolean;
   avatarSize: AvatarSize;
-  avatarShape: AvatarShape;
   selected: boolean;
   honorific: string;
   showButtons: boolean;
@@ -29,7 +27,6 @@ interface PlaygroundState {
 const state: PlaygroundState = {
   dark: false,
   avatarSize: 'md',
-  avatarShape: 'circle',
   selected: false,
   honorific: 'Bố',
   showButtons: true,
@@ -93,7 +90,6 @@ function renderPlayground() {
               <person-avatar
                 .person=${person}
                 size="${state.avatarSize}"
-                shape="${state.avatarShape}"
               ></person-avatar>
             </div>
 
@@ -112,22 +108,6 @@ function renderPlayground() {
                   ${sizes.map((s) => html`<option value="${s}">${s}</option>`)}
                 </select>
               </div>
-
-              <div>
-                <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Shape</label>
-                <select
-                  class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200"
-                  value="${state.avatarShape}"
-                  @change=${(e: Event) => {
-                    state.avatarShape = (e.target as HTMLSelectElement)
-                      .value as AvatarShape;
-                    renderPlayground();
-                  }}
-                >
-                  ${shapes.map((s) => html`<option value="${s}">${s}</option>`)}
-                </select>
-              </div>
-
 
             </div>
           </section>
