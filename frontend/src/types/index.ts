@@ -54,11 +54,11 @@ export interface AppData {
   funds: FundTransaction[];
 }
 
-import type { TemplateResult } from 'lit';
+import type { SVGTemplateResult } from 'lit';
 
 export interface MemberAction {
   label: string;
-  icon: TemplateResult;
+  icon: SVGTemplateResult;
   color?: string;
   onClick: () => void;
 }

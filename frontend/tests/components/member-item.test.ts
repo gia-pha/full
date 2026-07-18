@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { html } from 'lit';
+import { svg } from 'lit';
 import '../../src/components/member-item.js';
 import type { MemberItem } from '../../src/components/member-item.js';
 import type { MemberAction } from '../../src/types/index.js';
@@ -175,8 +175,8 @@ describe('MemberItem', () => {
     const el = await renderComponent(makePerson());
     const onClick = vi.fn();
     el.actions = [
-      { label: 'View', icon: html`icon`, onClick },
-      { label: 'Delete', icon: html`icon`, onClick },
+      { label: 'View', icon: svg`<svg></svg>`, onClick },
+      { label: 'Delete', icon: svg`<svg></svg>`, onClick },
     ];
     await el.updateComplete;
     const rendered = getContent(el);
