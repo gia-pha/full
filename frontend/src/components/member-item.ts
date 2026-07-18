@@ -3,21 +3,13 @@ import { customElement, property } from 'lit/decorators.js';
 import type { MemberAction, Person } from '../types/index.js';
 import { getFullName, isDeceased } from '../utils/format.js';
 import './person-avatar.js';
-
-const roleColors: Record<string, string> = {
-  admin: 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300',
-  treasurer:
-    'bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300',
-  editor: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300',
-  member: 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300',
-};
+import './role-badge.js';
 
 @customElement('member-item')
 export class MemberItem extends LitElement {
   @property({ type: Object }) declare person: Person;
   @property({ type: Boolean, reflect: true }) selected = false;
   @property({ type: String }) honorific = '';
-  @property({ type: String }) roleLabel = '';
   @property({ type: Boolean }) locked = false;
   @property({ type: Array }) actions: MemberAction[] = [];
 
@@ -31,10 +23,6 @@ export class MemberItem extends LitElement {
 
     const deceased = isDeceased(person);
     const fullName = getFullName(person);
-    const role = person.data.role || 'member';
-    const roleClass = roleColors[role] || roleColors.member;
-    const displayRole = this.roleLabel || role;
-
     const years = person.data.birthYear
       ? `${person.data.birthYear}${deceased ? `-${person.data.deathYear}` : ''}`
       : '';
@@ -81,7 +69,7 @@ export class MemberItem extends LitElement {
             </div>
           </div>
           <div class="flex items-center gap-2 flex-shrink-0">
-            <span class="px-3 py-1 rounded-full text-xs font-medium ${roleClass}">${displayRole}</span>
+            <role-badge name="${person.data.role || ''}"></role-badge>
             ${this.locked ? html`<span class="text-gray-400">🔒</span>` : ''}
             ${this.actions.map((action) => html`
               <button

@@ -89,28 +89,28 @@ describe('MemberItem', () => {
   it('shows role badge with correct color for admin', async () => {
     const el = await renderComponent(makePerson({ role: 'admin' }));
     const rendered = getContent(el);
-    expect(rendered).toContain('admin');
+    expect(rendered).toContain('Admin');
     expect(rendered).toContain('bg-red-100');
   });
 
   it('shows role badge with correct color for editor', async () => {
     const el = await renderComponent(makePerson({ role: 'editor' }));
     const rendered = getContent(el);
-    expect(rendered).toContain('editor');
+    expect(rendered).toContain('Editor');
     expect(rendered).toContain('bg-blue-100');
   });
 
   it('shows role badge with correct color for treasurer', async () => {
     const el = await renderComponent(makePerson({ role: 'treasurer' }));
     const rendered = getContent(el);
-    expect(rendered).toContain('treasurer');
+    expect(rendered).toContain('Treasurer');
     expect(rendered).toContain('bg-amber-100');
   });
 
   it('shows role badge with correct color for member', async () => {
     const el = await renderComponent(makePerson({ role: 'member' }));
     const rendered = getContent(el);
-    expect(rendered).toContain('member');
+    expect(rendered).toContain('Member');
     expect(rendered).toContain('bg-gray-100');
   });
 
