@@ -1,6 +1,6 @@
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { Person } from '../types/index.js';
+import type { MemberAction, Person } from '../types/index.js';
 import { getFullName, isDeceased } from '../utils/format.js';
 import './person-avatar.js';
 
@@ -18,8 +18,8 @@ export class MemberItem extends LitElement {
   @property({ type: Boolean, reflect: true }) selected = false;
   @property({ type: String }) honorific = '';
   @property({ type: String }) roleLabel = '';
-  @property({ type: Boolean }) showButtons = false;
   @property({ type: Boolean }) locked = false;
+  @property({ type: Array }) actions: MemberAction[] = [];
 
   override createRenderRoot() {
     return this;
@@ -40,8 +40,8 @@ export class MemberItem extends LitElement {
       : '';
 
     return html`
-      <button
-        class="member-item w-full text-left p-4 rounded-xl border transition-all ${
+      <div
+        class="member-item w-full text-left p-4 rounded-xl border transition-all cursor-pointer ${
           this.selected
             ? 'bg-emerald-50 border-emerald-300 dark:bg-emerald-900/30 dark:border-emerald-700'
             : 'bg-white border-gray-200 hover:border-emerald-300 hover:bg-emerald-50/50 dark:bg-gray-800 dark:border-gray-700 dark:hover:border-emerald-600 dark:hover:bg-emerald-900/20'
@@ -83,29 +83,21 @@ export class MemberItem extends LitElement {
           <div class="flex items-center gap-2 flex-shrink-0">
             <span class="px-3 py-1 rounded-full text-xs font-medium ${roleClass}">${displayRole}</span>
             ${this.locked ? html`<span class="text-gray-400">🔒</span>` : ''}
-            ${
-              this.showButtons
-                ? html`
-                  <div class="flex items-center gap-1">
-                    <button class="p-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-600 transition-colors dark:bg-emerald-900/30 dark:hover:bg-emerald-900/50 dark:text-emerald-400" title="View">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4">
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                        <circle cx="12" cy="12" r="3"/>
-                      </svg>
-                    </button>
-                    <button class="p-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors dark:bg-blue-900/30 dark:hover:bg-blue-900/50 dark:text-blue-400" title="Edit">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4">
-                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                      </svg>
-                    </button>
-                  </div>
-                `
-                : ''
-            }
+            ${this.actions.map((action) => html`
+              <button
+                class="p-1.5 rounded-lg transition-colors ${action.color || 'bg-gray-100 hover:bg-gray-200 text-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-300'}"
+                title="${action.label}"
+                @click=${(e: Event) => {
+                  e.stopPropagation();
+                  action.onClick();
+                }}
+              >
+                ${action.icon}
+              </button>
+            `)}
           </div>
         </div>
-      </button>
+      </div>
     `;
   }
 }

@@ -53,3 +53,12 @@ export interface AppData {
   events: Event[];
   funds: FundTransaction[];
 }
+
+import { type TemplateResult } from 'lit';
+
+export interface MemberAction {
+  label: string;
+  icon: TemplateResult;
+  color?: string;
+  onClick: () => void;
+}

@@ -1,6 +1,8 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+import { html } from 'lit';
 import '../../src/components/member-item.js';
 import type { MemberItem } from '../../src/components/member-item.js';
+import type { MemberAction } from '../../src/types/index.js';
 import type { Person } from '../../src/types/index.js';
 
 const makePerson = (
@@ -22,7 +24,6 @@ async function renderComponent(
   opts?: {
     selected?: boolean;
     honorific?: string;
-    showButtons?: boolean;
     locked?: boolean;
   },
 ): Promise<MemberItem> {
@@ -30,7 +31,6 @@ async function renderComponent(
   el.person = person;
   if (opts?.selected !== undefined) el.selected = opts.selected;
   if (opts?.honorific !== undefined) el.honorific = opts.honorific;
-  if (opts?.showButtons !== undefined) el.showButtons = opts.showButtons;
   if (opts?.locked !== undefined) el.locked = opts.locked;
   document.body.appendChild(el);
   await el.updateComplete;
@@ -67,10 +67,9 @@ describe('MemberItem', () => {
     expect(avatar?.size).toBe('sm');
   });
 
-  it('renders as button element', async () => {
+  it('renders as div element', async () => {
     const el = await renderComponent(makePerson());
-    const btn = el.querySelector('button');
-    expect(btn).not.toBeNull();
+    expect(el.querySelector('div')).not.toBeNull();
   });
 
   it('has green hover classes', async () => {
@@ -172,18 +171,21 @@ describe('MemberItem', () => {
     expect(rendered).not.toContain('🔒');
   });
 
-  it('shows action buttons when showButtons is true', async () => {
-    const el = await renderComponent(makePerson(), { showButtons: true });
+  it('renders action buttons from array property', async () => {
+    const el = await renderComponent(makePerson());
+    const onClick = vi.fn();
+    el.actions = [
+      { label: 'View', icon: html`icon`, onClick },
+      { label: 'Delete', icon: html`icon`, onClick },
+    ];
+    await el.updateComplete;
     const rendered = getContent(el);
     expect(rendered).toContain('View');
-    expect(rendered).toContain('Edit');
-  });
-
-  it('does not show action buttons when showButtons is false', async () => {
-    const el = await renderComponent(makePerson(), { showButtons: false });
-    const rendered = getContent(el);
-    expect(rendered).not.toContain('View');
-    expect(rendered).not.toContain('Edit');
+    expect(rendered).toContain('Delete');
+    const buttons = el.querySelectorAll('button');
+    expect(buttons.length).toBe(2);
+    buttons[0].click();
+    expect(onClick).toHaveBeenCalled();
   });
 
   it('applies selected styles when selected is true', async () => {
