@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import '../../src/components/person-avatar.js';
 import type {
-  AvatarShape,
   AvatarSize,
   PersonAvatar,
 } from '../../src/components/person-avatar.js';
@@ -27,17 +26,11 @@ async function renderComponent(
   person: Person,
   opts?: {
     size?: AvatarSize;
-    shape?: AvatarShape;
-    showDeceased?: boolean;
-    withName?: boolean;
   },
 ): Promise<PersonAvatar> {
   const el = document.createElement('person-avatar');
   el.person = person;
   if (opts?.size) el.size = opts.size;
-  if (opts?.shape) el.shape = opts.shape;
-  if (opts?.showDeceased !== undefined) el.showDeceased = opts.showDeceased;
-  if (opts?.withName !== undefined) el.withName = opts.withName;
   document.body.appendChild(el);
   await el.updateComplete;
   return el;
@@ -63,58 +56,36 @@ describe('PersonAvatar', () => {
     expect(rendered).toContain('text-pink-600');
   });
 
-  it('shows deceased indicator when enabled and person is deceased', async () => {
-    const deceased = makePerson({ deathYear: '2020' });
-    const el = await renderComponent(deceased, { showDeceased: true });
+  it('renders image when avatar URL is provided', async () => {
+    const person = makePerson({
+      avatar: 'https://xsgames.co/randomusers/avatar.php?g=male',
+    });
+    const el = await renderComponent(person);
     const rendered = getContent(el);
-    expect(rendered).toContain('✝');
+    expect(rendered).toContain('<img');
+    expect(rendered).toContain(
+      'https://xsgames.co/randomusers/avatar.php?g=male',
+    );
+    expect(rendered).toContain('object-cover');
   });
 
-  it('does not show deceased indicator when disabled', async () => {
-    const deceased = makePerson({ deathYear: '2020' });
-    const el = await renderComponent(deceased, { showDeceased: false });
+  it('does not render image when avatar URL is not provided', async () => {
+    const el = await renderComponent(mockPerson);
     const rendered = getContent(el);
-    expect(rendered).not.toContain('✝');
+    expect(rendered).not.toContain('<img');
   });
 
-  it('does not show deceased indicator for living person', async () => {
-    const el = await renderComponent(mockPerson, { showDeceased: true });
+  it('renders default SVG icon when no avatar URL', async () => {
+    const el = await renderComponent(mockPerson);
     const rendered = getContent(el);
-    expect(rendered).not.toContain('✝');
+    expect(rendered).toContain('<svg');
+    expect(rendered).toContain('viewBox="0 0 24 24"');
   });
 
-  it('renders name when withName is true', async () => {
-    const el = await renderComponent(mockPerson, { withName: true });
-    const rendered = getContent(el);
-    expect(rendered).toContain('Văn');
-    expect(rendered).toContain('Nguyễn');
-  });
-
-  it('does not render name when withName is false', async () => {
-    const el = await renderComponent(mockPerson, { withName: false });
-    const rendered = getContent(el);
-    expect(rendered).not.toContain('Văn Nguyễn');
-  });
-
-  it('uses rounded shape with gender symbol for male', async () => {
-    const el = await renderComponent(mockPerson, { shape: 'rounded' });
-    const rendered = getContent(el);
-    expect(rendered).toContain('rounded-2xl');
-    expect(rendered).toContain('♂');
-  });
-
-  it('uses rounded shape with gender symbol for female', async () => {
-    const female = makePerson({ gender: 'F' });
-    const el = await renderComponent(female, { shape: 'rounded' });
-    const rendered = getContent(el);
-    expect(rendered).toContain('♀');
-  });
-
-  it('uses circle shape with initial letter', async () => {
-    const el = await renderComponent(mockPerson, { shape: 'circle' });
+  it('always uses rounded-full (circle shape)', async () => {
+    const el = await renderComponent(mockPerson);
     const rendered = getContent(el);
     expect(rendered).toContain('rounded-full');
-    expect(rendered).toContain('N');
   });
 
   it('applies xs size classes', async () => {

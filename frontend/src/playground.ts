@@ -2,42 +2,40 @@ import { html, render } from 'lit';
 import './styles/main.css';
 import './components/person-avatar.js';
 import './components/member-item.js';
-import type { AvatarShape, AvatarSize } from './components/person-avatar.js';
+import type { AvatarSize } from './components/person-avatar.js';
+import { iconDelete, iconEdit, iconView } from './icons/index.js';
 import type { Person } from './types/index.js';
 
 const sizes: AvatarSize[] = ['xs', 'sm', 'md', 'lg', 'xl'];
-const shapes: AvatarShape[] = ['circle', 'rounded'];
 
 interface PlaygroundState {
   dark: boolean;
   avatarSize: AvatarSize;
-  avatarShape: AvatarShape;
-  showDeceased: boolean;
-  withName: boolean;
   selected: boolean;
-  showRole: boolean;
+  honorific: string;
+  locked: boolean;
   personGender: 'M' | 'F';
   firstName: string;
   lastName: string;
   birthYear: string;
   deathYear: string;
   role: string;
+  avatarUrl: string;
 }
 
 const state: PlaygroundState = {
   dark: false,
   avatarSize: 'md',
-  avatarShape: 'circle',
-  showDeceased: false,
-  withName: false,
   selected: false,
-  showRole: true,
+  honorific: 'Bố',
+  locked: false,
   personGender: 'M',
   firstName: 'Nguyễn',
   lastName: 'Văn A',
   birthYear: '1985',
   deathYear: '',
   role: 'admin',
+  avatarUrl: '',
 };
 
 function updatePerson(): Person {
@@ -51,6 +49,7 @@ function updatePerson(): Person {
       deathYear: state.deathYear || undefined,
       generation: 5,
       role: state.role || undefined,
+      avatar: state.avatarUrl || undefined,
     },
     rels: { parents: [], spouses: [], children: [] },
   };
@@ -88,9 +87,6 @@ function renderPlayground() {
               <person-avatar
                 .person=${person}
                 size="${state.avatarSize}"
-                shape="${state.avatarShape}"
-                ?show-deceased=${state.showDeceased}
-                ?with-name=${state.withName}
               ></person-avatar>
             </div>
 
@@ -110,48 +106,6 @@ function renderPlayground() {
                 </select>
               </div>
 
-              <div>
-                <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Shape</label>
-                <select
-                  class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200"
-                  value="${state.avatarShape}"
-                  @change=${(e: Event) => {
-                    state.avatarShape = (e.target as HTMLSelectElement)
-                      .value as AvatarShape;
-                    renderPlayground();
-                  }}
-                >
-                  ${shapes.map((s) => html`<option value="${s}">${s}</option>`)}
-                </select>
-              </div>
-
-              <div class="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  id="showDeceased"
-                  ?checked=${state.showDeceased}
-                  @change=${(e: Event) => {
-                    state.showDeceased = (e.target as HTMLInputElement).checked;
-                    renderPlayground();
-                  }}
-                  class="rounded border-gray-300"
-                />
-                <label for="showDeceased" class="text-sm text-gray-700 dark:text-gray-300">Show Deceased Badge</label>
-              </div>
-
-              <div class="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  id="withName"
-                  ?checked=${state.withName}
-                  @change=${(e: Event) => {
-                    state.withName = (e.target as HTMLInputElement).checked;
-                    renderPlayground();
-                  }}
-                  class="rounded border-gray-300"
-                />
-                <label for="withName" class="text-sm text-gray-700 dark:text-gray-300">With Name</label>
-              </div>
             </div>
           </section>
 
@@ -161,11 +115,35 @@ function renderPlayground() {
               &lt;member-item&gt;
             </h2>
 
-            <div class="flex items-center justify-center min-h-[200px] bg-gray-50 dark:bg-gray-900 rounded-xl p-4">
+            <div class="min-h-[200px] bg-gray-50 dark:bg-gray-900 rounded-xl p-4">
               <member-item
                 .person=${person}
                 ?selected=${state.selected}
-                ?show-role=${state.showRole}
+                .honorific=${state.honorific}
+                ?locked=${state.locked}
+                .actions=${[
+                  {
+                    label: 'View',
+                    icon: iconView,
+                    color:
+                      'bg-emerald-50 hover:bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:hover:bg-emerald-900/50 dark:text-emerald-400',
+                    onClick: () => alert('View'),
+                  },
+                  {
+                    label: 'Edit',
+                    icon: iconEdit,
+                    color:
+                      'bg-blue-50 hover:bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 dark:text-blue-400',
+                    onClick: () => alert('Edit'),
+                  },
+                  {
+                    label: 'Delete',
+                    icon: iconDelete,
+                    color:
+                      'bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-900/30 dark:hover:bg-red-900/50 dark:text-red-400',
+                    onClick: () => alert('Delete'),
+                  },
+                ]}
               ></member-item>
             </div>
 
@@ -187,15 +165,28 @@ function renderPlayground() {
               <div class="flex items-center gap-2">
                 <input
                   type="checkbox"
-                  id="showRole"
-                  ?checked=${state.showRole}
+                  id="locked"
+                  ?checked=${state.locked}
                   @change=${(e: Event) => {
-                    state.showRole = (e.target as HTMLInputElement).checked;
+                    state.locked = (e.target as HTMLInputElement).checked;
                     renderPlayground();
                   }}
                   class="rounded border-gray-300"
                 />
-                <label for="showRole" class="text-sm text-gray-700 dark:text-gray-300">Show Role</label>
+                <label for="locked" class="text-sm text-gray-700 dark:text-gray-300">Locked</label>
+              </div>
+
+              <div>
+                <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Honorific</label>
+                <input
+                  type="text"
+                  class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                  value="${state.honorific}"
+                  @input=${(e: Event) => {
+                    state.honorific = (e.target as HTMLInputElement).value;
+                    renderPlayground();
+                  }}
+                />
               </div>
             </div>
           </section>
@@ -206,7 +197,7 @@ function renderPlayground() {
               Person Data
             </h2>
 
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-4">
               <div>
                 <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">First Name</label>
                 <input
@@ -292,9 +283,23 @@ function renderPlayground() {
                   <option value="member">Member</option>
                 </select>
               </div>
+
+              <div>
+                <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Avatar URL</label>
+                <input
+                  type="text"
+                  class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                  value="${state.avatarUrl}"
+                  placeholder="—"
+                  @input=${(e: Event) => {
+                    state.avatarUrl = (e.target as HTMLInputElement).value;
+                    renderPlayground();
+                  }}
+                />
+              </div>
             </div>
 
-            <div class="flex gap-3 pt-2">
+            <div class="flex flex-wrap gap-3 pt-2">
               <button
                 class="px-4 py-2 text-sm rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white transition-colors"
                 @click=${() => {
@@ -305,6 +310,7 @@ function renderPlayground() {
                     birthYear: '1985',
                     deathYear: '',
                     role: 'admin',
+                    avatarUrl: '',
                   });
                   renderPlayground();
                 }}
@@ -321,11 +327,33 @@ function renderPlayground() {
                     birthYear: '1950',
                     deathYear: '2020',
                     role: 'editor',
+                    avatarUrl: '',
                   });
                   renderPlayground();
                 }}
               >
                 Load Deceased Female
+              </button>
+              <button
+                class="px-4 py-2 text-sm rounded-lg bg-blue-100 hover:bg-blue-200 dark:bg-blue-900 dark:hover:bg-blue-800 text-blue-700 dark:text-blue-300 transition-colors"
+                @click=${() => {
+                  state.avatarUrl =
+                    state.personGender === 'M'
+                      ? 'https://xsgames.co/randomusers/avatar.php?g=male'
+                      : 'https://xsgames.co/randomusers/avatar.php?g=female';
+                  renderPlayground();
+                }}
+              >
+                Set Random Avatar
+              </button>
+              <button
+                class="px-4 py-2 text-sm rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 transition-colors"
+                @click=${() => {
+                  state.avatarUrl = '';
+                  renderPlayground();
+                }}
+              >
+                Clear Avatar
               </button>
             </div>
           </section>
