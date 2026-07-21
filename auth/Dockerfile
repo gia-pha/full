@@ -3,7 +3,7 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux go build -v -o auth-server ./...
+RUN CGO_ENABLED=0 GOOS=linux go build -v -o auth-server .
 
 FROM scratch
 WORKDIR /app

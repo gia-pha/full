@@ -15,7 +15,9 @@ async function register() {
     try {
         // Get registration options from your server. Here, we also receive the challenge.
         const response = await fetch(AUTH_BACKEND_URL + '/api/passkey/registerStart', {
-            method: 'POST', headers: {'Content-Type': 'application/json'},
+            method: 'POST', 
+            credentials: 'include',
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({username: username})
         });
 
@@ -35,6 +37,7 @@ async function register() {
         // Send attestationResponse back to server for verification and storage.
         const verificationResponse = await fetch(AUTH_BACKEND_URL + '/api/passkey/registerFinish', {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -61,7 +64,9 @@ async function login() {
     try {
         // Get login options from your server. Here, we also receive the challenge.
         const response = await fetch(AUTH_BACKEND_URL + '/api/passkey/loginStart', {
-            method: 'POST', headers: {'Content-Type': 'application/json'},
+            method: 'POST',
+            credentials: 'include',
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({username: username})
         });
         // Check if the login options are ok.
@@ -79,6 +84,7 @@ async function login() {
         // Send assertionResponse back to server for verification.
         const verificationResponse = await fetch(AUTH_BACKEND_URL + '/api/passkey/loginFinish', {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
