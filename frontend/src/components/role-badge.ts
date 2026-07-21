@@ -1,6 +1,6 @@
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { defaultRoles } from '../types/index.js';
+import { defaultRoles } from '../consts/index.js';
 
 @customElement('role-badge')
 export class RoleBadge extends LitElement {
