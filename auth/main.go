@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/go-webauthn/webauthn/webauthn"
 )
@@ -19,12 +20,15 @@ func main() {
 	host := getEnv("HOST", "localhost")
 	port := getEnv("PORT", ":8080")
 	origin := fmt.Sprintf("%s://%s%s", proto, host, port)
+	webauthnName := getEnv("WEBAUTHN_NAME", "Go Webauthn")
+	webauthnId := getEnv("WEBAUTHN_ID", host)
+	webauthnOrigins := strings.Split(getEnv("WEBAUTHN_ORIGINS", origin), ",")
 
 	logger.Printf("[INFO] make webauthn config")
 	wconfig := &webauthn.Config{
-		RPDisplayName: "Go Webauthn",                     // Display Name for your site
-		RPID:          host,                              // Generally the FQDN for your site
-		RPOrigins:     []string{"http://localhost:8081"}, // The origin URLs allowed for WebAuthn
+		RPDisplayName: webauthnName,    // Display Name for your site
+		RPID:          webauthnId,      // Generally the FQDN for your site
+		RPOrigins:     webauthnOrigins, // The origin URLs allowed for WebAuthn
 	}
 	webAuthn, err := webauthn.New(wconfig)
 	if err != nil {
