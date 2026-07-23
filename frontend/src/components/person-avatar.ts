@@ -2,6 +2,7 @@ import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { Person } from '../types/index.js';
 import { getGenderIcon } from '../utils/avatar.js';
+import { getFullName } from '../utils/format.js';
 
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
@@ -41,7 +42,7 @@ export class PersonAvatar extends LitElement {
         </div>`;
 
     return html`
-      <div class="${s.dim} rounded-full flex-shrink-0 overflow-hidden">
+      <div class="${s.dim} rounded-full flex-shrink-0 overflow-hidden" title="${getFullName(this.person)}">
         ${avatarContent}
       </div>
     `;
