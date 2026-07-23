@@ -18,3 +18,13 @@ export function getInitials(person: Person): string {
 export function getGenderSymbol(person: Person): string {
   return person.data.gender === 'M' ? '♂' : '♀';
 }
+
+export function formatDate(dateStr: string): string {
+  if (!dateStr) return '-';
+  const d = new Date(dateStr);
+  return new Intl.DateTimeFormat('vi-VN', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  }).format(d);
+}
