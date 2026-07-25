@@ -32,7 +32,7 @@ export class MemberItem extends LitElement {
         class="member-item w-full text-left p-4 rounded-xl border transition-all cursor-pointer ${
           this.selected
             ? 'bg-emerald-50 border-emerald-300 dark:bg-emerald-900/30 dark:border-emerald-700'
-            : 'bg-white border-gray-200 hover:border-emerald-300 hover:bg-emerald-50/50 dark:bg-gray-800 dark:border-gray-700 dark:hover:border-emerald-600 dark:hover:bg-emerald-900/20'
+            : 'bg-white border-gray-200 hover:border-emerald-300 hover:bg-emerald-50/70 dark:bg-gray-800 dark:border-gray-700 dark:hover:border-emerald-600 dark:hover:bg-emerald-900/20'
         }"
       >
         <div class="flex items-center gap-4">

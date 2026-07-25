@@ -140,11 +140,11 @@ function renderPlayground() {
   render(
     html`
       <div class="min-h-screen">
-        <header class="bg-white dark:bg-gray-800 shadow border-b border-gray-200 dark:border-gray-700">
+        <header class="bg-white os-dark:bg-gray-800 shadow border-b border-gray-200 os-dark:border-gray-700">
           <div class="container mx-auto px-4 py-4 flex items-center justify-between">
-            <h1 class="text-xl font-bold text-gray-800 dark:text-gray-100">Component Playground</h1>
+            <h1 class="text-xl font-bold text-gray-800 os-dark:text-gray-100">Component Playground</h1>
             <button
-              class="px-3 py-1.5 text-sm rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 transition-colors"
+              class="px-3 py-1.5 text-sm rounded-lg bg-gray-100 hover:bg-gray-200 os-dark:bg-gray-700 os-dark:hover:bg-gray-600 text-gray-700 os-dark:text-gray-200 transition-colors"
               @click=${() => {
                 state.dark = !state.dark;
                 renderPlayground();
@@ -157,23 +157,25 @@ function renderPlayground() {
 
         <div class="container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
           <!-- Person Avatar Section -->
-          <section class="bg-white dark:bg-gray-800 rounded-xl shadow p-6 space-y-6">
-            <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 border-b border-gray-200 dark:border-gray-700 pb-2">
+          <section class="bg-white os-dark:bg-gray-800 rounded-xl shadow p-6 space-y-6">
+            <h2 class="text-lg font-semibold text-gray-800 os-dark:text-gray-100 border-b border-gray-200 os-dark:border-gray-700 pb-2">
               &lt;person-avatar&gt;
             </h2>
 
-            <div class="flex items-center justify-center min-h-[200px] bg-gray-50 dark:bg-gray-900 rounded-xl">
-              <person-avatar
-                .person=${person}
-                size="${state.avatarSize}"
-              ></person-avatar>
+            <div class="flex items-center justify-center min-h-[200px] bg-gray-50 os-dark:bg-gray-900 rounded-xl">
+              <div class="${state.dark ? 'dark' : ''}">
+                <person-avatar
+                  .person=${person}
+                  size="${state.avatarSize}"
+                ></person-avatar>
+              </div>
             </div>
 
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Size</label>
+                <label class="block text-xs text-gray-500 os-dark:text-gray-400 mb-1">Size</label>
                 <select
-                  class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                  class="w-full px-3 py-2 text-sm border border-gray-300 os-dark:border-gray-600 rounded-lg bg-white os-dark:bg-gray-700 text-gray-800 os-dark:text-gray-200"
                   value="${state.avatarSize}"
                   @change=${(e: Event) => {
                     state.avatarSize = (e.target as HTMLSelectElement)
@@ -189,41 +191,43 @@ function renderPlayground() {
           </section>
 
           <!-- Member Item Section -->
-          <section class="bg-white dark:bg-gray-800 rounded-xl shadow p-6 space-y-6">
-            <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 border-b border-gray-200 dark:border-gray-700 pb-2">
+          <section class="bg-white os-dark:bg-gray-800 rounded-xl shadow p-6 space-y-6">
+            <h2 class="text-lg font-semibold text-gray-800 os-dark:text-gray-100 border-b border-gray-200 os-dark:border-gray-700 pb-2">
               &lt;member-item&gt;
             </h2>
 
-            <div class="min-h-[200px] bg-gray-50 dark:bg-gray-900 rounded-xl p-4">
-              <member-item
-                .person=${person}
-                ?selected=${state.selected}
-                .honorific=${state.honorific}
-                ?locked=${state.locked}
-                .actions=${[
-                  {
-                    label: 'View',
-                    icon: iconView,
-                    color:
-                      'bg-emerald-50 hover:bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:hover:bg-emerald-900/50 dark:text-emerald-400',
-                    onClick: () => alert('View'),
-                  },
-                  {
-                    label: 'Edit',
-                    icon: iconEdit,
-                    color:
-                      'bg-blue-50 hover:bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 dark:text-blue-400',
-                    onClick: () => alert('Edit'),
-                  },
-                  {
-                    label: 'Delete',
-                    icon: iconDelete,
-                    color:
-                      'bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-900/30 dark:hover:bg-red-900/50 dark:text-red-400',
-                    onClick: () => alert('Delete'),
-                  },
-                ]}
-              ></member-item>
+            <div class="min-h-[200px] bg-gray-50 os-dark:bg-gray-900 rounded-xl p-4">
+              <div class="${state.dark ? 'dark' : ''}">
+                <member-item
+                  .person=${person}
+                  ?selected=${state.selected}
+                  .honorific=${state.honorific}
+                  ?locked=${state.locked}
+                  .actions=${[
+                    {
+                      label: 'View',
+                      icon: iconView,
+                      color:
+                        'bg-emerald-50 hover:bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:hover:bg-emerald-900/50 dark:text-emerald-400',
+                      onClick: () => alert('View'),
+                    },
+                    {
+                      label: 'Edit',
+                      icon: iconEdit,
+                      color:
+                        'bg-blue-50 hover:bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 dark:text-blue-400',
+                      onClick: () => alert('Edit'),
+                    },
+                    {
+                      label: 'Delete',
+                      icon: iconDelete,
+                      color:
+                        'bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-900/30 dark:hover:bg-red-900/50 dark:text-red-400',
+                      onClick: () => alert('Delete'),
+                    },
+                  ]}
+                ></member-item>
+              </div>
             </div>
 
             <div class="grid grid-cols-2 gap-4">
@@ -238,7 +242,7 @@ function renderPlayground() {
                   }}
                   class="rounded border-gray-300"
                 />
-                <label for="selected" class="text-sm text-gray-700 dark:text-gray-300">Selected</label>
+                <label for="selected" class="text-sm text-gray-700 os-dark:text-gray-300">Selected</label>
               </div>
 
               <div class="flex items-center gap-2">
@@ -252,14 +256,14 @@ function renderPlayground() {
                   }}
                   class="rounded border-gray-300"
                 />
-                <label for="locked" class="text-sm text-gray-700 dark:text-gray-300">Locked</label>
+                <label for="locked" class="text-sm text-gray-700 os-dark:text-gray-300">Locked</label>
               </div>
 
               <div>
-                <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Honorific</label>
+                <label class="block text-xs text-gray-500 os-dark:text-gray-400 mb-1">Honorific</label>
                 <input
                   type="text"
-                  class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                  class="w-full px-3 py-2 text-sm border border-gray-300 os-dark:border-gray-600 rounded-lg bg-white os-dark:bg-gray-700 text-gray-800 os-dark:text-gray-200"
                   value="${state.honorific}"
                   @input=${(e: Event) => {
                     state.honorific = (e.target as HTMLInputElement).value;
@@ -271,28 +275,30 @@ function renderPlayground() {
           </section>
 
           <!-- Event Card Section -->
-          <section class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl shadow p-6 space-y-6">
-            <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 border-b border-gray-200 dark:border-gray-700 pb-2">
+          <section class="bg-white os-dark:bg-gray-800 lg:col-span-2 rounded-xl shadow p-6 space-y-6">
+            <h2 class="text-lg font-semibold text-gray-800 os-dark:text-gray-100 border-b border-gray-200 pb-2">
               &lt;event-card&gt;
             </h2>
 
-            <div class="min-h-[300px] bg-gray-50 dark:bg-gray-900 rounded-xl p-4">
-              <event-card
-                .event=${event}
-                ?canEdit=${state.eventCanEdit}
-                .persons=${demoPersons}
-                .onEdit=${() => alert('Edit event')}
-                .onDelete=${() => alert('Delete event')}
-                .onAddToCalendar=${() => alert('Added to calendar')}
-              ></event-card>
+            <div class="min-h-[300px] bg-gray-50 os-dark:bg-gray-900 rounded-xl p-4">
+              <div class="${state.dark ? 'dark' : ''}">
+                <event-card
+                  .event=${event}
+                  ?canEdit=${state.eventCanEdit}
+                  .persons=${demoPersons}
+                  .onEdit=${() => alert('Edit event')}
+                  .onDelete=${() => alert('Delete event')}
+                  .onAddToCalendar=${() => alert('Added to calendar')}
+                ></event-card>
+              </div>
             </div>
 
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
               <div>
-                <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Title</label>
+                <label class="block text-xs text-gray-500 os-dark:text-gray-400 mb-1">Title</label>
                 <input
                   type="text"
-                  class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                  class="w-full px-3 py-2 text-sm border border-gray-300 os-dark:border-gray-600 rounded-lg bg-white os-dark:bg-gray-700 text-gray-800 os-dark:text-gray-200"
                   value="${state.eventTitle}"
                   @input=${(e: Event) => {
                     state.eventTitle = (e.target as HTMLInputElement).value;
@@ -302,10 +308,10 @@ function renderPlayground() {
               </div>
 
               <div>
-                <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Location</label>
+                <label class="block text-xs text-gray-500 os-dark:text-gray-400 mb-1">Location</label>
                 <input
                   type="text"
-                  class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                  class="w-full px-3 py-2 text-sm border border-gray-300 os-dark:border-gray-600 rounded-lg bg-white os-dark:bg-gray-700 text-gray-800 os-dark:text-gray-200"
                   value="${state.eventLocation}"
                   @input=${(e: Event) => {
                     state.eventLocation = (e.target as HTMLInputElement).value;
@@ -315,10 +321,10 @@ function renderPlayground() {
               </div>
 
               <div>
-                <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Date</label>
+                <label class="block text-xs text-gray-500 os-dark:text-gray-400 mb-1">Date</label>
                 <input
                   type="date"
-                  class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                  class="w-full px-3 py-2 text-sm border border-gray-300 os-dark:border-gray-600 rounded-lg bg-white os-dark:bg-gray-700 text-gray-800 os-dark:text-gray-200"
                   value="${state.eventDate}"
                   @input=${(e: Event) => {
                     state.eventDate = (e.target as HTMLInputElement).value;
@@ -328,9 +334,9 @@ function renderPlayground() {
               </div>
 
               <div>
-                <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Status</label>
+                <label class="block text-xs text-gray-500 os-dark:text-gray-400 mb-1">Status</label>
                 <select
-                  class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                  class="w-full px-3 py-2 text-sm border border-gray-300 os-dark:border-gray-600 rounded-lg bg-white os-dark:bg-gray-700 text-gray-800 os-dark:text-gray-200"
                   value="${state.eventStatus}"
                   @change=${(e: Event) => {
                     state.eventStatus = (e.target as HTMLSelectElement).value as
@@ -345,9 +351,9 @@ function renderPlayground() {
               </div>
 
               <div>
-                <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Type</label>
+                <label class="block text-xs text-gray-500 os-dark:text-gray-400 mb-1">Type</label>
                 <select
-                  class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                  class="w-full px-3 py-2 text-sm border border-gray-300 os-dark:border-gray-600 rounded-lg bg-white os-dark:bg-gray-700 text-gray-800 os-dark:text-gray-200"
                   value="${state.eventType}"
                   @change=${(e: Event) => {
                     state.eventType = (e.target as HTMLSelectElement).value;
@@ -362,10 +368,10 @@ function renderPlayground() {
               </div>
 
               <div>
-                <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Lunar Date</label>
+                <label class="block text-xs text-gray-500 os-dark:text-gray-400 mb-1">Lunar Date</label>
                 <input
                   type="date"
-                  class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                  class="w-full px-3 py-2 text-sm border border-gray-300 os-dark:border-gray-600 rounded-lg bg-white os-dark:bg-gray-700 text-gray-800 os-dark:text-gray-200"
                   value="${state.eventLunarDate}"
                   @input=${(e: Event) => {
                     state.eventLunarDate = (e.target as HTMLInputElement).value;
@@ -375,10 +381,10 @@ function renderPlayground() {
               </div>
 
               <div>
-                <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Map URL</label>
+                <label class="block text-xs text-gray-500 os-dark:text-gray-400 mb-1">Map URL</label>
                 <input
                   type="url"
-                  class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                  class="w-full px-3 py-2 text-sm border border-gray-300 os-dark:border-gray-600 rounded-lg bg-white os-dark:bg-gray-700 text-gray-800 os-dark:text-gray-200"
                   value="${state.eventMapUrl}"
                   placeholder="—"
                   @input=${(e: Event) => {
@@ -390,9 +396,9 @@ function renderPlayground() {
             </div>
 
             <div>
-              <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Description</label>
+              <label class="block text-xs text-gray-500 mb-1">Description</label>
               <textarea
-                class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg bg-white os-dark:bg-gray-700 text-gray-800 os-dark:text-gray-200"
                 rows="3"
                 @input=${(e: Event) => {
                   state.eventDescription = (
@@ -404,10 +410,10 @@ function renderPlayground() {
             </div>
 
             <div>
-              <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Images (comma-separated URLs)</label>
+              <label class="block text-xs text-gray-500 mb-1">Images (comma-separated URLs)</label>
               <input
                 type="text"
-                class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg bg-white os-dark:bg-gray-700 text-gray-800 os-dark:text-gray-200"
                 value="${state.eventImages}"
                 placeholder="—"
                 @input=${(e: Event) => {
@@ -428,7 +434,7 @@ function renderPlayground() {
                 }}
                 class="rounded border-gray-300"
               />
-              <label for="event-can-edit" class="text-sm text-gray-700 dark:text-gray-300">Can Edit</label>
+              <label for="event-can-edit" class="text-sm text-gray-700 os-dark:text-gray-300">Can Edit</label>
             </div>
 
             <div class="flex flex-wrap gap-3 pt-2">
@@ -455,7 +461,7 @@ function renderPlayground() {
                 Reset Event
               </button>
               <button
-                class="px-4 py-2 text-sm rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 transition-colors"
+                class="px-4 py-2 text-sm rounded-lg bg-gray-100 hover:bg-gray-200 os-dark:bg-gray-700 os-dark:hover:bg-gray-600 text-gray-700 os-dark:text-gray-200 transition-colors"
                 @click=${() => {
                   Object.assign(state, {
                     eventTitle: 'Memorial Ceremony',
@@ -477,17 +483,17 @@ function renderPlayground() {
           </section>
 
           <!-- Person Data Editor -->
-          <section class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl shadow p-6 space-y-6">
-            <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100 border-b border-gray-200 dark:border-gray-700 pb-2">
+          <section class="bg-white os-dark:bg-gray-800 lg:col-span-2 rounded-xl shadow p-6 space-y-6">
+            <h2 class="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2">
               Person Data
             </h2>
 
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-4">
               <div>
-                <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">First Name</label>
+                <label class="block text-xs text-gray-500 os-dark:text-gray-400 mb-1">First Name</label>
                 <input
                   type="text"
-                  class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                  class="w-full px-3 py-2 text-sm border border-gray-300 os-dark:border-gray-600 rounded-lg bg-white os-dark:bg-gray-700 text-gray-800 os-dark:text-gray-200"
                   value="${state.firstName}"
                   @input=${(e: Event) => {
                     state.firstName = (e.target as HTMLInputElement).value;
@@ -497,10 +503,10 @@ function renderPlayground() {
               </div>
 
               <div>
-                <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Last Name</label>
+                <label class="block text-xs text-gray-500 os-dark:text-gray-400 mb-1">Last Name</label>
                 <input
                   type="text"
-                  class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                  class="w-full px-3 py-2 text-sm border border-gray-300 os-dark:border-gray-600 rounded-lg bg-white os-dark:bg-gray-700 text-gray-800 os-dark:text-gray-200"
                   value="${state.lastName}"
                   @input=${(e: Event) => {
                     state.lastName = (e.target as HTMLInputElement).value;
@@ -510,9 +516,9 @@ function renderPlayground() {
               </div>
 
               <div>
-                <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Gender</label>
+                <label class="block text-xs text-gray-500 os-dark:text-gray-400 mb-1">Gender</label>
                 <select
-                  class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                  class="w-full px-3 py-2 text-sm border border-gray-300 os-dark:border-gray-600 rounded-lg bg-white os-dark:bg-gray-700 text-gray-800 os-dark:text-gray-200"
                   value="${state.personGender}"
                   @change=${(e: Event) => {
                     state.personGender = (e.target as HTMLSelectElement)
@@ -526,10 +532,10 @@ function renderPlayground() {
               </div>
 
               <div>
-                <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Birth Year</label>
+                <label class="block text-xs text-gray-500 os-dark:text-gray-400 mb-1">Birth Year</label>
                 <input
                   type="text"
-                  class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                  class="w-full px-3 py-2 text-sm border border-gray-300 os-dark:border-gray-600 rounded-lg bg-white os-dark:bg-gray-700 text-gray-800 os-dark:text-gray-200"
                   value="${state.birthYear}"
                   @input=${(e: Event) => {
                     state.birthYear = (e.target as HTMLInputElement).value;
@@ -539,10 +545,10 @@ function renderPlayground() {
               </div>
 
               <div>
-                <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Death Year</label>
+                <label class="block text-xs text-gray-500 os-dark:text-gray-400 mb-1">Death Year</label>
                 <input
                   type="text"
-                  class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                  class="w-full px-3 py-2 text-sm border border-gray-300 os-dark:border-gray-600 rounded-lg bg-white os-dark:bg-gray-700 text-gray-800 os-dark:text-gray-200"
                   value="${state.deathYear}"
                   placeholder="—"
                   @input=${(e: Event) => {
@@ -553,9 +559,9 @@ function renderPlayground() {
               </div>
 
               <div>
-                <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Role</label>
+                <label class="block text-xs text-gray-500 os-dark:text-gray-400 mb-1">Role</label>
                 <select
-                  class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                  class="w-full px-3 py-2 text-sm border border-gray-300 os-dark:border-gray-600 rounded-lg bg-white os-dark:bg-gray-700 text-gray-800 os-dark:text-gray-200"
                   value="${state.role}"
                   @change=${(e: Event) => {
                     state.role = (e.target as HTMLSelectElement).value;
@@ -570,10 +576,10 @@ function renderPlayground() {
               </div>
 
               <div>
-                <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Avatar URL</label>
+                <label class="block text-xs text-gray-500 os-dark:text-gray-400 mb-1">Avatar URL</label>
                 <input
                   type="text"
-                  class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200"
+                  class="w-full px-3 py-2 text-sm border border-gray-300 os-dark:border-gray-600 rounded-lg bg-white os-dark:bg-gray-700 text-gray-800 os-dark:text-gray-200"
                   value="${state.avatarUrl}"
                   placeholder="—"
                   @input=${(e: Event) => {
@@ -603,7 +609,7 @@ function renderPlayground() {
                 Reset to Living Male
               </button>
               <button
-                class="px-4 py-2 text-sm rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 transition-colors"
+                class="px-4 py-2 text-sm rounded-lg bg-gray-100 hover:bg-gray-200 os-dark:bg-gray-700 os-dark:hover:bg-gray-600 text-gray-700 os-dark:text-gray-200 transition-colors"
                 @click=${() => {
                   Object.assign(state, {
                     firstName: 'Trần',
@@ -620,7 +626,7 @@ function renderPlayground() {
                 Load Deceased Female
               </button>
               <button
-                class="px-4 py-2 text-sm rounded-lg bg-blue-100 hover:bg-blue-200 dark:bg-blue-900 dark:hover:bg-blue-800 text-blue-700 dark:text-blue-300 transition-colors"
+                class="px-4 py-2 text-sm rounded-lg bg-blue-100 hover:bg-blue-200 os-dark:bg-blue-900 os-dark:hover:bg-blue-800 text-blue-700 os-dark:text-blue-300 transition-colors"
                 @click=${() => {
                   state.avatarUrl =
                     state.personGender === 'M'
@@ -632,7 +638,7 @@ function renderPlayground() {
                 Set Random Avatar
               </button>
               <button
-                class="px-4 py-2 text-sm rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 transition-colors"
+                class="px-4 py-2 text-sm rounded-lg bg-gray-100 hover:bg-gray-200 os-dark:bg-gray-700 os-dark:hover:bg-gray-600 text-gray-700 os-dark:text-gray-200 transition-colors"
                 @click=${() => {
                   state.avatarUrl = '';
                   renderPlayground();
@@ -649,9 +655,18 @@ function renderPlayground() {
   );
 }
 
+let osDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+window
+  .matchMedia('(prefers-color-scheme: dark)')
+  .addEventListener('change', (e) => {
+    osDark = e.matches;
+    applyTheme();
+    renderPlayground();
+  });
+
 // Apply dark class to html element
 function applyTheme() {
-  document.documentElement.classList.toggle('dark', state.dark);
+  document.documentElement.classList.toggle('os-dark', osDark);
 }
 
 applyTheme();
