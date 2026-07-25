@@ -28,3 +28,14 @@ export function formatDate(dateStr: string): string {
     year: 'numeric',
   }).format(d);
 }
+
+export function formatCurrency(
+  amount: number,
+  currency: string = 'VND',
+): string {
+  return new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency,
+    minimumFractionDigits: 0,
+  }).format(amount);
+}
