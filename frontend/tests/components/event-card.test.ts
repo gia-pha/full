@@ -281,9 +281,10 @@ describe('EventCard', () => {
         makeEvent({ date: '2024-01-15', lunarDate: '2024-01-10' }),
       );
       const rendered = getContent(el);
+      expect(rendered).toContain('📅');
+      expect(rendered).toContain('15/01/2024');
       expect(rendered).toContain('🌙');
-      expect(rendered).toContain('2024-01-10');
-      expect(rendered).toContain('text-amber-600');
+      expect(rendered).toContain('10/01/2024');
     });
 
     it('does not show lunar date section when lunarDate is not provided', async () => {
@@ -291,15 +292,10 @@ describe('EventCard', () => {
         makeEvent({ date: '2024-01-15', lunarDate: undefined }),
       );
       const rendered = getContent(el);
-      expect(rendered).not.toContain('text-amber-600');
-    });
-
-    it('always shows solar date first regardless of lunarDate', async () => {
-      const el = await renderComponent(
-        makeEvent({ date: '2024-01-15', lunarDate: '2024-01-10' }),
-      );
-      const rendered = getContent(el);
       expect(rendered).toContain('📅');
+      expect(rendered).toContain('15/01/2024');
+      expect(rendered).not.toContain('🌙');
+      expect(rendered).not.toContain('10/01/2024');
     });
   });
 
