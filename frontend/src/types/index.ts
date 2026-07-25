@@ -81,3 +81,14 @@ export interface Role {
   label: string;
   color: string;
 }
+
+export type NotificationType = 'fund_change' | 'new_event' | 'memorial_reminder' | 'member_joins';
+
+export interface Notification {
+  id: string;
+  type: NotificationType;
+  title: string;
+  message: string;
+  date: string;
+  read?: boolean;
+}
