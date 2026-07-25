@@ -2,6 +2,7 @@ import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { Event, Person } from '../types/index.js';
 import './person-avatar.js';
+import { formatDate } from '../utils/format.js';
 
 const eventTypeClass: Record<string, string> = {
   memorial: 'bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300',
@@ -28,16 +29,6 @@ export class EventCard extends LitElement {
 
   private getAttendeePerson(id: string): Person | undefined {
     return this.persons.find((p) => p.id === id);
-  }
-
-  private formatDate(dateStr: string): string {
-    if (!dateStr) return '-';
-    const d = new Date(dateStr);
-    return new Intl.DateTimeFormat('vi-VN', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    }).format(d);
   }
 
   override render() {
@@ -104,10 +95,10 @@ export class EventCard extends LitElement {
           <p class="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">${evt.description}</p>
 
           <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-4">
-            <div class="flex items-center gap-2">📅 ${this.formatDate(evt.date)}</div>
+            <div class="flex items-center gap-2">📅 ${formatDate(evt.date)}</div>
             ${
               evt.lunarDate
-                ? html`<div class="flex items-center gap-2 text-amber-600">🌙 ${evt.lunarDate}</div>`
+                ? html`<div class="flex items-center gap-2 text-amber-600">🌙 ${formatDate(evt.lunarDate)}</div>`
                 : html``
             }
             <div class="flex items-center gap-2">📍 ${evt.location}</div>
