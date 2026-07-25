@@ -34,7 +34,10 @@ export interface Event {
   lunarDate?: string;
   location: string;
   description: string;
-  type: 'upcoming' | 'past';
+  status: 'upcoming' | 'past';
+  type?: string;
+  mapUrl?: string;
+  images?: string[];
   attendees?: string[];
 }
 

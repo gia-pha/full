@@ -5,6 +5,7 @@ import {
   getGenderSymbol,
   getInitials,
   isDeceased,
+  formatDate,
 } from '../../src/utils/format.js';
 
 const makePerson = (overrides?: Partial<typeof mockPerson.data>): Person => ({
@@ -75,5 +76,19 @@ describe('getGenderSymbol', () => {
   it('returns female symbol for gender F', () => {
     const p = makePerson({ gender: 'F' });
     expect(getGenderSymbol(p)).toBe('♀');
+  });
+});
+
+describe('formatDate', () => {
+  it('formats a valid date string in DD/MM/YYYY format', () => {
+    expect(formatDate('2024-01-15')).toBe('15/01/2024');
+  });
+
+  it('returns "-" for empty string', () => {
+    expect(formatDate('')).toBe('-');
+  });
+
+  it('formats a different date correctly', () => {
+    expect(formatDate('2023-12-31')).toBe('31/12/2023');
   });
 });

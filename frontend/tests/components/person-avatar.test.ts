@@ -127,4 +127,22 @@ describe('PersonAvatar', () => {
     const el = await renderComponent(mockPerson);
     expect(el.shadowRoot).toBeNull();
   });
+
+  it('has title attribute with person full name', async () => {
+    const el = await renderComponent(mockPerson);
+    const rendered = getContent(el);
+    expect(rendered).toContain('title="Văn Nguyễn"');
+  });
+
+  it('updates title when person data changes', async () => {
+    const el = await renderComponent(mockPerson);
+    const rendered1 = getContent(el);
+    expect(rendered1).toContain('title="Văn Nguyễn"');
+
+    el.person = makePerson({ firstName: 'Hương', lastName: 'Trần' });
+    await el.updateComplete;
+    const rendered2 = getContent(el);
+    expect(rendered2).toContain('title="Hương Trần"');
+    expect(rendered2).not.toContain('title="Văn Nguyễn"');
+  });
 });
