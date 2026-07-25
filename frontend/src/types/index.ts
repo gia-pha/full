@@ -50,6 +50,16 @@ export interface FundTransaction {
   personId?: string;
 }
 
+export interface Transaction {
+  id: string;
+  date: string;
+  type: 'contribution' | 'expense';
+  amount: number;
+  description: string;
+  personId?: string;
+  eventId?: string;
+}
+
 export interface AppData {
   clans: Clan[];
   persons: Person[];

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { Person } from '../../src/types/index.js';
 import {
+  formatCurrency,
   getFullName,
   getGenderSymbol,
   getInitials,
@@ -90,5 +91,37 @@ describe('formatDate', () => {
 
   it('formats a different date correctly', () => {
     expect(formatDate('2023-12-31')).toBe('31/12/2023');
+  });
+});
+
+describe('formatCurrency', () => {
+  it('formats a positive number in VND', () => {
+    const result = formatCurrency(1000000);
+    expect(result).toContain('1');
+    expect(result).toContain('₫');
+  });
+
+  it('formats zero correctly', () => {
+    expect(formatCurrency(0)).toContain('0');
+  });
+
+  it('formats a negative number', () => {
+    const result = formatCurrency(-500000);
+    expect(result).toContain('-');
+  });
+
+  it('defaults to VND currency', () => {
+    expect(formatCurrency(1000)).toContain('₫');
+  });
+
+  it('formats with custom currency (USD)', () => {
+    const result = formatCurrency(99.9, 'USD');
+    expect(result).toContain('$');
+  });
+
+  it('handles large amounts', () => {
+    const result = formatCurrency(1000000000);
+    expect(result).toBeTruthy();
+    expect(typeof result).toBe('string');
   });
 });
