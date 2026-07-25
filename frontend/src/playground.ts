@@ -162,8 +162,8 @@ function renderPlayground() {
               &lt;person-avatar&gt;
             </h2>
 
-            <div class="flex items-center justify-center min-h-[200px] bg-gray-50 os-dark:bg-gray-900 rounded-xl">
-              <div class="${state.dark ? 'dark' : ''}">
+            <div class="${state.dark ? 'dark' : ''}">
+              <div class="flex items-center justify-center min-h-[200px] bg-gray-50 dark:bg-gray-900 rounded-xl">
                 <person-avatar
                   .person=${person}
                   size="${state.avatarSize}"
@@ -196,8 +196,8 @@ function renderPlayground() {
               &lt;member-item&gt;
             </h2>
 
-            <div class="min-h-[200px] bg-gray-50 os-dark:bg-gray-900 rounded-xl p-4">
-              <div class="${state.dark ? 'dark' : ''}">
+            <div class="${state.dark ? 'dark' : ''}">
+              <div class="min-h-[200px] bg-gray-50 dark:bg-gray-900 rounded-xl p-4">
                 <member-item
                   .person=${person}
                   ?selected=${state.selected}
@@ -280,8 +280,8 @@ function renderPlayground() {
               &lt;event-card&gt;
             </h2>
 
-            <div class="min-h-[300px] bg-gray-50 os-dark:bg-gray-900 rounded-xl p-4">
-              <div class="${state.dark ? 'dark' : ''}">
+            <div class="${state.dark ? 'dark' : ''}">
+              <div class="min-h-[300px] bg-gray-50 dark:bg-gray-900 rounded-xl p-4">
                 <event-card
                   .event=${event}
                   ?canEdit=${state.eventCanEdit}
