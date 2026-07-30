@@ -1,4 +1,11 @@
-import type { Role } from '../types';
+import type { NotificationType, Role } from '../types';
+
+export const notificationTypes: NotificationType[] = [
+  { name: 'fund_change', icon: '💰' },
+  { name: 'new_event', icon: '📅' },
+  { name: 'memorial_reminder', icon: '🕯️' },
+  { name: 'member_joins', icon: '👤' },
+];
 
 export const defaultRoles: Role[] = [
   {

@@ -1,0 +1,14 @@
+{
+  "vi": {
+    "notifications": {
+      "markRead": "Đánh dấu đã đọc",
+      "markAllRead": "Đánh dấu tất cả đã đọc"
+    }
+  },
+  "en": {
+    "notifications": {
+      "markRead": "Mark as Read",
+      "markAllRead": "Mark All Read"
+    }
+  }
+}

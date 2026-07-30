@@ -81,3 +81,17 @@ export interface Role {
   label: string;
   color: string;
 }
+
+export interface NotificationType {
+  name: string;
+  icon: string;
+}
+
+export interface Notification {
+  id: string;
+  type: string;
+  title: string;
+  message: string;
+  date: string;
+  read?: boolean;
+}
