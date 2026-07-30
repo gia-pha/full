@@ -1,15 +1,9 @@
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { notificationTypes } from '../consts/index.js';
 import { t } from '../i18n.js';
 import type { Notification } from '../types/index.js';
 import { formatDate } from '../utils/format.js';
-
-const ICONS: Record<string, string> = {
-  fund_change: '💰',
-  new_event: '📅',
-  memorial_reminder: '🕯️',
-  member_joins: '👤',
-};
 
 @customElement('notification-item')
 export class NotificationItem extends LitElement {
@@ -39,7 +33,7 @@ export class NotificationItem extends LitElement {
     if (!this.notification || this.dismissed) return html``;
 
     const n = this.notification;
-    const icon = ICONS[n.type] || '📌';
+    const icon = notificationTypes.find(t => t.name === n.type)?.icon || '📌';
     const unread = !n.read;
     const bgClass = unread
       ? 'bg-emerald-50/50 border-emerald-200 dark:bg-emerald-900/20 dark:border-emerald-800'
