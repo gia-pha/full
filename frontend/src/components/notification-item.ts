@@ -18,14 +18,18 @@ export class NotificationItem extends LitElement {
   private handleDismiss(e: Event) {
     e.stopPropagation();
     this.dismissed = true;
-    this.dispatchEvent(new CustomEvent('dismiss', { bubbles: true, composed: true }));
+    this.dispatchEvent(
+      new CustomEvent('dismiss', { bubbles: true, composed: true }),
+    );
   }
 
   private handleMarkRead(e: Event) {
     e.stopPropagation();
     if (this.notification) {
       this.notification.read = true;
-      this.dispatchEvent(new CustomEvent('mark-read', { bubbles: true, composed: true }));
+      this.dispatchEvent(
+        new CustomEvent('mark-read', { bubbles: true, composed: true }),
+      );
     }
   }
 
@@ -33,7 +37,7 @@ export class NotificationItem extends LitElement {
     if (!this.notification || this.dismissed) return html``;
 
     const n = this.notification;
-    const icon = notificationTypes.find(t => t.name === n.type)?.icon || '📌';
+    const icon = notificationTypes.find((t) => t.name === n.type)?.icon || '📌';
     const unread = !n.read;
     const bgClass = unread
       ? 'bg-emerald-50/50 border-emerald-200 dark:bg-emerald-900/20 dark:border-emerald-800'

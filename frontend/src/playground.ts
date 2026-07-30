@@ -816,7 +816,8 @@ function renderPlayground() {
                   Object.assign(state, {
                     notifType: 'fund_change' as const,
                     notifTitle: 'Đóng góp quỹ họ tộc',
-                    notifMessage: 'Nguyễn Văn A đã đóng góp 1,000,000₫ vào quỹ họ tộc.',
+                    notifMessage:
+                      'Nguyễn Văn A đã đóng góp 1,000,000₫ vào quỹ họ tộc.',
                     notifTimestamp: '2025-01-15',
                     notifRead: false,
                   });
@@ -831,7 +832,8 @@ function renderPlayground() {
                   Object.assign(state, {
                     notifType: 'new_event' as const,
                     notifTitle: 'Sự kiện mới: Họp mặt gia đình',
-                    notifMessage: 'Sự kiện "Họp mặt gia đình 2025" đã được tạo. Hãy tham gia và xác nhận tham dự.',
+                    notifMessage:
+                      'Sự kiện "Họp mặt gia đình 2025" đã được tạo. Hãy tham gia và xác nhận tham dự.',
                     notifTimestamp: '2025-02-01',
                     notifRead: false,
                   });
@@ -846,7 +848,8 @@ function renderPlayground() {
                   Object.assign(state, {
                     notifType: 'memorial_reminder' as const,
                     notifTitle: 'Nhắc nhở: Lễ giỗ tổ',
-                    notifMessage: 'Lễ giỗ tổ sẽ diễn ra vào ngày 15/03/2025. Hãy chuẩn bị và tham gia.',
+                    notifMessage:
+                      'Lễ giỗ tổ sẽ diễn ra vào ngày 15/03/2025. Hãy chuẩn bị và tham gia.',
                     notifTimestamp: '2025-03-01',
                     notifRead: false,
                   });
