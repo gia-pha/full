@@ -1,5 +1,6 @@
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { t } from '../i18n.js';
 import type { Notification } from '../types/index.js';
 import { formatDate } from '../utils/format.js';
 
@@ -14,6 +15,7 @@ const ICONS: Record<string, string> = {
 export class NotificationItem extends LitElement {
   @property({ type: Object }) declare notification: Notification;
   @property({ type: Boolean, reflect: true }) dismissed = false;
+  @property({ type: String }) locale = 'vi';
 
   override createRenderRoot() {
     return this;
@@ -60,7 +62,7 @@ export class NotificationItem extends LitElement {
             </div>
           </div>
           <p class="text-sm text-gray-600 dark:text-gray-400 mt-1 leading-relaxed">${n.message}</p>
-          ${unread ? html`<button class="mt-2 text-xs text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 font-medium" @click=${this.handleMarkRead}>Đánh dấu đã đọc</button>` : ''}
+          ${unread ? html`<button class="mt-2 text-xs text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 font-medium" @click=${this.handleMarkRead}>${t(this.locale, 'notifications.markRead')}</button>` : ''}
         </div>
       </div>
     `;
