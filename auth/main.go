@@ -4,7 +4,7 @@ import (
 	"auth-passkey/ports"
 	"auth-passkey/service"
 	"fmt"
-	"log"
+	"log/slog"
 	"net/http"
 	"os"
 	"strings"
@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	logger := log.Default()
+	logger := slog.Default()
 
 	proto := getEnv("PROTO", "http")
 	host := getEnv("HOST", "localhost")
@@ -23,7 +23,7 @@ func main() {
 	webauthnId := getEnv("WEBAUTHN_ID", host)
 	webauthnOrigins := strings.Split(getEnv("WEBAUTHN_ORIGINS", origin), ",")
 
-	logger.Printf("[INFO] make webauthn config")
+	logger.Info("Make webauthn config")
 	wconfig := &webauthn.Config{
 		RPDisplayName: webauthnName,
 		RPID:          webauthnId,
@@ -35,17 +35,17 @@ func main() {
 		os.Exit(1)
 	}
 
-	logger.Printf("[INFO] build application")
+	logger.Info("Build application")
 	application := service.NewApplication(webAuthn, logger)
 
-	logger.Printf("[INFO] create http server")
+	logger.Info("Create http server")
 	httpServer := ports.NewHttpServer(application, logger)
 
-	logger.Printf("[INFO] register routes")
+	logger.Info("Register routes")
 	mux := http.NewServeMux()
 	httpServer.RegisterRoutes(mux)
 
-	logger.Printf("[INFO] start server at %s", origin)
+	logger.Info("Start server", "origin", origin)
 	if err := http.ListenAndServe(port, mux); err != nil {
 		fmt.Println(err)
 	}

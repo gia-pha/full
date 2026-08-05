@@ -2,17 +2,17 @@ package adapters
 
 import (
 	"context"
+	"log/slog"
 
-	"auth-passkey/common/logger"
 	"auth-passkey/domain/user"
 )
 
 type MemoryUserRepository struct {
 	users map[string]*user.User
-	log   logger.Logger
+	log   *slog.Logger
 }
 
-func NewMemoryUserRepository(log logger.Logger) *MemoryUserRepository {
+func NewMemoryUserRepository(log *slog.Logger) *MemoryUserRepository {
 	return &MemoryUserRepository{
 		users: make(map[string]*user.User),
 		log:   log,
@@ -20,10 +20,10 @@ func NewMemoryUserRepository(log logger.Logger) *MemoryUserRepository {
 }
 
 func (r *MemoryUserRepository) GetOrCreateUser(ctx context.Context, userName string) (*user.User, error) {
-	r.log.Printf("[DEBUG] GetOrCreate user: %v", userName)
+	r.log.Debug("GetOrCreate user: ", "userName", userName)
 
 	if _, ok := r.users[userName]; !ok {
-		r.log.Printf("[DEBUG] Creating new user: %v", userName)
+		r.log.Debug("Creating new user: ", "userName", userName)
 		r.users[userName] = user.NewUser(userName)
 	}
 
@@ -31,7 +31,7 @@ func (r *MemoryUserRepository) GetOrCreateUser(ctx context.Context, userName str
 }
 
 func (r *MemoryUserRepository) SaveUser(ctx context.Context, u *user.User) error {
-	r.log.Printf("[DEBUG] SaveUser: %v", u.WebAuthnName())
+	r.log.Debug("SaveUser: ", "u.WebAuthnName()", u.WebAuthnName())
 	r.users[u.WebAuthnName()] = u
 	return nil
 }

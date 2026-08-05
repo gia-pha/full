@@ -2,9 +2,9 @@ package command
 
 import (
 	"context"
+	"log/slog"
 	"net/http"
 
-	"auth-passkey/common/logger"
 	"auth-passkey/domain/session"
 	"auth-passkey/domain/user"
 
@@ -28,14 +28,14 @@ type finishLoginHandler struct {
 	webAuthn    *webauthn.WebAuthn
 	userRepo    user.Repository
 	sessionRepo session.Repository
-	log         logger.Logger
+	log         *slog.Logger
 }
 
 func NewFinishLoginHandler(
 	webAuthn *webauthn.WebAuthn,
 	userRepo user.Repository,
 	sessionRepo session.Repository,
-	log logger.Logger,
+	log *slog.Logger,
 ) FinishLoginHandler {
 	if webAuthn == nil {
 		panic("nil webAuthn")
@@ -75,7 +75,7 @@ func (h finishLoginHandler) Handle(ctx context.Context, cmd FinishLogin) (*Finis
 	}
 
 	if credential.Authenticator.CloneWarning {
-		h.log.Printf("[WARN] clone warning detected for user: %s", u.WebAuthnName())
+		h.log.Warn("Clone warning detected for user: ", "userName", u.WebAuthnName())
 	}
 
 	u.UpdateCredential(credential)

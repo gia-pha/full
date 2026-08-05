@@ -1,12 +1,15 @@
 package ports
 
-import "net/http"
+import (
+	"net/http"
+	"os"
+)
 
 func CORSHandler(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		origin := r.Header.Get("Origin")
 
-		if origin == "http://localhost:8081" {
+		if origin == os.Getenv("WEBAUTHN_ORIGINS") {
 			w.Header().Set("Access-Control-Allow-Origin", origin)
 			w.Header().Set("Access-Control-Allow-Credentials", "true")
 		}
