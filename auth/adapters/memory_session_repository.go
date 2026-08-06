@@ -4,18 +4,17 @@ import (
 	"context"
 	"crypto/rand"
 	"encoding/base64"
-
-	"auth-passkey/common/logger"
+	"log/slog"
 
 	"github.com/go-webauthn/webauthn/webauthn"
 )
 
 type MemorySessionRepository struct {
 	sessions map[string]webauthn.SessionData
-	log      logger.Logger
+	log      *slog.Logger
 }
 
-func NewMemorySessionRepository(log logger.Logger) *MemorySessionRepository {
+func NewMemorySessionRepository(log *slog.Logger) *MemorySessionRepository {
 	return &MemorySessionRepository{
 		sessions: make(map[string]webauthn.SessionData),
 		log:      log,
@@ -31,19 +30,19 @@ func (r *MemorySessionRepository) GenerateID(ctx context.Context) (string, error
 }
 
 func (r *MemorySessionRepository) GetSession(ctx context.Context, token string) (webauthn.SessionData, bool) {
-	r.log.Printf("[DEBUG] GetSession: %v", token)
+	r.log.Debug("GetSession: ", "token", token)
 	val, ok := r.sessions[token]
 	return val, ok
 }
 
 func (r *MemorySessionRepository) SaveSession(ctx context.Context, token string, data webauthn.SessionData) error {
-	r.log.Printf("[DEBUG] SaveSession: %s", token)
+	r.log.Debug("SaveSession: ", "token", token)
 	r.sessions[token] = data
 	return nil
 }
 
 func (r *MemorySessionRepository) DeleteSession(ctx context.Context, token string) error {
-	r.log.Printf("[DEBUG] DeleteSession: %v", token)
+	r.log.Debug("DeleteSession: ", "token", token)
 	delete(r.sessions, token)
 	return nil
 }

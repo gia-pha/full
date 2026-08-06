@@ -1,14 +1,32 @@
 package ports
 
-import "net/http"
+import (
+	"log/slog"
+	"net/http"
+	"os"
+	"slices"
+	"strings"
+)
 
-func CORSHandler(next http.HandlerFunc) http.HandlerFunc {
+func allowedOrigins() []string {
+	raw := os.Getenv("ALLOWED_ORIGINS")
+	if raw == "" {
+		return nil
+	}
+	return strings.Split(raw, ",")
+}
+
+func CORSHandler(log *slog.Logger, next http.HandlerFunc) http.HandlerFunc {
+	allowedOrigins := allowedOrigins()
+
 	return func(w http.ResponseWriter, r *http.Request) {
 		origin := r.Header.Get("Origin")
 
-		if origin == "http://localhost:8081" {
+		if slices.Contains(allowedOrigins, origin) {
 			w.Header().Set("Access-Control-Allow-Origin", origin)
 			w.Header().Set("Access-Control-Allow-Credentials", "true")
+		} else if origin != "" {
+			log.Warn("Origin not allowed by CORS policy", "origin", origin)
 		}
 
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")

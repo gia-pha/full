@@ -2,20 +2,20 @@ package ports
 
 import (
 	"encoding/json"
+	"log/slog"
 	"net/http"
 
 	"auth-passkey/app"
 	"auth-passkey/app/command"
 	"auth-passkey/app/query"
-	"auth-passkey/common/logger"
 )
 
 type HttpServer struct {
 	app app.Application
-	log logger.Logger
+	log *slog.Logger
 }
 
-func NewHttpServer(application app.Application, log logger.Logger) *HttpServer {
+func NewHttpServer(application app.Application, log *slog.Logger) *HttpServer {
 	return &HttpServer{
 		app: application,
 		log: log,
@@ -23,23 +23,18 @@ func NewHttpServer(application app.Application, log logger.Logger) *HttpServer {
 }
 
 func (h *HttpServer) RegisterRoutes(mux *http.ServeMux) {
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "http://localhost:8081", http.StatusFound)
-	})
-
-	mux.HandleFunc("/api/passkey/registerStart", CORSHandler(h.BeginRegistration))
-	mux.HandleFunc("/api/passkey/registerFinish", CORSHandler(h.FinishRegistration))
-	mux.HandleFunc("/api/passkey/loginStart", CORSHandler(h.BeginLogin))
-	mux.HandleFunc("/api/passkey/loginFinish", CORSHandler(h.FinishLogin))
-	mux.Handle("/private", h.LoggedInMiddleware(http.HandlerFunc(h.PrivatePage)))
+	mux.HandleFunc("/api/passkey/registerStart", CORSHandler(h.log, h.BeginRegistration))
+	mux.HandleFunc("/api/passkey/registerFinish", CORSHandler(h.log, h.FinishRegistration))
+	mux.HandleFunc("/api/passkey/loginStart", CORSHandler(h.log, h.BeginLogin))
+	mux.HandleFunc("/api/passkey/loginFinish", CORSHandler(h.log, h.FinishLogin))
 }
 
 func (h *HttpServer) BeginRegistration(w http.ResponseWriter, r *http.Request) {
-	h.log.Printf("[INFO] begin registration ----------------------\\")
+	h.log.Info("Begin registration ----------------------\\")
 
 	username, err := getUsername(r)
 	if err != nil {
-		h.log.Printf("[ERRO] can't get user name: %s", err.Error())
+		h.log.Error("Can't get user name: ", "err", err.Error())
 		jsonResponse(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -48,7 +43,7 @@ func (h *HttpServer) BeginRegistration(w http.ResponseWriter, r *http.Request) {
 		Username: username,
 	})
 	if err != nil {
-		h.log.Printf("[ERRO] can't begin registration: %s", err.Error())
+		h.log.Error("Can't begin registration: ", "err", err.Error())
 		jsonResponse(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -69,7 +64,7 @@ func (h *HttpServer) BeginRegistration(w http.ResponseWriter, r *http.Request) {
 func (h *HttpServer) FinishRegistration(w http.ResponseWriter, r *http.Request) {
 	sid, err := r.Cookie("sid")
 	if err != nil {
-		h.log.Printf("[ERRO] can't get session id: %s", err.Error())
+		h.log.Error("Can't get session id: ", "err", err.Error())
 		jsonResponse(w, "session not found", http.StatusBadRequest)
 		return
 	}
@@ -79,23 +74,23 @@ func (h *HttpServer) FinishRegistration(w http.ResponseWriter, r *http.Request) 
 		Request:   r,
 	})
 	if err != nil {
-		h.log.Printf("[ERRO] can't finish registration: %s", err.Error())
+		h.log.Error("Can't finish registration: ", "err", err.Error())
 		http.SetCookie(w, &http.Cookie{Name: "sid", Value: ""})
 		jsonResponse(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	http.SetCookie(w, &http.Cookie{Name: "sid", Value: ""})
-	h.log.Printf("[INFO] finish registration ----------------------/")
+	h.log.Info("Finish registration ----------------------/")
 	jsonResponse(w, "Registration Success", http.StatusOK)
 }
 
 func (h *HttpServer) BeginLogin(w http.ResponseWriter, r *http.Request) {
-	h.log.Printf("[INFO] begin login ----------------------\\")
+	h.log.Info("Begin login ----------------------\\")
 
 	username, err := getUsername(r)
 	if err != nil {
-		h.log.Printf("[ERRO] can't get user name: %s", err.Error())
+		h.log.Error("Can't get user name: ", "err", err.Error())
 		jsonResponse(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -104,7 +99,7 @@ func (h *HttpServer) BeginLogin(w http.ResponseWriter, r *http.Request) {
 		Username: username,
 	})
 	if err != nil {
-		h.log.Printf("[ERRO] can't begin login: %s", err.Error())
+		h.log.Error("Can't begin login: ", "err", err.Error())
 		jsonResponse(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -125,7 +120,7 @@ func (h *HttpServer) BeginLogin(w http.ResponseWriter, r *http.Request) {
 func (h *HttpServer) FinishLogin(w http.ResponseWriter, r *http.Request) {
 	sid, err := r.Cookie("sid")
 	if err != nil {
-		h.log.Printf("[ERRO] can't get session id: %s", err.Error())
+		h.log.Error("Can't get session id: ", "err", err.Error())
 		jsonResponse(w, "session not found", http.StatusBadRequest)
 		return
 	}
@@ -135,7 +130,7 @@ func (h *HttpServer) FinishLogin(w http.ResponseWriter, r *http.Request) {
 		Request:   r,
 	})
 	if err != nil {
-		h.log.Printf("[ERRO] can't finish login: %s", err.Error())
+		h.log.Error("Can't finish login: ", "err", err.Error())
 		jsonResponse(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -152,12 +147,8 @@ func (h *HttpServer) FinishLogin(w http.ResponseWriter, r *http.Request) {
 		SameSite: http.SameSiteLaxMode,
 	})
 
-	h.log.Printf("[INFO] finish login ----------------------/")
+	h.log.Info("Finish login ----------------------/")
 	jsonResponse(w, "Login Success", http.StatusOK)
-}
-
-func (h *HttpServer) PrivatePage(w http.ResponseWriter, r *http.Request) {
-	_, _ = w.Write([]byte("Hello, World!"))
 }
 
 func (h *HttpServer) LoggedInMiddleware(next http.Handler) http.Handler {
