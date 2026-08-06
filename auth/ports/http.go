@@ -23,10 +23,10 @@ func NewHttpServer(application app.Application, log *slog.Logger) *HttpServer {
 }
 
 func (h *HttpServer) RegisterRoutes(mux *http.ServeMux) {
-	mux.HandleFunc("/api/passkey/registerStart", CORSHandler(h.BeginRegistration))
-	mux.HandleFunc("/api/passkey/registerFinish", CORSHandler(h.FinishRegistration))
-	mux.HandleFunc("/api/passkey/loginStart", CORSHandler(h.BeginLogin))
-	mux.HandleFunc("/api/passkey/loginFinish", CORSHandler(h.FinishLogin))
+	mux.HandleFunc("/api/passkey/registerStart", CORSHandler(h.log, h.BeginRegistration))
+	mux.HandleFunc("/api/passkey/registerFinish", CORSHandler(h.log, h.FinishRegistration))
+	mux.HandleFunc("/api/passkey/loginStart", CORSHandler(h.log, h.BeginLogin))
+	mux.HandleFunc("/api/passkey/loginFinish", CORSHandler(h.log, h.FinishLogin))
 }
 
 func (h *HttpServer) BeginRegistration(w http.ResponseWriter, r *http.Request) {
