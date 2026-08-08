@@ -10,7 +10,6 @@ services:
       - PORT=:8080
       - WEBAUTHN_NAME=Gia Pha
       - WEBAUTHN_ID=localhost
-      - WEBAUTHN_ORIGINS=http://localhost:8081
       - ALLOWED_ORIGINS=http://localhost:8081
     develop:
       watch:

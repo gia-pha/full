@@ -16,8 +16,11 @@ type Commands struct {
 
 	BeginLogin  command.BeginLoginHandler
 	FinishLogin command.FinishLoginHandler
+
+	Logout command.LogoutHandler
 }
 
 type Queries struct {
 	IsSessionValid query.IsSessionValidHandler
+	UserInfo       query.UserInfoHandler
 }

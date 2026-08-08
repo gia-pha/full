@@ -2,6 +2,7 @@ package command
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"auth-passkey/domain/session"
@@ -53,21 +54,24 @@ func (h finishRegistrationHandler) Handle(ctx context.Context, cmd FinishRegistr
 		return ErrSessionNotFound
 	}
 
-	u, err := h.userRepo.GetOrCreateUser(ctx, string(sessionData.UserID))
+	u, err := h.userRepo.GetUser(ctx, string(sessionData.UserID))
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to get user: %w", err)
 	}
 
 	credential, err := h.webAuthn.FinishRegistration(u, sessionData, cmd.Request)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to finish registration: %w", err)
 	}
 
 	u.AddCredential(credential)
 
 	if err := h.userRepo.SaveUser(ctx, u); err != nil {
-		return err
+		return fmt.Errorf("failed to save user: %w", err)
 	}
 
-	return h.sessionRepo.DeleteSession(ctx, cmd.SessionID)
+	if err := h.sessionRepo.DeleteSession(ctx, cmd.SessionID); err != nil {
+		return fmt.Errorf("failed to delete session: %w", err)
+	}
+	return nil
 }

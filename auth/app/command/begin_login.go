@@ -2,6 +2,7 @@ package command
 
 import (
 	"context"
+	"fmt"
 
 	"auth-passkey/domain/session"
 	"auth-passkey/domain/user"
@@ -11,7 +12,6 @@ import (
 )
 
 type BeginLogin struct {
-	Username string
 }
 
 type BeginLoginResult struct {
@@ -52,23 +52,18 @@ func NewBeginLoginHandler(
 }
 
 func (h beginLoginHandler) Handle(ctx context.Context, cmd BeginLogin) (*BeginLoginResult, error) {
-	u, err := h.userRepo.GetOrCreateUser(ctx, cmd.Username)
+	options, sessionData, err := h.webAuthn.BeginDiscoverableLogin()
 	if err != nil {
-		return nil, err
-	}
-
-	options, sessionData, err := h.webAuthn.BeginLogin(u)
-	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to begin discoverable login: %w", err)
 	}
 
 	sessionID, err := h.sessionRepo.GenerateID(ctx)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to generate id: %w", err)
 	}
 
 	if err := h.sessionRepo.SaveSession(ctx, sessionID, *sessionData); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to save session: %w", err)
 	}
 
 	return &BeginLoginResult{

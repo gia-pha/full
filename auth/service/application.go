@@ -20,9 +20,11 @@ func NewApplication(webAuthn *webauthn.WebAuthn, log *slog.Logger) app.Applicati
 			FinishRegistration: command.NewFinishRegistrationHandler(webAuthn, userRepo, sessionRepo),
 			BeginLogin:         command.NewBeginLoginHandler(webAuthn, userRepo, sessionRepo),
 			FinishLogin:        command.NewFinishLoginHandler(webAuthn, userRepo, sessionRepo, log),
+			Logout:             command.NewLogoutHandler(sessionRepo),
 		},
 		Queries: app.Queries{
 			IsSessionValid: query.NewIsSessionValidHandler(sessionRepo),
+			UserInfo:       query.NewUserInfoHandler(sessionRepo, userRepo),
 		},
 	}
 }
