@@ -13,6 +13,18 @@ import (
 )
 
 func main() {
+	var lvl slog.Level
+	switch getEnv("LOG_LEVEL", "DEBUG") {
+	case "INFO":
+		lvl = slog.LevelInfo
+	case "WARN":
+		lvl = slog.LevelWarn
+	case "ERROR":
+		lvl = slog.LevelError
+	default:
+		lvl = slog.LevelInfo
+	}
+	slog.SetLogLoggerLevel(lvl)
 	logger := slog.Default()
 
 	proto := getEnv("PROTO", "http")

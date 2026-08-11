@@ -11,6 +11,7 @@ services:
       - WEBAUTHN_NAME=Gia Pha
       - WEBAUTHN_ID=localhost
       - ALLOWED_ORIGINS=http://localhost:8081
+      - LOG_LEVEL=DEBUG
     develop:
       watch:
         - action: rebuild
