@@ -5,6 +5,6 @@ import (
 )
 
 type Repository interface {
-	GetOrCreateUser(ctx context.Context, userName string) (*User, error)
+	GetUser(ctx context.Context, id string) (*User, error)
 	SaveUser(ctx context.Context, user *User) error
 }

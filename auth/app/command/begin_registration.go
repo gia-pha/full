@@ -2,6 +2,7 @@ package command
 
 import (
 	"context"
+	"fmt"
 
 	"auth-passkey/domain/session"
 	"auth-passkey/domain/user"
@@ -11,7 +12,7 @@ import (
 )
 
 type BeginRegistration struct {
-	Username string
+	Name string
 }
 
 type BeginRegistrationResult struct {
@@ -52,23 +53,30 @@ func NewBeginRegistrationHandler(
 }
 
 func (h beginRegistrationHandler) Handle(ctx context.Context, cmd BeginRegistration) (*BeginRegistrationResult, error) {
-	u, err := h.userRepo.GetOrCreateUser(ctx, cmd.Username)
-	if err != nil {
-		return nil, err
+	user := user.NewUser(cmd.Name)
+
+	opts := []webauthn.RegistrationOption{
+		webauthn.WithResidentKeyRequirement(protocol.ResidentKeyRequirementRequired),
+		webauthn.WithExclusions(webauthn.Credentials(user.WebAuthnCredentials()).CredentialDescriptors()),
+		webauthn.WithExtensions(map[string]any{"credProps": true}),
 	}
 
-	options, sessionData, err := h.webAuthn.BeginRegistration(u)
+	options, sessionData, err := h.webAuthn.BeginRegistration(user, opts...)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to begin registration: %w", err)
 	}
 
 	sessionID, err := h.sessionRepo.GenerateID(ctx)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to generate id: %w", err)
+	}
+
+	if err := h.userRepo.SaveUser(ctx, user); err != nil {
+		return nil, fmt.Errorf("failed to save user: %w", err)
 	}
 
 	if err := h.sessionRepo.SaveSession(ctx, sessionID, *sessionData); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to save session: %w", err)
 	}
 
 	return &BeginRegistrationResult{

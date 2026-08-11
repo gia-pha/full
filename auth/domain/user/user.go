@@ -1,6 +1,10 @@
 package user
 
-import "github.com/go-webauthn/webauthn/webauthn"
+import (
+	"crypto/rand"
+
+	"github.com/go-webauthn/webauthn/webauthn"
+)
 
 type User struct {
 	id          []byte
@@ -10,8 +14,11 @@ type User struct {
 }
 
 func NewUser(name string) *User {
+	id := make([]byte, 64)
+	rand.Read(id)
+
 	return &User{
-		id:          []byte(name),
+		id:          []byte(id),
 		name:        name,
 		displayName: name,
 	}

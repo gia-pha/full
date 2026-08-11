@@ -13,21 +13,34 @@ import (
 )
 
 func main() {
+	var lvl slog.Level
+	switch getEnv("LOG_LEVEL", "DEBUG") {
+	case "INFO":
+		lvl = slog.LevelInfo
+	case "WARN":
+		lvl = slog.LevelWarn
+	case "ERROR":
+		lvl = slog.LevelError
+	default:
+		lvl = slog.LevelInfo
+	}
+	slog.SetLogLoggerLevel(lvl)
 	logger := slog.Default()
 
 	proto := getEnv("PROTO", "http")
+	secure := proto == "https"
 	host := getEnv("HOST", "localhost")
 	port := getEnv("PORT", ":8080")
 	origin := fmt.Sprintf("%s://%s%s", proto, host, port)
 	webauthnName := getEnv("WEBAUTHN_NAME", "Go Webauthn")
 	webauthnId := getEnv("WEBAUTHN_ID", host)
-	webauthnOrigins := strings.Split(getEnv("WEBAUTHN_ORIGINS", origin), ",")
+	allowedOrigins := strings.Split(getEnv("ALLOWED_ORIGINS", origin), ",")
 
 	logger.Info("Make webauthn config")
 	wconfig := &webauthn.Config{
 		RPDisplayName: webauthnName,
 		RPID:          webauthnId,
-		RPOrigins:     webauthnOrigins,
+		RPOrigins:     allowedOrigins,
 	}
 	webAuthn, err := webauthn.New(wconfig)
 	if err != nil {
@@ -39,7 +52,7 @@ func main() {
 	application := service.NewApplication(webAuthn, logger)
 
 	logger.Info("Create http server")
-	httpServer := ports.NewHttpServer(application, logger)
+	httpServer := ports.NewHttpServer(application, logger, secure)
 
 	logger.Info("Register routes")
 	mux := http.NewServeMux()
