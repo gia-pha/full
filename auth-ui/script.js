@@ -71,6 +71,7 @@ async function register() {
         const msg = await verificationResponse.json();
         if (verificationResponse.ok) {
             showMessage(msg, false);
+            checkAuth();
         } else {
             showMessage(msg, true);
         }

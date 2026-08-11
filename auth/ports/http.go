@@ -62,7 +62,7 @@ func (h *HttpServer) FinishRegistration(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	err = h.app.Commands.FinishRegistration.Handle(r.Context(), command.FinishRegistration{
+	result, err := h.app.Commands.FinishRegistration.Handle(r.Context(), command.FinishRegistration{
 		SessionID: sid.Value,
 		Request:   r,
 	})
@@ -73,7 +73,7 @@ func (h *HttpServer) FinishRegistration(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	http.SetCookie(w, h.cookieOptions("", -1))
+	http.SetCookie(w, h.cookieOptions(result.NewSessionID, 3600))
 	h.log.Info("Finish registration ----------------------/")
 	jsonResponse(w, "Registration Success", http.StatusOK)
 }
