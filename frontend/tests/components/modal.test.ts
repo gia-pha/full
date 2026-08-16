@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { html, type TemplateResult } from 'lit';
 import '../../src/components/modal.js';
 import type { Modal } from '../../src/components/modal.js';
@@ -174,28 +174,62 @@ describe('Modal', () => {
   });
 
   describe('enter animation', () => {
-    it('starts below viewport and animates to visible position', async () => {
-      const el = document.createElement('app-modal');
-      el.title = 'Title';
-      document.body.appendChild(el);
-      el.open = true;
-      await el.updateComplete;
-      const content = el.querySelector('.modal-content')!;
-      expect(content.style.transform).toBe('translateY(100%)');
-      expect(content.style.opacity).toBe('0');
-      await new Promise((r) => setTimeout(r, 50));
-      expect(content.style.transform).toBe('translateY(0)');
-      expect(content.style.opacity).toBe('1');
-      expect(content.style.transition).toContain('transform');
-      expect(content.style.transition).toContain('opacity');
+    it('sets hidden start state on the first frame', async () => {
+      const rafs: FrameRequestCallback[] = [];
+      vi.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+        rafs.push(cb);
+        return 0;
+      });
+      try {
+        const el = document.createElement('app-modal');
+        el.title = 'Title';
+        document.body.appendChild(el);
+        el.open = true;
+        await el.updateComplete;
+        const content = el.querySelector('.modal-content')!;
+        expect(content.style.transform).toBe('');
+        expect(rafs.length).toBe(1);
+        rafs.shift()!(0);
+        expect(content.style.transform).toBe('translateY(100%)');
+        expect(content.style.opacity).toBe('0');
+        expect(rafs.length).toBe(1);
+      } finally {
+        vi.restoreAllMocks();
+      }
+    });
+
+    it('applies transition and visible end state on the second frame', async () => {
+      const rafs: FrameRequestCallback[] = [];
+      vi.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+        rafs.push(cb);
+        return 0;
+      });
+      try {
+        const el = document.createElement('app-modal');
+        el.title = 'Title';
+        document.body.appendChild(el);
+        el.open = true;
+        await el.updateComplete;
+        const content = el.querySelector('.modal-content')!;
+        rafs.shift()!(0);
+        rafs.shift()!(0);
+        expect(content.style.transform).toBe('translateY(0)');
+        expect(content.style.opacity).toBe('1');
+        expect(content.style.transition).toContain('transform');
+        expect(content.style.transition).toContain('opacity');
+      } finally {
+        vi.restoreAllMocks();
+      }
     });
 
     it('does not re-animate when other properties change while open', async () => {
       const el = await renderComponent({ open: true, title: 'A' });
       await new Promise((r) => setTimeout(r, 50));
       const content = el.querySelector('.modal-content')!;
+      expect(content.style.transform).toBe('translateY(0)');
       el.title = 'B';
       await el.updateComplete;
+      await new Promise((r) => setTimeout(r, 50));
       expect(content.style.transform).toBe('translateY(0)');
       expect(content.style.opacity).toBe('1');
     });

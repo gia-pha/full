@@ -42,13 +42,17 @@ export class Modal extends LitElement {
   private animateIn() {
     const content = this.querySelector<HTMLElement>('.modal-content');
     if (!content) return;
-    content.style.transform = 'translateY(100%)';
-    content.style.opacity = '0';
     requestAnimationFrame(() => {
-      content.style.transition =
-        'transform 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.2s';
-      content.style.transform = 'translateY(0)';
-      content.style.opacity = '1';
+      if (!content.isConnected) return;
+      content.style.transform = 'translateY(100%)';
+      content.style.opacity = '0';
+      requestAnimationFrame(() => {
+        if (!content.isConnected) return;
+        content.style.transition =
+          'transform 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.2s';
+        content.style.transform = 'translateY(0)';
+        content.style.opacity = '1';
+      });
     });
   }
 
