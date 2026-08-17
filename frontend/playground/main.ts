@@ -9,6 +9,9 @@ import '../src/components/modal.js';
 import '../src/components/app-input.js';
 import '../src/components/app-select.js';
 import '../src/components/app-textarea.js';
+import '../src/components/toggle.js';
+import '../src/components/tabs.js';
+import '../src/components/empty-state.js';
 import { eventCardSection } from './components/event-card.js';
 import { formControlsSection } from './components/form-controls.js';
 import { memberItemSection } from './components/member-item.js';
@@ -16,6 +19,7 @@ import { modalSection } from './components/modal.js';
 import { notificationItemSection } from './components/notification-item.js';
 import { personAvatarSection } from './components/person-avatar.js';
 import { transactionItemSection } from './components/transaction-item.js';
+import { uiBasicsSection } from './components/ui-basics.js';
 import { notify, state, subscribe, updatePerson } from './state.js';
 
 function renderPlayground() {
@@ -49,6 +53,7 @@ function renderPlayground() {
           ${notificationItemSection()}
           ${modalSection()}
           ${formControlsSection()}
+          ${uiBasicsSection()}
         </div>
       </div>
     `,
