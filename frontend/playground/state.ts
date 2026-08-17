@@ -1,6 +1,7 @@
 import type { FieldType } from '../src/components/app-input.js';
 import type { SelectOption } from '../src/components/app-select.js';
 import type { AvatarSize } from '../src/components/person-avatar.js';
+import type { TabDef } from '../src/components/tabs.js';
 import type {
   Event as CalendarEvent,
   Notification,
@@ -50,6 +51,11 @@ export interface PlaygroundState {
   selectShowPlaceholder: boolean;
   textareaValue: string;
   textareaRows: number;
+  toggleChecked: boolean;
+  tabsValue: string;
+  emptyIcon: string;
+  emptyMessage: string;
+  emptyVisible: boolean;
   lastEvent: string;
 }
 
@@ -97,8 +103,18 @@ export const state: PlaygroundState = {
   selectShowPlaceholder: false,
   textareaValue: 'Annual family gathering for the Lunar New Year.',
   textareaRows: 3,
+  toggleChecked: true,
+  tabsValue: 'upcoming',
+  emptyIcon: '📭',
+  emptyMessage: 'No events yet',
+  emptyVisible: true,
   lastEvent: '',
 };
+
+export const tabOptions: TabDef[] = [
+  { id: 'upcoming', label: '📅 Upcoming (3)' },
+  { id: 'past', label: '📋 Past (12)' },
+];
 
 export const sizes: AvatarSize[] = ['xs', 'sm', 'md', 'lg', 'xl'];
 
