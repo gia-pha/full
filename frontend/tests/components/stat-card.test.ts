@@ -7,14 +7,12 @@ async function renderComponent(opts?: {
   label?: string;
   value?: string;
   color?: StatCardColor;
-  classes?: string;
 }): Promise<StatCard> {
   const el = document.createElement('app-stat-card');
   if (opts?.icon !== undefined) el.icon = opts.icon;
   if (opts?.label !== undefined) el.label = opts.label;
   if (opts?.value !== undefined) el.value = opts.value;
   if (opts?.color !== undefined) el.color = opts.color;
-  if (opts?.classes !== undefined) el.classes = opts.classes;
   document.body.appendChild(el);
   await el.updateComplete;
   return el;
@@ -71,9 +69,14 @@ describe('StatCard', () => {
     expect(getCard(el).className).toContain('bg-blue-50');
   });
 
-  it('applies extra classes (e.g. grid span)', async () => {
-    const el = await renderComponent({ classes: 'sm:col-span-2' });
-    expect(getCard(el).className).toContain('sm:col-span-2');
+  it('keeps consumer layout classes on the host untouched (e.g. grid span)', async () => {
+    const el = document.createElement('app-stat-card');
+    el.className = 'sm:col-span-2';
+    el.label = 'Clan house';
+    document.body.appendChild(el);
+    await el.updateComplete;
+    expect(el.classList.contains('sm:col-span-2')).toBe(true);
+    expect(getCard(el).className).not.toContain('sm:col-span-2');
   });
 
   it('renders with no label or value when empty', async () => {

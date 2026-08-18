@@ -17,7 +17,6 @@ export class StatCard extends LitElement {
   @property({ type: String }) label = '';
   @property({ type: String }) value = '';
   @property({ type: String }) color: StatCardColor = 'blue';
-  @property({ type: String }) classes = '';
 
   override createRenderRoot() {
     return this;
@@ -26,9 +25,7 @@ export class StatCard extends LitElement {
   override render() {
     const color = COLORS[this.color] ?? COLORS.blue;
     return html`
-      <div
-        class="stat-card rounded-xl p-4 lg:p-5 border ${color} ${this.classes}"
-      >
+      <div class="stat-card rounded-xl p-4 lg:p-5 border ${color}">
         <p class="text-sm text-gray-500 mb-2 dark:text-gray-400">${this.icon} ${this.label}</p>
         <p
           class="stat-card-value font-semibold text-gray-800 text-base leading-snug dark:text-gray-100"

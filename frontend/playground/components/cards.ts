@@ -10,7 +10,7 @@ interface StatDemo {
   label: string;
   value: string;
   color: StatCardColor;
-  classes?: string;
+  span?: boolean;
 }
 
 interface InfoDemo {
@@ -40,14 +40,14 @@ const statDemos: StatDemo[] = [
     label: 'Clan house',
     value: 'Nguyen clan ancestral house, Soc Son district',
     color: 'green',
-    classes: 'sm:col-span-2',
+    span: true,
   },
   {
     icon: '🏘️',
     label: 'Village',
     value: 'Xuan Dinh hamlet, Hoang Giau commune',
     color: 'purple',
-    classes: 'sm:col-span-2',
+    span: true,
   },
 ];
 
@@ -102,7 +102,7 @@ export function cardsSection(): TemplateResult {
                     label=${card.label}
                     value=${card.value}
                     color=${card.color}
-                    classes=${card.classes || ''}
+                    class=${card.span ? 'sm:col-span-2' : null}
                   ></app-stat-card>
                 `,
               )}
