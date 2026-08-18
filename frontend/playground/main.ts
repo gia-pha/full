@@ -1,6 +1,7 @@
 import { html, render } from 'lit';
 import '../src/styles/main.css';
 import '../src/components/person-avatar.js';
+import '../src/components/avatar-stack.js';
 import '../src/components/member-item.js';
 import '../src/components/event-card.js';
 import '../src/components/transaction-item.js';
@@ -15,6 +16,7 @@ import '../src/components/empty-state.js';
 import '../src/components/stat-card.js';
 import '../src/components/info-card.js';
 import '../src/components/relation-card.js';
+import { avatarStackSection } from './components/avatar-stack.js';
 import { cardsSection } from './components/cards.js';
 import { eventCardSection } from './components/event-card.js';
 import { formControlsSection } from './components/form-controls.js';
@@ -51,6 +53,7 @@ function renderPlayground() {
 
         <div class="container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
           ${personAvatarSection(person)}
+          ${avatarStackSection()}
           ${memberItemSection(person)}
           ${eventCardSection()}
           ${transactionItemSection()}

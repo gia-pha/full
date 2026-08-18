@@ -12,6 +12,9 @@ import type {
 export interface PlaygroundState {
   dark: boolean;
   avatarSize: AvatarSize;
+  stackMax: number;
+  stackLabel: string;
+  stackShowOverflow: boolean;
   selected: boolean;
   honorific: string;
   locked: boolean;
@@ -62,6 +65,9 @@ export interface PlaygroundState {
 export const state: PlaygroundState = {
   dark: false,
   avatarSize: 'md',
+  stackMax: 3,
+  stackLabel: '4 người tham gia',
+  stackShowOverflow: true,
   selected: false,
   honorific: 'Bố',
   locked: false,
