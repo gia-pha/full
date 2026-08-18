@@ -12,6 +12,10 @@ import '../src/components/app-textarea.js';
 import '../src/components/toggle.js';
 import '../src/components/tabs.js';
 import '../src/components/empty-state.js';
+import '../src/components/stat-card.js';
+import '../src/components/info-card.js';
+import '../src/components/relation-card.js';
+import { cardsSection } from './components/cards.js';
 import { eventCardSection } from './components/event-card.js';
 import { formControlsSection } from './components/form-controls.js';
 import { memberItemSection } from './components/member-item.js';
@@ -54,6 +58,7 @@ function renderPlayground() {
           ${modalSection()}
           ${formControlsSection()}
           ${uiBasicsSection()}
+          ${cardsSection()}
         </div>
       </div>
     `,
