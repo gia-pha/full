@@ -6,7 +6,7 @@ import { getFullName } from '../utils/format.js';
 
 export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
-const sizes: Record<AvatarSize, { dim: string; icon: string }> = {
+export const sizes: Record<AvatarSize, { dim: string; icon: string }> = {
   xs: { dim: 'w-6 h-6', icon: 'w-4 h-4' },
   sm: { dim: 'w-8 h-8', icon: 'w-5 h-5' },
   md: { dim: 'w-12 h-12', icon: 'w-7 h-7' },
