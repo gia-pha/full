@@ -1,3 +1,4 @@
+import type { ButtonVariant } from '../src/components/app-button.js';
 import type { FieldType } from '../src/components/app-input.js';
 import type { SelectOption } from '../src/components/app-select.js';
 import type { AvatarSize } from '../src/components/person-avatar.js';
@@ -59,6 +60,11 @@ export interface PlaygroundState {
   emptyIcon: string;
   emptyMessage: string;
   emptyVisible: boolean;
+  buttonVariant: ButtonVariant;
+  buttonIcon: string;
+  buttonLabel: string;
+  buttonFullWidth: boolean;
+  buttonDisabled: boolean;
   lastEvent: string;
 }
 
@@ -114,6 +120,11 @@ export const state: PlaygroundState = {
   emptyIcon: '📭',
   emptyMessage: 'No events yet',
   emptyVisible: true,
+  buttonVariant: 'primary',
+  buttonIcon: '',
+  buttonLabel: 'Save changes',
+  buttonFullWidth: false,
+  buttonDisabled: false,
   lastEvent: '',
 };
 
