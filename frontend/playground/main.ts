@@ -16,6 +16,8 @@ import '../src/components/empty-state.js';
 import '../src/components/stat-card.js';
 import '../src/components/info-card.js';
 import '../src/components/relation-card.js';
+import '../src/components/app-button.js';
+import { appButtonSection } from './components/app-button.js';
 import { avatarStackSection } from './components/avatar-stack.js';
 import { cardsSection } from './components/cards.js';
 import { eventCardSection } from './components/event-card.js';
@@ -60,6 +62,7 @@ function renderPlayground() {
           ${notificationItemSection()}
           ${modalSection()}
           ${formControlsSection()}
+          ${appButtonSection()}
           ${uiBasicsSection()}
           ${cardsSection()}
         </div>
