@@ -14,13 +14,9 @@ const overflowText: Record<AvatarSize, string> = {
 @customElement('app-avatar-stack')
 export class AvatarStack extends LitElement {
   @property({ type: Array }) people: Person[] = [];
-
   @property({ type: Number }) max = 5;
-
   @property({ type: String, reflect: true }) size: AvatarSize = 'sm';
-
   @property({ type: String }) label = '';
-
   @property({ type: Boolean }) showOverflow = true;
 
   override createRenderRoot() {

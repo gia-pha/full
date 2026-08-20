@@ -12,17 +12,11 @@ interface MonthBucket {
 @customElement('app-fund-chart')
 export class FundChart extends LitElement {
   @property({ type: Array }) transactions: Transaction[] = [];
-
   @property({ type: String }) title = '';
-
   @property({ type: String }) currency = 'VND';
-
   @property({ type: String }) contributionLabel = 'Contributions';
-
   @property({ type: String }) expenseLabel = 'Expenses';
-
   @property({ type: Boolean }) showLegend = true;
-
   @property({ attribute: false })
   formatLabel: (key: string) => string = (key) => key;
 
