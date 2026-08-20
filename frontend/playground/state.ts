@@ -65,6 +65,10 @@ export interface PlaygroundState {
   buttonLabel: string;
   buttonFullWidth: boolean;
   buttonDisabled: boolean;
+  chartScenario: 'sample' | 'usd' | 'empty';
+  chartTitle: string;
+  chartShowLegend: boolean;
+  chartSlashedLabels: boolean;
   lastEvent: string;
 }
 
@@ -125,8 +129,94 @@ export const state: PlaygroundState = {
   buttonLabel: 'Save changes',
   buttonFullWidth: false,
   buttonDisabled: false,
+  chartScenario: 'sample',
+  chartTitle: 'Biểu đồ theo tháng',
+  chartShowLegend: true,
+  chartSlashedLabels: false,
   lastEvent: '',
 };
+
+const chartSample: Transaction[] = [
+  {
+    id: 'fc-1',
+    date: '2024-12-05',
+    type: 'expense',
+    amount: 2_000_000,
+    description: 'Sửa bàn thờ tổ',
+  },
+  {
+    id: 'fc-2',
+    date: '2025-01-15',
+    type: 'contribution',
+    amount: 10_000_000,
+    description: 'Đóng góp quý I',
+  },
+  {
+    id: 'fc-3',
+    date: '2025-01-25',
+    type: 'contribution',
+    amount: 5_000_000,
+    description: 'Hương công khuyến mãi',
+  },
+  {
+    id: 'fc-4',
+    date: '2025-02-10',
+    type: 'expense',
+    amount: 15_000_000,
+    description: 'Lễ giỗ tổ 2025',
+  },
+  {
+    id: 'fc-5',
+    date: '2025-02-20',
+    type: 'contribution',
+    amount: 8_000_000,
+    description: 'Đóng góp quý I (đợt 2)',
+  },
+  {
+    id: 'fc-6',
+    date: '2025-03-05',
+    type: 'contribution',
+    amount: 12_000_000,
+    description: 'Đóng góp quý II',
+  },
+  {
+    id: 'fc-7',
+    date: '2025-03-18',
+    type: 'expense',
+    amount: 3_000_000,
+    description: 'In sao lục gia phả',
+  },
+];
+
+const chartUsd: Transaction[] = [
+  {
+    id: 'fc-u1',
+    date: '2025-01-10',
+    type: 'contribution',
+    amount: 250,
+    description: 'Family fund contribution',
+  },
+  {
+    id: 'fc-u2',
+    date: '2025-01-22',
+    type: 'expense',
+    amount: 90,
+    description: 'Ancestral hall repairs',
+  },
+  {
+    id: 'fc-u3',
+    date: '2025-02-14',
+    type: 'contribution',
+    amount: 400,
+    description: 'Annual meeting fund',
+  },
+];
+
+export function chartTransactions(): Transaction[] {
+  if (state.chartScenario === 'empty') return [];
+  if (state.chartScenario === 'usd') return chartUsd;
+  return chartSample;
+}
 
 export const tabOptions: TabDef[] = [
   { id: 'upcoming', label: '📅 Upcoming (3)' },
