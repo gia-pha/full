@@ -108,7 +108,7 @@ describe('Modal', () => {
     it('dispatches close event on click', async () => {
       const el = await renderComponent({ open: true });
       const closeEvent = awaitClose(el);
-      el.querySelector('.modal-close')!.click();
+      (el.querySelector('.modal-close') as HTMLButtonElement).click();
       const event = await closeEvent;
       expect(event.type).toBe('close');
       expect(event.bubbles).toBe(true);
@@ -120,7 +120,7 @@ describe('Modal', () => {
     it('dispatches close event when clicking overlay', async () => {
       const el = await renderComponent({ open: true });
       const closeEvent = awaitClose(el);
-      el.querySelector('.modal-overlay')!.click();
+      (el.querySelector('.modal-overlay') as HTMLElement).click();
       const event = await closeEvent;
       expect(event.type).toBe('close');
     });
@@ -131,7 +131,7 @@ describe('Modal', () => {
       el.addEventListener('close', () => {
         closed = true;
       });
-      el.querySelector('.modal-content')!.click();
+      (el.querySelector('.modal-content') as HTMLElement).click();
       await tick();
       expect(closed).toBe(false);
     });
@@ -186,7 +186,7 @@ describe('Modal', () => {
         document.body.appendChild(el);
         el.open = true;
         await el.updateComplete;
-        const content = el.querySelector('.modal-content')!;
+        const content = el.querySelector('.modal-content') as HTMLElement;
         expect(content.style.transform).toBe('');
         expect(rafs.length).toBe(1);
         rafs.shift()!(0);
@@ -210,7 +210,7 @@ describe('Modal', () => {
         document.body.appendChild(el);
         el.open = true;
         await el.updateComplete;
-        const content = el.querySelector('.modal-content')!;
+        const content = el.querySelector('.modal-content') as HTMLElement;
         rafs.shift()!(0);
         rafs.shift()!(0);
         expect(content.style.transform).toBe('translateY(0)');
@@ -225,7 +225,7 @@ describe('Modal', () => {
     it('does not re-animate when other properties change while open', async () => {
       const el = await renderComponent({ open: true, title: 'A' });
       await new Promise((r) => setTimeout(r, 50));
-      const content = el.querySelector('.modal-content')!;
+      const content = el.querySelector('.modal-content') as HTMLElement;
       expect(content.style.transform).toBe('translateY(0)');
       el.title = 'B';
       await el.updateComplete;

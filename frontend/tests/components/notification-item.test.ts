@@ -149,7 +149,7 @@ describe('NotificationItem', () => {
       const notification = makeNotification({ read: false });
       const el = await renderComponent(notification);
       const markReadPromise = new Promise<CustomEvent>((resolve) => {
-        el.addEventListener('mark-read', (e: CustomEvent) => resolve(e), {
+        el.addEventListener('mark-read', (e) => resolve(e as CustomEvent), {
           once: true,
         });
       });
@@ -180,11 +180,13 @@ describe('NotificationItem', () => {
     it('dispatches dismiss event on delete click', async () => {
       const el = await renderComponent(makeNotification());
       const dismissPromise = new Promise<CustomEvent>((resolve) => {
-        el.addEventListener('dismiss', (e: CustomEvent) => resolve(e), {
+        el.addEventListener('dismiss', (e) => resolve(e as CustomEvent), {
           once: true,
         });
       });
-      const deleteBtn = el.querySelector('button[title="Delete"]')!;
+      const deleteBtn = el.querySelector(
+        'button[title="Delete"]',
+      ) as HTMLButtonElement;
       deleteBtn.click();
       const event = await dismissPromise;
       expect(event.type).toBe('dismiss');
@@ -192,7 +194,9 @@ describe('NotificationItem', () => {
 
     it('sets dismissed flag on dismiss', async () => {
       const el = await renderComponent(makeNotification());
-      const deleteBtn = el.querySelector('button[title="Delete"]')!;
+      const deleteBtn = el.querySelector(
+        'button[title="Delete"]',
+      ) as HTMLButtonElement;
       deleteBtn.click();
       await el.updateComplete;
       expect(el.dismissed).toBe(true);
@@ -205,7 +209,9 @@ describe('NotificationItem', () => {
       el.addEventListener('mark-read', () => {
         markReadFired = true;
       });
-      const deleteBtn = el.querySelector('button[title="Delete"]')!;
+      const deleteBtn = el.querySelector(
+        'button[title="Delete"]',
+      ) as HTMLButtonElement;
       deleteBtn.click();
       await el.updateComplete;
       expect(markReadFired).toBe(false);

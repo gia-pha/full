@@ -69,9 +69,7 @@ describe('AvatarStack', () => {
   it('passes each person to person-avatar', async () => {
     const el = await renderComponent({ people: people.slice(0, 2) });
     await el.updateComplete;
-    const avatars = el.querySelectorAll(
-      'person-avatar',
-    ) as Array<HTMLElement & { person: Person }>;
+    const avatars = Array.from(el.querySelectorAll('person-avatar'));
     expect(avatars[0].person.id).toBe('a');
     expect(avatars[1].person.id).toBe('b');
   });
@@ -87,9 +85,7 @@ describe('AvatarStack', () => {
 
   it('passes the size prop to each avatar', async () => {
     const el = await renderComponent({ people: people.slice(0, 2), size: 'md' });
-    const avatars = el.querySelectorAll('person-avatar') as Array<
-      { size: AvatarSize }
-    >;
+    const avatars = Array.from(el.querySelectorAll('person-avatar'));
     expect(avatars[0].size).toBe('md');
   });
 
