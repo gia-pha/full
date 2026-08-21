@@ -49,7 +49,7 @@ async function renderComponent(opts?: {
 }
 
 function getGroups(el: FundChart): HTMLElement[] {
-  return [...el.querySelectorAll('.fund-chart-group')];
+  return [...el.querySelectorAll('.fund-chart-group')] as HTMLElement[];
 }
 
 function getBar(
