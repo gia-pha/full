@@ -9,8 +9,8 @@
     "test": "vitest",
     "test:run": "vitest run",
     "typecheck": "tsc --noEmit",
-    "fix": "biome check src/ playground/ --fix",
-    "check": "biome check src/ playground/"
+    "fix": "biome check src/ playground/ tests/ --fix",
+    "check": "biome check src/ playground/ tests/"
   },
   "keywords": [],
   "author": "",

@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import '../../src/components/fund-chart.js';
-import type { FundChart } from '../../src/components/fund-chart.js';
 import type { AppEmptyState } from '../../src/components/empty-state.js';
+import type { FundChart } from '../../src/components/fund-chart.js';
 import type { Transaction } from '../../src/types/index.js';
 import { formatCurrency } from '../../src/utils/format.js';
 
@@ -72,7 +72,9 @@ function getLabels(el: FundChart): string[] {
 }
 
 afterEach(() => {
-  document.querySelectorAll('app-fund-chart').forEach((el) => el.remove());
+  document.querySelectorAll('app-fund-chart').forEach((el) => {
+    el.remove();
+  });
 });
 
 describe('FundChart', () => {

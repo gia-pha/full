@@ -40,7 +40,9 @@ function tick(): Promise<void> {
 }
 
 afterEach(() => {
-  document.querySelectorAll('app-select').forEach((el) => el.remove());
+  document.querySelectorAll('app-select').forEach((el) => {
+    el.remove();
+  });
 });
 
 describe('AppSelect', () => {

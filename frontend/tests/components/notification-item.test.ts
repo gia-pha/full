@@ -3,9 +3,7 @@ import '../../src/components/notification-item.js';
 import type { NotificationItem } from '../../src/components/notification-item.js';
 import type { Notification } from '../../src/types/index.js';
 
-const makeNotification = (
-  overrides?: Partial<Notification>,
-): Notification => ({
+const makeNotification = (overrides?: Partial<Notification>): Notification => ({
   id: 'notif-1',
   type: 'fund_change',
   title: 'Test notification',
@@ -74,7 +72,9 @@ describe('NotificationItem', () => {
 
   describe('notification type icons', () => {
     it('shows fund_change icon', async () => {
-      const el = await renderComponent(makeNotification({ type: 'fund_change' }));
+      const el = await renderComponent(
+        makeNotification({ type: 'fund_change' }),
+      );
       expect(getContent(el)).toContain('💰');
     });
 
@@ -98,9 +98,7 @@ describe('NotificationItem', () => {
     });
 
     it('shows fallback icon for unknown type', async () => {
-      const el = await renderComponent(
-        makeNotification({ type: 'unknown' as any }),
-      );
+      const el = await renderComponent(makeNotification({ type: 'unknown' }));
       expect(getContent(el)).toContain('📌');
     });
   });

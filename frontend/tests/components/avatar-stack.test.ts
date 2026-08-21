@@ -47,7 +47,9 @@ function getAvatars(el: AvatarStack): HTMLElement[] {
 }
 
 afterEach(() => {
-  document.querySelectorAll('app-avatar-stack').forEach((el) => el.remove());
+  document.querySelectorAll('app-avatar-stack').forEach((el) => {
+    el.remove();
+  });
 });
 
 describe('AvatarStack', () => {
@@ -84,7 +86,10 @@ describe('AvatarStack', () => {
   });
 
   it('passes the size prop to each avatar', async () => {
-    const el = await renderComponent({ people: people.slice(0, 2), size: 'md' });
+    const el = await renderComponent({
+      people: people.slice(0, 2),
+      size: 'md',
+    });
     const avatars = Array.from(el.querySelectorAll('person-avatar'));
     expect(avatars[0].size).toBe('md');
   });

@@ -31,7 +31,9 @@ function tick(): Promise<void> {
 }
 
 afterEach(() => {
-  document.querySelectorAll('app-textarea').forEach((el) => el.remove());
+  document.querySelectorAll('app-textarea').forEach((el) => {
+    el.remove();
+  });
 });
 
 describe('AppTextarea', () => {

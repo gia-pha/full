@@ -1,10 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import '../../src/components/tabs.js';
-import type {
-  AppTabs,
-  TabDef,
-  TabsDetail,
-} from '../../src/components/tabs.js';
+import type { AppTabs, TabDef, TabsDetail } from '../../src/components/tabs.js';
 
 const defaultTabs: TabDef[] = [
   { id: 'upcoming', label: '📅 Upcoming (3)' },
@@ -24,7 +20,9 @@ async function renderComponent(opts?: {
 }
 
 function getTabButtons(el: AppTabs): HTMLButtonElement[] {
-  return Array.from(el.querySelectorAll<HTMLButtonElement>('button[role="tab"]'));
+  return Array.from(
+    el.querySelectorAll<HTMLButtonElement>('button[role="tab"]'),
+  );
 }
 
 function tick(): Promise<void> {
@@ -32,7 +30,9 @@ function tick(): Promise<void> {
 }
 
 afterEach(() => {
-  document.querySelectorAll('app-tabs').forEach((el) => el.remove());
+  document.querySelectorAll('app-tabs').forEach((el) => {
+    el.remove();
+  });
 });
 
 describe('AppTabs', () => {
@@ -95,9 +95,7 @@ describe('AppTabs', () => {
       await el.updateComplete;
       expect(el.value).toBe('past');
       expect(events).toEqual([{ id: 'past' }]);
-      expect(
-        getTabButtons(el)[1].getAttribute('aria-selected'),
-      ).toBe('true');
+      expect(getTabButtons(el)[1].getAttribute('aria-selected')).toBe('true');
     });
 
     it('does not dispatch when clicking the already-active tab', async () => {

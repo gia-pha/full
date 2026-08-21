@@ -23,7 +23,9 @@ function getMessage(el: AppEmptyState): HTMLParagraphElement {
 }
 
 afterEach(() => {
-  document.querySelectorAll('app-empty-state').forEach((el) => el.remove());
+  document.querySelectorAll('app-empty-state').forEach((el) => {
+    el.remove();
+  });
 });
 
 describe('AppEmptyState', () => {
@@ -38,7 +40,10 @@ describe('AppEmptyState', () => {
   });
 
   it('renders a custom icon', async () => {
-    const el = await renderComponent({ icon: '🔕', message: 'No notifications' });
+    const el = await renderComponent({
+      icon: '🔕',
+      message: 'No notifications',
+    });
     expect(getIcon(el).textContent).toBe('🔕');
   });
 

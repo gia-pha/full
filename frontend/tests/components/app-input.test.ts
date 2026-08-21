@@ -1,9 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import '../../src/components/app-input.js';
-import type {
-  FieldType,
-  AppInput,
-} from '../../src/components/app-input.js';
+import type { AppInput, FieldType } from '../../src/components/app-input.js';
 
 async function renderComponent(opts?: {
   label?: string;
@@ -34,7 +31,9 @@ function tick(): Promise<void> {
 }
 
 afterEach(() => {
-  document.querySelectorAll('app-input').forEach((el) => el.remove());
+  document.querySelectorAll('app-input').forEach((el) => {
+    el.remove();
+  });
 });
 
 describe('AppInput', () => {
@@ -57,13 +56,15 @@ describe('AppInput', () => {
       expect(getInput(el).type).toBe('text');
     });
 
-    it.each(['text', 'number', 'date', 'url'] as const)(
-      'renders %s type',
-      async (type) => {
-        const el = await renderComponent({ type });
-        expect(getInput(el).type).toBe(type);
-      },
-    );
+    it.each([
+      'text',
+      'number',
+      'date',
+      'url',
+    ] as const)('renders %s type', async (type) => {
+      const el = await renderComponent({ type });
+      expect(getInput(el).type).toBe(type);
+    });
 
     it('renders initial value', async () => {
       const el = await renderComponent({ value: 'Nguyen Van A' });

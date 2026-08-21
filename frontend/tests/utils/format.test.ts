@@ -2,11 +2,11 @@ import { describe, expect, it } from 'vitest';
 import type { Person } from '../../src/types/index.js';
 import {
   formatCurrency,
+  formatDate,
   getFullName,
   getGenderSymbol,
   getInitials,
   isDeceased,
-  formatDate,
 } from '../../src/utils/format.js';
 
 const makePerson = (overrides?: Partial<typeof mockPerson.data>): Person => ({
