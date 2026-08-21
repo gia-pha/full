@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import '../../src/components/fund-chart.js';
 import type { FundChart } from '../../src/components/fund-chart.js';
+import type { AppEmptyState } from '../../src/components/empty-state.js';
 import type { Transaction } from '../../src/types/index.js';
 import { formatCurrency } from '../../src/utils/format.js';
 
@@ -30,6 +31,7 @@ async function renderComponent(opts?: {
   expenseLabel?: string;
   showLegend?: boolean;
   formatLabel?: (key: string) => string;
+  emptyMessage?: string;
 }): Promise<FundChart> {
   const el = document.createElement('app-fund-chart');
   if (opts?.transactions !== undefined) el.transactions = opts.transactions;
@@ -40,6 +42,7 @@ async function renderComponent(opts?: {
   if (opts?.expenseLabel !== undefined) el.expenseLabel = opts.expenseLabel;
   if (opts?.showLegend !== undefined) el.showLegend = opts.showLegend;
   if (opts?.formatLabel !== undefined) el.formatLabel = opts.formatLabel;
+  if (opts?.emptyMessage !== undefined) el.emptyMessage = opts.emptyMessage;
   document.body.appendChild(el);
   await el.updateComplete;
   return el;
@@ -73,9 +76,24 @@ afterEach(() => {
 });
 
 describe('FundChart', () => {
-  it('renders nothing when there are no transactions', async () => {
+  it('shows the empty message when there are no transactions', async () => {
     const el = await renderComponent({ transactions: [] });
-    expect(el.querySelector('.app-fund-chart')).toBeNull();
+    const empty = el.querySelector('app-empty-state') as AppEmptyState;
+    expect(empty).not.toBeNull();
+    await empty.updateComplete;
+    expect(empty.message).toBe('No data');
+    expect(el.querySelectorAll('.fund-chart-group')).toHaveLength(0);
+  });
+
+  it('supports a custom empty message', async () => {
+    const el = await renderComponent({
+      transactions: [],
+      emptyMessage: 'Chưa có dữ liệu',
+    });
+    const empty = el.querySelector('app-empty-state') as AppEmptyState;
+    expect(empty).not.toBeNull();
+    await empty.updateComplete;
+    expect(empty.message).toBe('Chưa có dữ liệu');
   });
 
   it('renders one group per month, sorted ascending', async () => {

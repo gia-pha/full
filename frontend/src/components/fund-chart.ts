@@ -2,6 +2,7 @@ import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import type { Transaction } from '../types/index.js';
 import { formatCurrency } from '../utils/format.js';
+import './empty-state.js';
 
 interface MonthBucket {
   key: string;
@@ -17,6 +18,7 @@ export class FundChart extends LitElement {
   @property({ type: String }) contributionLabel = 'Contributions';
   @property({ type: String }) expenseLabel = 'Expenses';
   @property({ type: Boolean }) showLegend = true;
+  @property({ type: String }) emptyMessage = 'No data';
   @property({ attribute: false })
   formatLabel: (key: string) => string = (key) => key;
 
@@ -40,7 +42,23 @@ export class FundChart extends LitElement {
 
   override render() {
     const months = this.months;
-    if (months.length === 0) return html``;
+    if (months.length === 0) {
+      return html`
+        <div class="app-fund-chart">
+          ${
+            this.title
+              ? html`<h3 class="fund-chart-title text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">${this.title}</h3>`
+              : ''
+          }
+          <div class="bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-4 lg:p-6 border border-gray-200 dark:border-gray-700">
+            <app-empty-state
+              icon="📊"
+              .message=${this.emptyMessage}
+            ></app-empty-state>
+          </div>
+        </div>
+      `;
+    }
 
     const maxVal = Math.max(
       ...months.map((m) => Math.max(m.contributions, m.expenses)),

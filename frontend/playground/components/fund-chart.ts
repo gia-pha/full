@@ -28,6 +28,7 @@ export function fundChartSection(): TemplateResult {
             .contributionLabel=${'Đóng góp'}
             .expenseLabel=${'Chi tiêu'}
             .showLegend=${state.chartShowLegend}
+            .emptyMessage=${'Chưa có dữ liệu'}
             .formatLabel=${(key: string) =>
               state.chartSlashedLabels ? key.replaceAll('-', '/') : key}
           ></app-fund-chart>
@@ -46,14 +47,19 @@ export function fundChartSection(): TemplateResult {
               state.chartScenario = (e.target as HTMLSelectElement).value as
                 | 'sample'
                 | 'usd'
+                | 'big'
                 | 'empty';
               notify();
             }}
           >
-            <option value="sample">Clan fund — 4 months (VND)</option>
-            <option value="usd">Small fund (USD)</option>
+            <option value="sample">Clan fund — 2 years (VND)</option>
+            <option value="usd">Small fund — 1 year (USD)</option>
+            <option value="big">Big data — 10 years, 361 txns (VND)</option>
             <option value="empty">Empty (no transactions)</option>
           </select>
+          <p class="mt-1 text-xs text-gray-400 os-dark:text-gray-500">
+            ${transactions.length} transactions
+          </p>
         </div>
 
         <div>
