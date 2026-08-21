@@ -1,6 +1,9 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import '../../src/components/stat-card.js';
-import type { StatCard, StatCardColor } from '../../src/components/stat-card.js';
+import type {
+  StatCard,
+  StatCardColor,
+} from '../../src/components/stat-card.js';
 
 async function renderComponent(opts?: {
   icon?: string;
@@ -31,7 +34,9 @@ function getValue(el: StatCard): HTMLParagraphElement {
 }
 
 afterEach(() => {
-  document.querySelectorAll('app-stat-card').forEach((el) => el.remove());
+  document.querySelectorAll('app-stat-card').forEach((el) => {
+    el.remove();
+  });
 });
 
 describe('StatCard', () => {

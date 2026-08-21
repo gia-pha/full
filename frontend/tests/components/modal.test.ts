@@ -1,5 +1,5 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
 import { html, type TemplateResult } from 'lit';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import '../../src/components/modal.js';
 import type { Modal } from '../../src/components/modal.js';
 
@@ -36,7 +36,9 @@ function tick(): Promise<void> {
 }
 
 afterEach(() => {
-  document.querySelectorAll('app-modal').forEach((el) => el.remove());
+  document.querySelectorAll('app-modal').forEach((el) => {
+    el.remove();
+  });
 });
 
 describe('Modal', () => {
@@ -141,9 +143,7 @@ describe('Modal', () => {
     it('dispatches close event on Escape when open', async () => {
       const el = await renderComponent({ open: true });
       const closeEvent = awaitClose(el);
-      document.dispatchEvent(
-        new KeyboardEvent('keydown', { key: 'Escape' }),
-      );
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
       const event = await closeEvent;
       expect(event.type).toBe('close');
     });
@@ -154,9 +154,7 @@ describe('Modal', () => {
       el.addEventListener('close', () => {
         closed = true;
       });
-      document.dispatchEvent(
-        new KeyboardEvent('keydown', { key: 'Escape' }),
-      );
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
       await tick();
       expect(closed).toBe(false);
     });

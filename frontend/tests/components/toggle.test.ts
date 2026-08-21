@@ -25,7 +25,9 @@ function tick(): Promise<void> {
 }
 
 afterEach(() => {
-  document.querySelectorAll('app-toggle').forEach((el) => el.remove());
+  document.querySelectorAll('app-toggle').forEach((el) => {
+    el.remove();
+  });
 });
 
 describe('AppToggle', () => {

@@ -32,7 +32,9 @@ function getValue(el: InfoCard): HTMLParagraphElement {
 }
 
 afterEach(() => {
-  document.querySelectorAll('app-info-card').forEach((el) => el.remove());
+  document.querySelectorAll('app-info-card').forEach((el) => {
+    el.remove();
+  });
 });
 
 describe('InfoCard', () => {

@@ -30,7 +30,9 @@ function tick(): Promise<void> {
 }
 
 afterEach(() => {
-  document.querySelectorAll('app-button').forEach((el) => el.remove());
+  document.querySelectorAll('app-button').forEach((el) => {
+    el.remove();
+  });
 });
 
 describe('AppButton', () => {

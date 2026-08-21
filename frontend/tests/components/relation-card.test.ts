@@ -44,7 +44,9 @@ function awaitSelect(el: RelationCard): Promise<CustomEvent> {
 }
 
 afterEach(() => {
-  document.querySelectorAll('app-relation-card').forEach((el) => el.remove());
+  document.querySelectorAll('app-relation-card').forEach((el) => {
+    el.remove();
+  });
 });
 
 describe('RelationCard', () => {
@@ -59,7 +61,10 @@ describe('RelationCard', () => {
   });
 
   it('renders name with birth year', async () => {
-    const el = await renderComponent({ name: 'Nguyễn Văn A', birthYear: '1960' });
+    const el = await renderComponent({
+      name: 'Nguyễn Văn A',
+      birthYear: '1960',
+    });
     expect(getLink(el).textContent).toBe('Nguyễn Văn A (1960)');
   });
 
