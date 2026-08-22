@@ -89,6 +89,10 @@ describe('formatDate', () => {
     expect(formatDate('')).toBe('-');
   });
 
+  it('returns "-" for an unparseable date', () => {
+    expect(formatDate('not-a-date')).toBe('-');
+  });
+
   it('formats a different date correctly', () => {
     expect(formatDate('2023-12-31')).toBe('31/12/2023');
   });

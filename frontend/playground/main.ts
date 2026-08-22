@@ -17,6 +17,7 @@ import '../src/components/stat-card.js';
 import '../src/components/info-card.js';
 import '../src/components/relation-card.js';
 import '../src/components/fund-chart.js';
+import '../src/components/fund-transactions-table.js';
 import '../src/components/app-button.js';
 import { appButtonSection } from './components/app-button.js';
 import { avatarStackSection } from './components/avatar-stack.js';
@@ -24,6 +25,7 @@ import { cardsSection } from './components/cards.js';
 import { eventCardSection } from './components/event-card.js';
 import { formControlsSection } from './components/form-controls.js';
 import { fundChartSection } from './components/fund-chart.js';
+import { fundTransactionsTableSection } from './components/fund-transactions-table.js';
 import { memberItemSection } from './components/member-item.js';
 import { modalSection } from './components/modal.js';
 import { notificationItemSection } from './components/notification-item.js';
@@ -68,6 +70,7 @@ function renderPlayground() {
           ${uiBasicsSection()}
           ${cardsSection()}
           ${fundChartSection()}
+          ${fundTransactionsTableSection()}
         </div>
       </div>
     `,
