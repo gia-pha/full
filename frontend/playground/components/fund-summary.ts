@@ -9,9 +9,7 @@ const inputClass =
 export function fundSummarySection(): TemplateResult {
   const transactions = chartTransactions();
   const currency = state.chartScenario === 'usd' ? 'USD' : 'VND';
-  const override = state.summaryBalanceOverride.trim();
-  const balanceOverride = override === '' ? null : Number(override);
-  const totals = getFundTotals(transactions, balanceOverride);
+  const totals = getFundTotals(transactions);
 
   return html`
     <section
@@ -37,50 +35,30 @@ export function fundSummarySection(): TemplateResult {
         </div>
       </div>
 
-      <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-        <div>
-          <label class="block text-xs text-gray-500 os-dark:text-gray-400 mb-1"
-            >Dataset</label
-          >
-          <select
-            class=${inputClass}
-            value="${state.chartScenario}"
-            @change=${(e: Event) => {
-              state.chartScenario = (e.target as HTMLSelectElement).value as
-                | 'sample'
-                | 'usd'
-                | 'big'
-                | 'empty';
-              notify();
-            }}
-          >
-            <option value="sample">Clan fund — 2 years (VND)</option>
-            <option value="usd">Small fund — 1 year (USD)</option>
-            <option value="big">Big data — 10 years, 361 txns (VND)</option>
-            <option value="empty">Empty (no transactions)</option>
-          </select>
-          <p class="mt-1 text-xs text-gray-400 os-dark:text-gray-500">
-            ${transactions.length} transactions
-          </p>
-        </div>
-
-        <div>
-          <label class="block text-xs text-gray-500 os-dark:text-gray-400 mb-1"
-            >Stored balance override</label
-          >
-          <input
-            type="number"
-            class=${inputClass}
-            value="${state.summaryBalanceOverride}"
-            placeholder="Auto (contrib − expense)"
-            @input=${(e: Event) => {
-              state.summaryBalanceOverride = (
-                e.target as HTMLInputElement
-              ).value;
-              notify();
-            }}
-          />
-        </div>
+      <div class="max-w-xs">
+        <label class="block text-xs text-gray-500 os-dark:text-gray-400 mb-1"
+          >Dataset</label
+        >
+        <select
+          class=${inputClass}
+          value="${state.chartScenario}"
+          @change=${(e: Event) => {
+            state.chartScenario = (e.target as HTMLSelectElement).value as
+              | 'sample'
+              | 'usd'
+              | 'big'
+              | 'empty';
+            notify();
+          }}
+        >
+          <option value="sample">Clan fund — 2 years (VND)</option>
+          <option value="usd">Small fund — 1 year (USD)</option>
+          <option value="big">Big data — 10 years, 361 txns (VND)</option>
+          <option value="empty">Empty (no transactions)</option>
+        </select>
+        <p class="mt-1 text-xs text-gray-400 os-dark:text-gray-500">
+          ${transactions.length} transactions
+        </p>
       </div>
     </section>
   `;
