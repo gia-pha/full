@@ -70,6 +70,7 @@ export interface PlaygroundState {
   chartTitle: string;
   chartShowLegend: boolean;
   chartSlashedLabels: boolean;
+  summaryBalanceOverride: string;
   fundQuery: string;
   fundSortKey: FundSortKey;
   fundSortDir: FundSortDir;
@@ -138,6 +139,7 @@ export const state: PlaygroundState = {
   chartTitle: 'Biểu đồ theo tháng',
   chartShowLegend: true,
   chartSlashedLabels: false,
+  summaryBalanceOverride: '',
   fundQuery: '',
   fundSortKey: 'date',
   fundSortDir: 'desc',
