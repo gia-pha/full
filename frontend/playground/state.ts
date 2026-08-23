@@ -9,6 +9,7 @@ import type {
   Person,
   Transaction,
 } from '../src/types/index.js';
+import type { FundSortDir, FundSortKey } from '../src/utils/fund.js';
 
 export interface PlaygroundState {
   dark: boolean;
@@ -69,6 +70,10 @@ export interface PlaygroundState {
   chartTitle: string;
   chartShowLegend: boolean;
   chartSlashedLabels: boolean;
+  fundQuery: string;
+  fundSortKey: FundSortKey;
+  fundSortDir: FundSortDir;
+  fundPage: number;
   lastEvent: string;
 }
 
@@ -133,6 +138,10 @@ export const state: PlaygroundState = {
   chartTitle: 'Biểu đồ theo tháng',
   chartShowLegend: true,
   chartSlashedLabels: false,
+  fundQuery: '',
+  fundSortKey: 'date',
+  fundSortDir: 'desc',
+  fundPage: 1,
   lastEvent: '',
 };
 

@@ -49,6 +49,7 @@ export function fundChartSection(): TemplateResult {
                 | 'usd'
                 | 'big'
                 | 'empty';
+              state.fundPage = 1;
               notify();
             }}
           >
