@@ -4,7 +4,6 @@ import '../src/components/person-avatar.js';
 import '../src/components/avatar-stack.js';
 import '../src/components/member-item.js';
 import '../src/components/event-card.js';
-import '../src/components/transaction-item.js';
 import '../src/components/notification-item.js';
 import '../src/components/modal.js';
 import '../src/components/app-input.js';
@@ -32,7 +31,6 @@ import { memberItemSection } from './components/member-item.js';
 import { modalSection } from './components/modal.js';
 import { notificationItemSection } from './components/notification-item.js';
 import { personAvatarSection } from './components/person-avatar.js';
-import { transactionItemSection } from './components/transaction-item.js';
 import { uiBasicsSection } from './components/ui-basics.js';
 import { notify, state, subscribe, updatePerson } from './state.js';
 
@@ -64,7 +62,6 @@ function renderPlayground() {
           ${avatarStackSection()}
           ${memberItemSection(person)}
           ${eventCardSection()}
-          ${transactionItemSection()}
           ${notificationItemSection()}
           ${modalSection()}
           ${formControlsSection()}
