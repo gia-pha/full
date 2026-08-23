@@ -20,6 +20,29 @@ export interface FundTablePage {
 
 export const DEFAULT_FUND_PAGE_SIZE = 10;
 
+export interface FundTotals {
+  contributions: number;
+  expenses: number;
+  balance: number;
+}
+
+export function getFundTotals(
+  transactions: Transaction[] | undefined,
+  balance?: number | null,
+): FundTotals {
+  let contributions = 0;
+  let expenses = 0;
+  for (const tx of transactions ?? []) {
+    if (tx.type === 'contribution') contributions += tx.amount;
+    else expenses += tx.amount;
+  }
+  return {
+    contributions,
+    expenses,
+    balance: balance ?? contributions - expenses,
+  };
+}
+
 function matchesQuery(
   tx: Transaction,
   query: string,
