@@ -75,6 +75,14 @@ export interface PlaygroundState {
   fundSortDir: FundSortDir;
   fundPage: number;
   lastEvent: string;
+  memberCardRole: 'admin' | 'editor' | 'treasurer' | 'member';
+  memberCardIsCurrent: boolean;
+  memberCardLocked: boolean;
+  memberCardDeceased: boolean;
+  memberCardHonorific: string;
+  memberCardNotes: string;
+  memberCardSelectedId: string;
+  memberCardEvent: string;
 }
 
 export const state: PlaygroundState = {
@@ -143,6 +151,14 @@ export const state: PlaygroundState = {
   fundSortDir: 'desc',
   fundPage: 1,
   lastEvent: '',
+  memberCardRole: 'admin',
+  memberCardIsCurrent: false,
+  memberCardLocked: false,
+  memberCardDeceased: false,
+  memberCardHonorific: 'Bố',
+  memberCardNotes: 'Người giữ sổ sách của gia tộc.',
+  memberCardSelectedId: 'mc-1',
+  memberCardEvent: '',
 };
 
 const chartSample: Transaction[] = [
@@ -820,6 +836,84 @@ export function demoPersons(): Person[] {
         avatar: 'https://picsum.photos/seed/mai/32/32',
       },
       rels: { parents: [], spouses: [], children: [] },
+    },
+  ];
+}
+
+export function memberCardPersons(): Person[] {
+  const person: Person = {
+    id: 'mc-1',
+    data: {
+      firstName: 'Nguyễn',
+      lastName: 'Văn A',
+      gender: 'M',
+      birthYear: '1985',
+      generation: 5,
+      role: state.memberCardRole,
+      deathYear: state.memberCardDeceased ? '2023' : undefined,
+      notes: state.memberCardNotes || undefined,
+    },
+    rels: {
+      parents: ['mc-0'],
+      spouses: ['mc-2'],
+      children: ['mc-c1', 'mc-c2'],
+    },
+  };
+  return [
+    person,
+    {
+      id: 'mc-0',
+      data: {
+        firstName: 'Cường',
+        lastName: 'Nguyễn',
+        gender: 'M',
+        birthYear: '1955',
+        deathYear: '2020',
+        generation: 4,
+        role: 'member',
+      },
+      rels: { parents: [], spouses: [], children: ['mc-1'] },
+    },
+    {
+      id: 'mc-2',
+      data: {
+        firstName: 'Lan',
+        lastName: 'Trần',
+        gender: 'F',
+        birthYear: '1987',
+        generation: 5,
+        role: 'editor',
+      },
+      rels: {
+        parents: [],
+        spouses: ['mc-1'],
+        children: ['mc-c1', 'mc-c2'],
+      },
+    },
+    {
+      id: 'mc-c1',
+      data: {
+        firstName: 'An',
+        lastName: 'Nguyễn',
+        gender: 'M',
+        birthYear: '2010',
+        generation: 6,
+        role: 'member',
+      },
+      rels: { parents: ['mc-1'], spouses: [], children: [] },
+    },
+    {
+      id: 'mc-c2',
+      data: {
+        firstName: 'Bình',
+        lastName: 'Nguyễn',
+        gender: 'F',
+        birthYear: '2012',
+        generation: 6,
+        role: 'member',
+        notes: 'Sinh đôi với An.',
+      },
+      rels: { parents: ['mc-1'], spouses: [], children: [] },
     },
   ];
 }
