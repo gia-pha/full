@@ -3,6 +3,7 @@ import { html } from 'lit';
 import type { InfoCardColor } from '../../src/components/info-card.js';
 import type { RelationCardColor } from '../../src/components/relation-card.js';
 import type { StatCardColor } from '../../src/components/stat-card.js';
+import type { Person } from '../../src/types/index.js';
 import { notify, state } from '../state.js';
 
 interface StatDemo {
@@ -21,11 +22,15 @@ interface InfoDemo {
 
 interface RelationDemo {
   label: string;
-  name: string;
-  birthYear: string;
-  deathYear: string;
+  person: Person;
   color: RelationCardColor;
 }
+
+const relationPerson = (id: string, data: Person['data']): Person => ({
+  id,
+  data,
+  rels: { parents: [], spouses: [], children: [] },
+});
 
 const statDemos: StatDemo[] = [
   { icon: '📍', label: 'Origin', value: 'Hà Nội', color: 'blue' },
@@ -61,17 +66,37 @@ const infoDemos: InfoDemo[] = [
 const relationDemos: RelationDemo[] = [
   {
     label: 'Spouse',
-    name: 'Nguyễn Thị B',
-    birthYear: '1988',
-    deathYear: '',
+    person: relationPerson('rel-1', {
+      firstName: 'Nguyễn',
+      lastName: 'Thị B',
+      gender: 'F',
+      birthYear: '1988',
+      generation: 5,
+    }),
     color: 'pink',
   },
   {
     label: 'Parent',
-    name: 'Nguyễn Văn Ông',
-    birthYear: '1955',
-    deathYear: '2010',
+    person: relationPerson('rel-2', {
+      firstName: 'Nguyễn',
+      lastName: 'Văn Ông',
+      gender: 'M',
+      birthYear: '1955',
+      deathYear: '2010',
+      generation: 4,
+    }),
     color: 'blue',
+  },
+  {
+    label: 'Child',
+    person: relationPerson('rel-3', {
+      firstName: 'Nguyễn',
+      lastName: 'An',
+      gender: 'M',
+      birthYear: '2010',
+      generation: 6,
+    }),
+    color: 'green',
   },
 ];
 
@@ -137,12 +162,10 @@ export function cardsSection(): TemplateResult {
                 (card) => html`
                   <app-relation-card
                     label=${card.label}
-                    name=${card.name}
-                    birth-year=${card.birthYear}
-                    death-year=${card.deathYear}
+                    .person=${card.person}
                     color=${card.color}
                     @select=${() => {
-                      state.lastEvent = `app-relation-card select → "${card.label}: ${card.name}"`;
+                      state.lastEvent = `app-relation-card select → "${card.label}: ${card.person.data.firstName} ${card.person.data.lastName}"`;
                       notify();
                     }}
                   ></app-relation-card>

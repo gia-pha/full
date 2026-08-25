@@ -3,6 +3,7 @@ import '../src/styles/main.css';
 import '../src/components/person-avatar.js';
 import '../src/components/avatar-stack.js';
 import '../src/components/member-item.js';
+import '../src/components/member-card.js';
 import '../src/components/event-card.js';
 import '../src/components/notification-item.js';
 import '../src/components/modal.js';
@@ -27,6 +28,7 @@ import { formControlsSection } from './components/form-controls.js';
 import { fundChartSection } from './components/fund-chart.js';
 import { fundSummarySection } from './components/fund-summary.js';
 import { fundTransactionsTableSection } from './components/fund-transactions-table.js';
+import { memberCardSection } from './components/member-card.js';
 import { memberItemSection } from './components/member-item.js';
 import { modalSection } from './components/modal.js';
 import { notificationItemSection } from './components/notification-item.js';
@@ -61,6 +63,7 @@ function renderPlayground() {
           ${personAvatarSection(person)}
           ${avatarStackSection()}
           ${memberItemSection(person)}
+          ${memberCardSection()}
           ${eventCardSection()}
           ${notificationItemSection()}
           ${modalSection()}

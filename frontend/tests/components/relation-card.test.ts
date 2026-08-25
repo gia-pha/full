@@ -4,35 +4,36 @@ import type {
   RelationCard,
   RelationCardColor,
 } from '../../src/components/relation-card.js';
+import type { Person } from '../../src/types/index.js';
+
+const makePerson = (overrides?: Partial<Person['data']>): Person => ({
+  id: 'p1',
+  data: {
+    firstName: 'A',
+    lastName: 'Nguyễn',
+    gender: 'M',
+    generation: 1,
+    ...overrides,
+  },
+  rels: { parents: [], spouses: [], children: [] },
+});
 
 async function renderComponent(opts?: {
   label?: string;
-  name?: string;
-  birthYear?: string;
-  deathYear?: string;
+  person?: Person;
   color?: RelationCardColor;
 }): Promise<RelationCard> {
   const el = document.createElement('app-relation-card');
   if (opts?.label !== undefined) el.label = opts.label;
-  if (opts?.name !== undefined) el.name = opts.name;
-  if (opts?.birthYear !== undefined) el.birthYear = opts.birthYear;
-  if (opts?.deathYear !== undefined) el.deathYear = opts.deathYear;
+  if (opts?.person !== undefined) el.person = opts.person;
   if (opts?.color !== undefined) el.color = opts.color;
   document.body.appendChild(el);
   await el.updateComplete;
   return el;
 }
 
-function getCard(el: RelationCard): HTMLElement {
+function getCard(el: RelationCard): HTMLButtonElement {
   return el.querySelector('.relation-card')!;
-}
-
-function getLabel(el: RelationCard): HTMLParagraphElement {
-  return getCard(el).querySelector('p')!;
-}
-
-function getLink(el: RelationCard): HTMLButtonElement {
-  return el.querySelector('.relation-card-link')!;
 }
 
 function awaitSelect(el: RelationCard): Promise<CustomEvent> {
@@ -52,63 +53,79 @@ afterEach(() => {
 describe('RelationCard', () => {
   it('renders the label', async () => {
     const el = await renderComponent({ label: 'Spouse' });
-    expect(getLabel(el).textContent).toBe('Spouse');
+    expect(getCard(el).textContent).toContain('Spouse');
   });
 
   it('renders the name only when no birth year', async () => {
-    const el = await renderComponent({ name: 'Nguyễn Văn A' });
-    expect(getLink(el).textContent).toBe('Nguyễn Văn A');
+    const el = await renderComponent({ person: makePerson() });
+    expect(getCard(el).textContent).toContain('A Nguyễn');
+    expect(getCard(el).textContent).not.toContain('(');
   });
 
   it('renders name with birth year', async () => {
     const el = await renderComponent({
-      name: 'Nguyễn Văn A',
-      birthYear: '1960',
+      person: makePerson({ birthYear: '1960' }),
     });
-    expect(getLink(el).textContent).toBe('Nguyễn Văn A (1960)');
+    expect(getCard(el).textContent).toContain('A Nguyễn (1960)');
   });
 
   it('renders name with birth and death years', async () => {
     const el = await renderComponent({
-      name: 'Nguyễn Văn A',
-      birthYear: '1920',
-      deathYear: '1990',
+      person: makePerson({ birthYear: '1920', deathYear: '1990' }),
     });
-    expect(getLink(el).textContent).toBe('Nguyễn Văn A (1920 - 1990)');
+    expect(getCard(el).textContent).toContain('A Nguyễn (1920 - 1990)');
+  });
+
+  it('renders the male gender symbol', async () => {
+    const el = await renderComponent({ person: makePerson({ gender: 'M' }) });
+    expect(getCard(el).textContent).toContain('♂');
+  });
+
+  it('renders the female gender symbol', async () => {
+    const el = await renderComponent({ person: makePerson({ gender: 'F' }) });
+    expect(getCard(el).textContent).toContain('♀');
   });
 
   it('defaults to the blue color variant', async () => {
     const el = await renderComponent({ label: 'Parent' });
     expect(getCard(el).className).toContain('bg-blue-50');
     expect(getCard(el).className).toContain('border-blue-200');
-    expect(getLabel(el).className).toContain('text-blue-500');
-    expect(getLink(el).className).toContain('text-blue-700');
+    expect(getCard(el).className).toContain('hover:bg-blue-100');
   });
 
   it('applies the pink color variant', async () => {
     const el = await renderComponent({ label: 'Spouse', color: 'pink' });
     expect(getCard(el).className).toContain('bg-pink-50');
     expect(getCard(el).className).toContain('border-pink-200');
-    expect(getLabel(el).className).toContain('text-pink-500');
-    expect(getLink(el).className).toContain('text-pink-700');
+    expect(getCard(el).className).toContain('hover:bg-pink-100');
+  });
+
+  it('applies the green color variant', async () => {
+    const el = await renderComponent({ label: 'Child', color: 'green' });
+    expect(getCard(el).className).toContain('bg-green-50');
+    expect(getCard(el).className).toContain('border-green-200');
+    expect(getCard(el).className).toContain('hover:bg-green-100');
   });
 
   it('falls back to blue for an unknown color', async () => {
     const el = document.createElement('app-relation-card');
-    el.color = 'green' as RelationCardColor;
+    el.person = makePerson();
+    el.color = 'yellow' as RelationCardColor;
     document.body.appendChild(el);
     await el.updateComplete;
     expect(getCard(el).className).toContain('bg-blue-50');
   });
 
-  it('dispatches select event when the link is clicked', async () => {
-    const el = await renderComponent({ label: 'Spouse', name: 'B' });
+  it('dispatches select event with the person when the card is clicked', async () => {
+    const person = makePerson();
+    const el = await renderComponent({ label: 'Spouse', person });
     const selectEvent = awaitSelect(el);
-    getLink(el).click();
+    getCard(el).click();
     const event = await selectEvent;
     expect(event.type).toBe('select');
     expect(event.bubbles).toBe(true);
     expect(event.composed).toBe(true);
+    expect(event.detail).toEqual({ person });
   });
 
   it('renders without shadow DOM', async () => {
