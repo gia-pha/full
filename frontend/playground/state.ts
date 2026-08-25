@@ -5,6 +5,7 @@ import type { AvatarSize } from '../src/components/person-avatar.js';
 import type { TabDef } from '../src/components/tabs.js';
 import type {
   Event as CalendarEvent,
+  Clan,
   Notification,
   Person,
   Transaction,
@@ -83,6 +84,13 @@ export interface PlaygroundState {
   memberCardNotes: string;
   memberCardSelectedId: string;
   memberCardEvent: string;
+  sidebarRole: 'admin' | 'editor' | 'member';
+  sidebarPage: string;
+  sidebarClanId: string;
+  sidebarOpen: boolean;
+  sidebarUnread: number;
+  sidebarLanguage: 'vi' | 'en';
+  sidebarEvent: string;
 }
 
 export const state: PlaygroundState = {
@@ -159,6 +167,13 @@ export const state: PlaygroundState = {
   memberCardNotes: 'Người giữ sổ sách của gia tộc.',
   memberCardSelectedId: 'mc-1',
   memberCardEvent: '',
+  sidebarRole: 'admin',
+  sidebarPage: 'tree',
+  sidebarClanId: 'sb-c1',
+  sidebarOpen: true,
+  sidebarUnread: 3,
+  sidebarLanguage: 'vi',
+  sidebarEvent: '',
 };
 
 const chartSample: Transaction[] = [
@@ -942,6 +957,38 @@ export function memberCardPersons(): Person[] {
         notes: 'Sinh đôi với An.',
       },
       rels: { parents: ['mc-1'], spouses: [], children: [] },
+    },
+  ];
+}
+
+export function sidebarClans(): Clan[] {
+  return [
+    {
+      id: 'sb-c1',
+      name: 'Họ Nguyễn',
+      lineage: 'father',
+      origin: 'Bắc Ninh',
+      history: '',
+      notableFigures: [],
+      images: [],
+    },
+    {
+      id: 'sb-c2',
+      name: 'Họ Trần',
+      lineage: 'mother',
+      origin: 'Huế',
+      history: '',
+      notableFigures: [],
+      images: [],
+    },
+    {
+      id: 'sb-c3',
+      name: 'Họ Lê',
+      lineage: 'spouse',
+      origin: 'Hà Nội',
+      history: '',
+      notableFigures: [],
+      images: [],
     },
   ];
 }

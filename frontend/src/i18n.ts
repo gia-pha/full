@@ -1,11 +1,14 @@
 import data from './i18n/translations.json';
 
-export const translations = data as Record<
-  string,
-  Record<string, Record<string, string>>
->;
+type TranslationNode = string | { [key: string]: TranslationNode };
+
+export const translations = data as Record<string, TranslationNode>;
 
 export function t(locale: string, key: string): string {
-  const [section, item] = key.split('.');
-  return translations[locale]?.[section]?.[item] ?? key;
+  let node: TranslationNode | undefined = translations[locale];
+  for (const part of key.split('.')) {
+    if (typeof node !== 'object' || node === null) return key;
+    node = node[part];
+  }
+  return typeof node === 'string' ? node : key;
 }
