@@ -2,7 +2,7 @@ import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { defaultRoles } from '../consts/index.js';
 import type { Person } from '../types/index.js';
-import { getFullName, getGenderSymbol, isDeceased } from '../utils/format.js';
+import { getFullName, isDeceased } from '../utils/format.js';
 import './info-card.js';
 import './relation-card.js';
 import './person-avatar.js';
@@ -203,24 +203,12 @@ export class MemberCard extends LitElement {
                 <div class="space-y-2">
                   ${children.map(
                     (c) => html`
-                      <button
-                        type="button"
-                        class="member-link flex w-full items-center gap-3 rounded-xl bg-gray-50 p-3 transition-colors hover:bg-gray-100 dark:bg-gray-700/50 dark:hover:bg-gray-700"
-                        @click=${() => this.dispatchSelect(c.id)}
-                      >
-                        <span
-                          class="text-lg ${c.data.gender === 'M' ? 'text-blue-500' : 'text-pink-500'}"
-                          >${getGenderSymbol(c)}</span
-                        >
-                        <span
-                          class="flex-1 truncate text-left font-medium text-gray-700 dark:text-gray-200"
-                          >${getFullName(c)}</span
-                        >
-                        <span
-                          class="text-sm text-gray-400 dark:text-gray-500"
-                          >${c.data.birthYear}</span
-                        >
-                      </button>
+                      <app-relation-card
+                        label="Child"
+                        .person=${c}
+                        color="green"
+                        @select=${this.handleRelationSelect}
+                      ></app-relation-card>
                     `,
                   )}
                 </div>

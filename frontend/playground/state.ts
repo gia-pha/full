@@ -854,8 +854,8 @@ export function memberCardPersons(): Person[] {
       notes: state.memberCardNotes || undefined,
     },
     rels: {
-      parents: ['mc-0'],
-      spouses: ['mc-2'],
+      parents: ['mc-0', 'mc-m'],
+      spouses: ['mc-2', 'mc-s2'],
       children: ['mc-c1', 'mc-c2'],
     },
   };
@@ -872,7 +872,19 @@ export function memberCardPersons(): Person[] {
         generation: 4,
         role: 'member',
       },
-      rels: { parents: [], spouses: [], children: ['mc-1'] },
+      rels: { parents: [], spouses: ['mc-m'], children: ['mc-1'] },
+    },
+    {
+      id: 'mc-m',
+      data: {
+        firstName: 'Lệ',
+        lastName: 'Phạm',
+        gender: 'F',
+        birthYear: '1958',
+        generation: 4,
+        role: 'member',
+      },
+      rels: { parents: [], spouses: ['mc-0'], children: ['mc-1'] },
     },
     {
       id: 'mc-2',
@@ -883,6 +895,22 @@ export function memberCardPersons(): Person[] {
         birthYear: '1987',
         generation: 5,
         role: 'editor',
+      },
+      rels: {
+        parents: [],
+        spouses: ['mc-1'],
+        children: ['mc-c1', 'mc-c2'],
+      },
+    },
+    {
+      id: 'mc-s2',
+      data: {
+        firstName: 'Hương',
+        lastName: 'Lê',
+        gender: 'F',
+        birthYear: '1990',
+        generation: 5,
+        role: 'member',
       },
       rels: {
         parents: [],

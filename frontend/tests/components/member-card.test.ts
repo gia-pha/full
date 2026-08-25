@@ -251,7 +251,7 @@ describe('MemberCard', () => {
     (
       el
         .querySelector('.member-card-panel app-relation-card')!
-        .querySelector('.relation-card-link') as HTMLButtonElement
+        .querySelector('.relation-card') as HTMLButtonElement
     ).click();
     const event = await selectEvent;
     expect(event.detail).toEqual({ id: 'p2' });
@@ -286,7 +286,9 @@ describe('MemberCard', () => {
     const el = await renderComponent(person, { persons: [person, c1] });
     const selectEvent = awaitEvent(el, 'select');
     (
-      el.querySelector('.member-card-panel .member-link') as HTMLButtonElement
+      el
+        .querySelector('.member-card-panel app-relation-card')!
+        .querySelector('.relation-card') as HTMLButtonElement
     ).click();
     const event = await selectEvent;
     expect(event.detail).toEqual({ id: 'c1' });
