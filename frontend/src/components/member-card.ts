@@ -5,6 +5,7 @@ import type { Person } from '../types/index.js';
 import { getFullName, isDeceased } from '../utils/format.js';
 import './info-card.js';
 import './relation-card.js';
+import type { RelationCardColor } from './relation-card.js';
 import './person-avatar.js';
 
 @customElement('member-card')
@@ -52,6 +53,34 @@ export class MemberCard extends LitElement {
     const { person } = (e as CustomEvent).detail as { person: Person };
     this.dispatchSelect(person.id);
   };
+
+  private renderRelationGroup(
+    groupLabel: string,
+    cardLabel: string,
+    people: Person[],
+    color: RelationCardColor,
+  ): TemplateResult {
+    if (people.length === 0) return html``;
+    return html`
+      <div>
+        <p class="mb-3 text-sm text-gray-400 dark:text-gray-500">
+          ${groupLabel} (${people.length})
+        </p>
+        <div class="space-y-2">
+          ${people.map(
+            (p) => html`
+              <app-relation-card
+                label=${cardLabel}
+                .person=${p}
+                color=${color}
+                @select=${this.handleRelationSelect}
+              ></app-relation-card>
+            `,
+          )}
+        </div>
+      </div>
+    `;
+  }
 
   override render() {
     if (!this.person) return html``;
@@ -164,58 +193,9 @@ export class MemberCard extends LitElement {
           ></app-info-card>
         </div>
 
-        ${
-          spouses.length > 0
-            ? html`${spouses.map(
-                (s) => html`
-                  <app-relation-card
-                    label="Spouse"
-                    .person=${s}
-                    color="pink"
-                    @select=${this.handleRelationSelect}
-                  ></app-relation-card>
-                `,
-              )}`
-            : html``
-        }
-        ${
-          parents.length > 0
-            ? html`${parents.map(
-                (p) => html`
-                  <app-relation-card
-                    label="Parent"
-                    .person=${p}
-                    color="blue"
-                    @select=${this.handleRelationSelect}
-                  ></app-relation-card>
-                `,
-              )}`
-            : html``
-        }
-
-        ${
-          children.length > 0
-            ? html`
-              <div>
-                <p class="mb-3 text-sm text-gray-400 dark:text-gray-500">
-                  Children (${children.length})
-                </p>
-                <div class="space-y-2">
-                  ${children.map(
-                    (c) => html`
-                      <app-relation-card
-                        label="Child"
-                        .person=${c}
-                        color="green"
-                        @select=${this.handleRelationSelect}
-                      ></app-relation-card>
-                    `,
-                  )}
-                </div>
-              </div>
-            `
-            : html``
-        }
+        ${this.renderRelationGroup('Spouses', 'Spouse', spouses, 'pink')}
+        ${this.renderRelationGroup('Parents', 'Parent', parents, 'blue')}
+        ${this.renderRelationGroup('Children', 'Child', children, 'green')}
 
         ${
           this.locked && !isSelf

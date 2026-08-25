@@ -26,10 +26,11 @@ interface RelationDemo {
   color: RelationCardColor;
 }
 
-const relationPerson = (
-  id: string,
-  data: Person['data'],
-): Person => ({ id, data, rels: { parents: [], spouses: [], children: [] } });
+const relationPerson = (id: string, data: Person['data']): Person => ({
+  id,
+  data,
+  rels: { parents: [], spouses: [], children: [] },
+});
 
 const statDemos: StatDemo[] = [
   { icon: '📍', label: 'Origin', value: 'Hà Nội', color: 'blue' },
