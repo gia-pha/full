@@ -28,6 +28,11 @@ export class RelationCard extends LitElement {
     return this;
   }
 
+  override connectedCallback() {
+    super.connectedCallback();
+    this.style.display = 'block';
+  }
+
   private handleClick = () => {
     this.dispatchEvent(
       new CustomEvent('select', {

@@ -195,6 +195,26 @@ describe('MemberCard', () => {
     expect(card?.color).toBe('pink');
   });
 
+  it('renders a card for each spouse and parent', async () => {
+    const person = makePerson('p1', {
+      rels: { parents: ['p0', 'p3'], spouses: ['p2', 'p4'], children: [] },
+    });
+    const persons = [
+      person,
+      makePerson('p2', { firstName: 'Lan' }),
+      makePerson('p4', { firstName: 'Hoa' }),
+      makePerson('p0', { firstName: 'Cường' }),
+      makePerson('p3', { firstName: 'Em' }),
+    ];
+    const el = await renderComponent(person, { persons });
+    const cards = [
+      ...el.querySelectorAll('app-relation-card'),
+    ] as RelationCard[];
+    expect(cards.length).toBe(4);
+    expect(cards.filter((c) => c.color === 'pink').length).toBe(2);
+    expect(cards.filter((c) => c.color === 'blue').length).toBe(2);
+  });
+
   it('shows parent relation card when parent exists', async () => {
     const person = makePerson('p1', {
       rels: { parents: ['p0'], spouses: [], children: [] },

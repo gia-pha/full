@@ -85,12 +85,12 @@ export class MemberCard extends LitElement {
   private renderContent(person: Person): TemplateResult {
     const isSelf = person.id === this.currentPersonId;
     const deceased = isDeceased(person);
-    const spouse = person.rels.spouses[0]
-      ? this.findPerson(person.rels.spouses[0])
-      : undefined;
-    const parent = person.rels.parents[0]
-      ? this.findPerson(person.rels.parents[0])
-      : undefined;
+    const spouses = person.rels.spouses
+      .map((id) => this.findPerson(id))
+      .filter((p): p is Person => Boolean(p));
+    const parents = person.rels.parents
+      .map((id) => this.findPerson(id))
+      .filter((p): p is Person => Boolean(p));
     const children = (person.rels.children || [])
       .map((id) => this.findPerson(id))
       .filter((p): p is Person => Boolean(p));
@@ -165,23 +165,31 @@ export class MemberCard extends LitElement {
         </div>
 
         ${
-          spouse
-            ? html`<app-relation-card
-                label="Spouse"
-                .person=${spouse}
-                color="pink"
-                @select=${this.handleRelationSelect}
-              ></app-relation-card>`
+          spouses.length > 0
+            ? html`${spouses.map(
+                (s) => html`
+                  <app-relation-card
+                    label="Spouse"
+                    .person=${s}
+                    color="pink"
+                    @select=${this.handleRelationSelect}
+                  ></app-relation-card>
+                `,
+              )}`
             : html``
         }
         ${
-          parent
-            ? html`<app-relation-card
-                label="Parent"
-                .person=${parent}
-                color="blue"
-                @select=${this.handleRelationSelect}
-              ></app-relation-card>`
+          parents.length > 0
+            ? html`${parents.map(
+                (p) => html`
+                  <app-relation-card
+                    label="Parent"
+                    .person=${p}
+                    color="blue"
+                    @select=${this.handleRelationSelect}
+                  ></app-relation-card>
+                `,
+              )}`
             : html``
         }
 
