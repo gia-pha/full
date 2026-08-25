@@ -5,7 +5,6 @@ import type { Person } from '../types/index.js';
 import { getFullName, getGenderSymbol, isDeceased } from '../utils/format.js';
 import './info-card.js';
 import './relation-card.js';
-import type { RelationCard } from './relation-card.js';
 import './person-avatar.js';
 
 @customElement('member-card')
@@ -50,13 +49,8 @@ export class MemberCard extends LitElement {
 
   private handleRelationSelect = (e: Event) => {
     e.stopPropagation();
-    const card = e.target as RelationCard;
-    const id = this.persons.find(
-      (p) =>
-        getFullName(p) === card.name &&
-        String(p.data.birthYear ?? '') === card.birthYear,
-    )?.id;
-    if (id) this.dispatchSelect(id);
+    const { person } = (e as CustomEvent).detail as { person: Person };
+    this.dispatchSelect(person.id);
   };
 
   override render() {
@@ -174,9 +168,7 @@ export class MemberCard extends LitElement {
           spouse
             ? html`<app-relation-card
                 label="Spouse"
-                name=${getFullName(spouse)}
-                birthYear=${String(spouse.data.birthYear ?? '')}
-                deathYear=${spouse.data.deathYear ?? ''}
+                .person=${spouse}
                 color="pink"
                 @select=${this.handleRelationSelect}
               ></app-relation-card>`
@@ -186,9 +178,7 @@ export class MemberCard extends LitElement {
           parent
             ? html`<app-relation-card
                 label="Parent"
-                name=${getFullName(parent)}
-                birthYear=${String(parent.data.birthYear ?? '')}
-                deathYear=${parent.data.deathYear ?? ''}
+                .person=${parent}
                 color="blue"
                 @select=${this.handleRelationSelect}
               ></app-relation-card>`

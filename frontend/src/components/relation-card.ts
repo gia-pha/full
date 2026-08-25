@@ -1,5 +1,7 @@
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import type { Person } from '../types/index.js';
+import { getFullName } from '../utils/format.js';
 
 export type RelationCardColor = 'pink' | 'blue';
 
@@ -19,9 +21,7 @@ const NAME: Record<RelationCardColor, string> = {
 @customElement('app-relation-card')
 export class RelationCard extends LitElement {
   @property({ type: String }) label = '';
-  @property({ type: String }) name = '';
-  @property({ type: String }) birthYear = '';
-  @property({ type: String }) deathYear = '';
+  @property({ type: Object }) declare person: Person;
   @property({ type: String }) color: RelationCardColor = 'blue';
 
   override createRenderRoot() {
@@ -30,7 +30,11 @@ export class RelationCard extends LitElement {
 
   private handleClick = () => {
     this.dispatchEvent(
-      new CustomEvent('select', { bubbles: true, composed: true }),
+      new CustomEvent('select', {
+        bubbles: true,
+        composed: true,
+        detail: { person: this.person },
+      }),
     );
   };
 
@@ -38,9 +42,12 @@ export class RelationCard extends LitElement {
     const color = CARD[this.color] ?? CARD.blue;
     const label = LABEL[this.color] ?? LABEL.blue;
     const name = NAME[this.color] ?? NAME.blue;
-    const text = this.birthYear
-      ? `${this.name} (${this.birthYear}${this.deathYear ? ` - ${this.deathYear}` : ''})`
-      : this.name;
+    const person = this.person;
+    const { birthYear, deathYear } = person?.data ?? {};
+    const fullName = person ? getFullName(person) : '';
+    const text = birthYear
+      ? `${fullName} (${birthYear}${deathYear ? ` - ${deathYear}` : ''})`
+      : fullName;
     return html`
       <div class="relation-card p-4 rounded-xl border ${color}">
         <p class="text-xs ${label} mb-2">${this.label}</p>

@@ -4,19 +4,28 @@ import type {
   RelationCard,
   RelationCardColor,
 } from '../../src/components/relation-card.js';
+import type { Person } from '../../src/types/index.js';
+
+const makePerson = (overrides?: Partial<Person['data']>): Person => ({
+  id: 'p1',
+  data: {
+    firstName: 'A',
+    lastName: 'Nguyễn',
+    gender: 'M',
+    generation: 1,
+    ...overrides,
+  },
+  rels: { parents: [], spouses: [], children: [] },
+});
 
 async function renderComponent(opts?: {
   label?: string;
-  name?: string;
-  birthYear?: string;
-  deathYear?: string;
+  person?: Person;
   color?: RelationCardColor;
 }): Promise<RelationCard> {
   const el = document.createElement('app-relation-card');
   if (opts?.label !== undefined) el.label = opts.label;
-  if (opts?.name !== undefined) el.name = opts.name;
-  if (opts?.birthYear !== undefined) el.birthYear = opts.birthYear;
-  if (opts?.deathYear !== undefined) el.deathYear = opts.deathYear;
+  if (opts?.person !== undefined) el.person = opts.person;
   if (opts?.color !== undefined) el.color = opts.color;
   document.body.appendChild(el);
   await el.updateComplete;
@@ -56,25 +65,22 @@ describe('RelationCard', () => {
   });
 
   it('renders the name only when no birth year', async () => {
-    const el = await renderComponent({ name: 'Nguyễn Văn A' });
-    expect(getLink(el).textContent).toBe('Nguyễn Văn A');
+    const el = await renderComponent({ person: makePerson() });
+    expect(getLink(el).textContent).toBe('A Nguyễn');
   });
 
   it('renders name with birth year', async () => {
     const el = await renderComponent({
-      name: 'Nguyễn Văn A',
-      birthYear: '1960',
+      person: makePerson({ birthYear: '1960' }),
     });
-    expect(getLink(el).textContent).toBe('Nguyễn Văn A (1960)');
+    expect(getLink(el).textContent).toBe('A Nguyễn (1960)');
   });
 
   it('renders name with birth and death years', async () => {
     const el = await renderComponent({
-      name: 'Nguyễn Văn A',
-      birthYear: '1920',
-      deathYear: '1990',
+      person: makePerson({ birthYear: '1920', deathYear: '1990' }),
     });
-    expect(getLink(el).textContent).toBe('Nguyễn Văn A (1920 - 1990)');
+    expect(getLink(el).textContent).toBe('A Nguyễn (1920 - 1990)');
   });
 
   it('defaults to the blue color variant', async () => {
@@ -101,14 +107,16 @@ describe('RelationCard', () => {
     expect(getCard(el).className).toContain('bg-blue-50');
   });
 
-  it('dispatches select event when the link is clicked', async () => {
-    const el = await renderComponent({ label: 'Spouse', name: 'B' });
+  it('dispatches select event with the person when the link is clicked', async () => {
+    const person = makePerson();
+    const el = await renderComponent({ label: 'Spouse', person });
     const selectEvent = awaitSelect(el);
     getLink(el).click();
     const event = await selectEvent;
     expect(event.type).toBe('select');
     expect(event.bubbles).toBe(true);
     expect(event.composed).toBe(true);
+    expect(event.detail).toEqual({ person });
   });
 
   it('renders without shadow DOM', async () => {

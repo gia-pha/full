@@ -191,7 +191,7 @@ describe('MemberCard', () => {
     ) as RelationCard | null;
     expect(card).not.toBeNull();
     expect(card?.label).toBe('Spouse');
-    expect(card?.name).toBe('Lan Trần');
+    expect(card?.person).toBe(spouse);
     expect(card?.color).toBe('pink');
   });
 
@@ -210,7 +210,7 @@ describe('MemberCard', () => {
     ) as RelationCard | null;
     expect(card).not.toBeNull();
     expect(card?.label).toBe('Parent');
-    expect(card?.name).toBe('Cường Nguyễn');
+    expect(card?.person).toBe(parent);
     expect(card?.color).toBe('blue');
   });
 
