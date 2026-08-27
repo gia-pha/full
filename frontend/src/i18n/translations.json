@@ -19,7 +19,8 @@
         "publicPage": "Trang Công Khai",
         "invite": "Mời Thành Viên",
         "language": "Ngôn ngữ",
-        "clans": "Dòng Họ"
+        "clans": "Dòng Họ",
+        "switchLanguage": "Switch to English"
       }
     },
     "clan": {
@@ -50,7 +51,8 @@
         "publicPage": "Public Page",
         "invite": "Invite Member",
         "language": "Language",
-        "clans": "Clans"
+        "clans": "Clans",
+        "switchLanguage": "Chuyển sang Tiếng Việt"
       }
     },
     "clan": {

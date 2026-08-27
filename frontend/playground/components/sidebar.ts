@@ -1,5 +1,7 @@
 import type { TemplateResult } from 'lit';
 import { html } from 'lit';
+import type { NavItem } from '../../src/components/sidebar.js';
+import { defaultRoles } from '../../src/consts/index.js';
 import { notify, sidebarClans, state } from '../state.js';
 
 const pageOptions = [
@@ -13,6 +15,34 @@ const pageOptions = [
   'profile',
   'public-page',
 ];
+
+function buildNavItems(role: string): NavItem[] {
+  const items: NavItem[] = [
+    { id: 'tree', icon: '🌳', labelKey: 'app.sidebar.tree' },
+    { id: 'members', icon: '👥', labelKey: 'app.sidebar.members' },
+    { id: 'clan-info', icon: '🏛️', labelKey: 'app.sidebar.clanInfo' },
+    { id: 'events', icon: '📅', labelKey: 'app.sidebar.events' },
+    { id: 'calendar', icon: '🗓️', labelKey: 'app.sidebar.calendar' },
+    { id: 'funds', icon: '💰', labelKey: 'app.sidebar.funds' },
+  ];
+  if (role === 'admin')
+    items.push({ id: 'admin', icon: '⚙️', labelKey: 'app.sidebar.admin' });
+  if (role === 'editor' || role === 'admin')
+    items.push({ id: 'invite', icon: '📨', labelKey: 'app.sidebar.invite' });
+  items.push({
+    id: 'notifications',
+    icon: '🔔',
+    labelKey: 'app.sidebar.notifications',
+    unreadBadge: true,
+  });
+  items.push({ id: 'profile', icon: '👤', labelKey: 'app.sidebar.profile' });
+  items.push({
+    id: 'public-page',
+    icon: '🌐',
+    labelKey: 'app.sidebar.publicPage',
+  });
+  return items;
+}
 
 const controlClass =
   'w-full px-3 py-2 text-sm border border-gray-300 os-dark:border-gray-600 rounded-lg bg-white os-dark:bg-gray-700 text-gray-800 os-dark:text-gray-200';
@@ -37,6 +67,14 @@ export function sidebarSection(): TemplateResult {
     state.sidebarEvent = event;
     notify();
   };
+
+  const navItems = buildNavItems(state.sidebarRole);
+  const mobileNavItems = [
+    ...navItems.slice(0, 5),
+    navItems.find((i) => i.id === 'notifications')!,
+  ];
+  const roleLabel =
+    defaultRoles.find((r) => r.name === state.sidebarRole)?.label ?? '';
 
   return html`
     <section
@@ -147,17 +185,19 @@ export function sidebarSection(): TemplateResult {
 
       <div class="${state.dark ? 'dark' : ''}">
         <div
-          class="h-[520px] rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-900 overflow-hidden flex"
+          class="relative h-[520px] rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-900 overflow-hidden flex"
         >
           <app-sidebar
             .clans=${clans}
+            .navItems=${navItems}
+            .mobileNavItems=${mobileNavItems}
             .currentClanId=${state.sidebarClanId}
             .currentPage=${state.sidebarPage}
             ?sidebarOpen=${state.sidebarOpen}
             .unreadCount=${state.sidebarUnread}
-            ?darkMode=${state.dark}
             .language=${state.sidebarLanguage}
             .currentPerson=${person}
+            .roleLabel=${roleLabel}
             @clan-select=${(e: CustomEvent) => {
               state.sidebarClanId = e.detail.id as string;
               log(`clan-select → ${e.detail.id}`);
@@ -165,14 +205,6 @@ export function sidebarSection(): TemplateResult {
             @page-select=${(e: CustomEvent) => {
               state.sidebarPage = e.detail.page as string;
               log(`page-select → ${e.detail.page}`);
-            }}
-            @toggle-sidebar=${() => {
-              state.sidebarOpen = !state.sidebarOpen;
-              log('toggle-sidebar');
-            }}
-            @toggle-dark-mode=${() => {
-              state.dark = !state.dark;
-              log('toggle-dark-mode');
             }}
             @toggle-language=${() => {
               state.sidebarLanguage =
@@ -196,9 +228,11 @@ export function sidebarSection(): TemplateResult {
       </div>
 
       <p class="text-xs text-gray-400">
-        Role gates the Admin / Invite nav items. Use the collapse button (◀) in
-        the footer to shrink the desktop sidebar, and the unread count drives
-        the notification badge.
+        The role gates the Admin / Invite nav items (built by this page, the
+        parent). The “Expanded” checkbox shows or hides the sidebar. On
+        narrow viewports the mobile mode (header, bottom nav, and drawer) is
+        contained inside this section — use the hamburger to open the drawer.
+        The unread count drives the notification badge.
       </p>
 
       <div
