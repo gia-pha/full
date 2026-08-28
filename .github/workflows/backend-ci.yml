@@ -1,0 +1,8 @@
+name: Test AUTH CI V1
+on: push
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test auth CI v1
+        run: echo "Test auth ci v1"
