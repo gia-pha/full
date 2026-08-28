@@ -48,19 +48,25 @@ function getContent(el: EventCard): string {
 describe('EventCard', () => {
   describe('basic rendering', () => {
     it('renders event title', async () => {
-      const el = await renderComponent(makeEvent({ title: 'Wedding Anniversary' }));
+      const el = await renderComponent(
+        makeEvent({ title: 'Wedding Anniversary' }),
+      );
       const rendered = getContent(el);
       expect(rendered).toContain('Wedding Anniversary');
     });
 
     it('renders event description', async () => {
-      const el = await renderComponent(makeEvent({ description: 'A family gathering' }));
+      const el = await renderComponent(
+        makeEvent({ description: 'A family gathering' }),
+      );
       const rendered = getContent(el);
       expect(rendered).toContain('A family gathering');
     });
 
     it('renders event location with map pin icon', async () => {
-      const el = await renderComponent(makeEvent({ location: 'Ho Chi Minh City' }));
+      const el = await renderComponent(
+        makeEvent({ location: 'Ho Chi Minh City' }),
+      );
       const rendered = getContent(el);
       expect(rendered).toContain('📍');
       expect(rendered).toContain('Ho Chi Minh City');
@@ -170,7 +176,9 @@ describe('EventCard', () => {
       const el = await renderComponent(makeEvent(), { canEdit: true });
       el.onEdit = onEdit;
       await el.updateComplete;
-      el.querySelector('.event-edit')?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      el.querySelector('.event-edit')?.dispatchEvent(
+        new MouseEvent('click', { bubbles: true }),
+      );
       expect(onEdit).toHaveBeenCalledOnce();
     });
 
@@ -179,7 +187,9 @@ describe('EventCard', () => {
       const el = await renderComponent(makeEvent(), { canEdit: true });
       el.onDelete = onDelete;
       await el.updateComplete;
-      el.querySelector('.event-delete')?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      el.querySelector('.event-delete')?.dispatchEvent(
+        new MouseEvent('click', { bubbles: true }),
+      );
       expect(onDelete).toHaveBeenCalledOnce();
     });
   });
@@ -210,8 +220,8 @@ describe('EventCard', () => {
       await el.updateComplete;
       const buttons = el.innerHTML.match(/Add to Calendar/g);
       expect(buttons).not.toBeNull();
-      const calendarBtn = Array.from(el.querySelectorAll('button')).find(
-        (b) => b.textContent?.includes('Add to Calendar'),
+      const calendarBtn = Array.from(el.querySelectorAll('button')).find((b) =>
+        b.textContent?.includes('Add to Calendar'),
       );
       expect(calendarBtn).toBeDefined();
       calendarBtn?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
@@ -222,7 +232,12 @@ describe('EventCard', () => {
   describe('image gallery', () => {
     it('shows image gallery when images are provided', async () => {
       const el = await renderComponent(
-        makeEvent({ images: ['https://example.com/img1.jpg', 'https://example.com/img2.jpg'] }),
+        makeEvent({
+          images: [
+            'https://example.com/img1.jpg',
+            'https://example.com/img2.jpg',
+          ],
+        }),
       );
       const text = el.textContent;
       expect(text).toContain('Images');
@@ -254,10 +269,9 @@ describe('EventCard', () => {
 
     it('shows attendee avatars when persons are provided', async () => {
       const persons = [makePerson({ firstName: 'Văn', lastName: 'Nguyễn' })];
-      const el = await renderComponent(
-        makeEvent({ attendees: ['person-1'] }),
-        { persons },
-      );
+      const el = await renderComponent(makeEvent({ attendees: ['person-1'] }), {
+        persons,
+      });
       const rendered = getContent(el);
       expect(rendered).toContain('Văn Nguyễn');
     });
@@ -301,42 +315,46 @@ describe('EventCard', () => {
 
   describe('attendee avatars', () => {
     it('shows gender icon avatar when person has no avatar URL', async () => {
-      const persons = [makePerson({ gender: 'M', firstName: 'Văn', lastName: 'Nguyễn' })];
-      const el = await renderComponent(
-        makeEvent({ attendees: ['person-1'] }),
-        { persons },
-      );
+      const persons = [
+        makePerson({ gender: 'M', firstName: 'Văn', lastName: 'Nguyễn' }),
+      ];
+      const el = await renderComponent(makeEvent({ attendees: ['person-1'] }), {
+        persons,
+      });
       expect(el.shadowRoot).toBeNull();
       const rendered = getContent(el);
       expect(rendered).toContain('w-8 h-8 rounded-full');
     });
 
     it('shows female avatar with pink colors when no avatar URL', async () => {
-      const persons = [makePerson({ gender: 'F', firstName: 'Hương', lastName: 'Trần' })];
-      const el = await renderComponent(
-        makeEvent({ attendees: ['person-1'] }),
-        { persons },
-      );
+      const persons = [
+        makePerson({ gender: 'F', firstName: 'Hương', lastName: 'Trần' }),
+      ];
+      const el = await renderComponent(makeEvent({ attendees: ['person-1'] }), {
+        persons,
+      });
       const rendered = getContent(el);
       expect(rendered).toContain('bg-pink-100');
     });
 
     it('shows male avatar with blue colors when no avatar URL', async () => {
-      const persons = [makePerson({ gender: 'M', firstName: 'Văn', lastName: 'Nguyễn' })];
-      const el = await renderComponent(
-        makeEvent({ attendees: ['person-1'] }),
-        { persons },
-      );
+      const persons = [
+        makePerson({ gender: 'M', firstName: 'Văn', lastName: 'Nguyễn' }),
+      ];
+      const el = await renderComponent(makeEvent({ attendees: ['person-1'] }), {
+        persons,
+      });
       const rendered = getContent(el);
       expect(rendered).toContain('bg-blue-100');
     });
 
     it('shows avatar image for attendees with avatar URL', async () => {
-      const persons = [makePerson({ avatar: 'https://example.com/avatar.jpg' })];
-      const el = await renderComponent(
-        makeEvent({ attendees: ['person-1'] }),
-        { persons },
-      );
+      const persons = [
+        makePerson({ avatar: 'https://example.com/avatar.jpg' }),
+      ];
+      const el = await renderComponent(makeEvent({ attendees: ['person-1'] }), {
+        persons,
+      });
       const rendered = getContent(el);
       expect(rendered).toContain('https://example.com/avatar.jpg');
     });
@@ -344,17 +362,33 @@ describe('EventCard', () => {
     it('shows multiple attendee avatars with mixed avatar types', async () => {
       const p1: Person = {
         id: 'person-1',
-        data: { firstName: 'Văn', lastName: 'Nguyễn', gender: 'M', generation: 1 },
+        data: {
+          firstName: 'Văn',
+          lastName: 'Nguyễn',
+          gender: 'M',
+          generation: 1,
+        },
         rels: { parents: [], spouses: [], children: [] },
       };
       const p2: Person = {
         id: 'person-2',
-        data: { firstName: 'Hương', lastName: 'Trần', gender: 'F', generation: 1, avatar: 'https://example.com/avatar.jpg' },
+        data: {
+          firstName: 'Hương',
+          lastName: 'Trần',
+          gender: 'F',
+          generation: 1,
+          avatar: 'https://example.com/avatar.jpg',
+        },
         rels: { parents: [], spouses: [], children: [] },
       };
       const p3: Person = {
         id: 'person-3',
-        data: { firstName: 'Thắng', lastName: 'Lê', gender: 'M', generation: 2 },
+        data: {
+          firstName: 'Thắng',
+          lastName: 'Lê',
+          gender: 'M',
+          generation: 2,
+        },
         rels: { parents: [], spouses: [], children: [] },
       };
       const el = await renderComponent(

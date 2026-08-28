@@ -3,9 +3,7 @@ import '../../src/components/notification-item.js';
 import type { NotificationItem } from '../../src/components/notification-item.js';
 import type { Notification } from '../../src/types/index.js';
 
-const makeNotification = (
-  overrides?: Partial<Notification>,
-): Notification => ({
+const makeNotification = (overrides?: Partial<Notification>): Notification => ({
   id: 'notif-1',
   type: 'fund_change',
   title: 'Test notification',
@@ -74,7 +72,9 @@ describe('NotificationItem', () => {
 
   describe('notification type icons', () => {
     it('shows fund_change icon', async () => {
-      const el = await renderComponent(makeNotification({ type: 'fund_change' }));
+      const el = await renderComponent(
+        makeNotification({ type: 'fund_change' }),
+      );
       expect(getContent(el)).toContain('💰');
     });
 
@@ -98,9 +98,7 @@ describe('NotificationItem', () => {
     });
 
     it('shows fallback icon for unknown type', async () => {
-      const el = await renderComponent(
-        makeNotification({ type: 'unknown' as any }),
-      );
+      const el = await renderComponent(makeNotification({ type: 'unknown' }));
       expect(getContent(el)).toContain('📌');
     });
   });
@@ -149,7 +147,7 @@ describe('NotificationItem', () => {
       const notification = makeNotification({ read: false });
       const el = await renderComponent(notification);
       const markReadPromise = new Promise<CustomEvent>((resolve) => {
-        el.addEventListener('mark-read', (e: CustomEvent) => resolve(e), {
+        el.addEventListener('mark-read', (e) => resolve(e as CustomEvent), {
           once: true,
         });
       });
@@ -180,11 +178,13 @@ describe('NotificationItem', () => {
     it('dispatches dismiss event on delete click', async () => {
       const el = await renderComponent(makeNotification());
       const dismissPromise = new Promise<CustomEvent>((resolve) => {
-        el.addEventListener('dismiss', (e: CustomEvent) => resolve(e), {
+        el.addEventListener('dismiss', (e) => resolve(e as CustomEvent), {
           once: true,
         });
       });
-      const deleteBtn = el.querySelector('button[title="Delete"]')!;
+      const deleteBtn = el.querySelector(
+        'button[title="Delete"]',
+      ) as HTMLButtonElement;
       deleteBtn.click();
       const event = await dismissPromise;
       expect(event.type).toBe('dismiss');
@@ -192,7 +192,9 @@ describe('NotificationItem', () => {
 
     it('sets dismissed flag on dismiss', async () => {
       const el = await renderComponent(makeNotification());
-      const deleteBtn = el.querySelector('button[title="Delete"]')!;
+      const deleteBtn = el.querySelector(
+        'button[title="Delete"]',
+      ) as HTMLButtonElement;
       deleteBtn.click();
       await el.updateComplete;
       expect(el.dismissed).toBe(true);
@@ -205,7 +207,9 @@ describe('NotificationItem', () => {
       el.addEventListener('mark-read', () => {
         markReadFired = true;
       });
-      const deleteBtn = el.querySelector('button[title="Delete"]')!;
+      const deleteBtn = el.querySelector(
+        'button[title="Delete"]',
+      ) as HTMLButtonElement;
       deleteBtn.click();
       await el.updateComplete;
       expect(markReadFired).toBe(false);

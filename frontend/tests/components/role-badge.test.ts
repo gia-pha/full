@@ -2,7 +2,10 @@ import { describe, expect, it } from 'vitest';
 import '../../src/components/role-badge.js';
 import type { RoleBadge } from '../../src/components/role-badge.js';
 
-async function renderComponent(opts?: { name?: string; label?: string }): Promise<RoleBadge> {
+async function renderComponent(opts?: {
+  name?: string;
+  label?: string;
+}): Promise<RoleBadge> {
   const el = document.createElement('role-badge');
   if (opts?.name !== undefined) el.name = opts.name;
   if (opts?.label !== undefined) el.label = opts.label;
@@ -61,7 +64,10 @@ describe('RoleBadge', () => {
   });
 
   it('custom label still uses role color', async () => {
-    const el = await renderComponent({ name: 'editor', label: 'Custom Editor' });
+    const el = await renderComponent({
+      name: 'editor',
+      label: 'Custom Editor',
+    });
     const rendered = getContent(el);
     expect(rendered).toContain('Custom Editor');
     expect(rendered).toContain('bg-blue-100');

@@ -1,3 +1,5 @@
+import { formatDate } from '../utils/format.js';
+
 class ModalComponent {
   constructor(container, store, t) {
     this.container = container;
@@ -12,7 +14,7 @@ class ModalComponent {
     const data = this.store.state.modalData;
     if (!type) { this.container.innerHTML = ''; return; }
 
-    const titles = { 'edit-person': 'Chinh sua thanh vien', 'edit-clan': 'Chinh sua ho toc', 'add-event': 'Them su kien', 'edit-event': 'Chinh sua su kien', 'add-fund-transaction': 'Them giao dich', 'change-role': 'Doi vai tro' };
+    const titles = { 'edit-person': 'Chinh sua thanh vien', 'edit-clan': 'Chinh sua ho toc', 'add-event': 'Them su kien', 'edit-event': 'Chinh sua su kien', 'add-fund-transaction': 'Them giao dich', 'change-role': 'Doi vai tro', 'day-events': 'Su kien trong ngay' };
 
     this.container.innerHTML = `
       <div class="modal-overlay fixed inset-0 z-50 bg-black/40 flex items-end sm:items-center justify-center">
@@ -48,6 +50,7 @@ class ModalComponent {
       case 'edit-person': return this.editPerson(data);
       case 'edit-clan': return this.editClan(data);
       case 'add-event': case 'edit-event': return this.editEvent(data, type === 'add-event');
+      case 'day-events': return this.dayEvents(data);
       case 'add-fund-transaction': return this.fundTxn(data);
       case 'change-role': return this.changeRole(data);
       default: return '<p class="text-gray-400 text-sm">Khong co noi dung</p>';
@@ -107,6 +110,28 @@ class ModalComponent {
         <div class="flex gap-2 pt-2">
           <button class="modal-save-event flex-1 py-2.5 bg-emerald-600 active:bg-emerald-700 text-white rounded-lg text-sm font-medium">${this.t.profile.save}</button>
           <button class="modal-cancel px-4 py-2.5 bg-gray-100 active:bg-gray-200 text-gray-600 rounded-lg text-sm font-medium">${this.t.profile.cancel}</button>
+        </div>
+      </div>
+    `;
+  }
+
+  dayEvents(data) {
+    const typeColors = { memorial: 'bg-amber-100 text-amber-700', meeting: 'bg-blue-100 text-blue-700', reunion: 'bg-emerald-100 text-emerald-700', anniversary: 'bg-purple-100 text-purple-700' };
+    return `
+      <div class="space-y-4">
+        <p class="text-sm font-medium text-gray-500">📅 ${formatDate(data.date)}</p>
+        ${data.events.map(e => `
+          <div class="p-3 sm:p-4 bg-gray-50 rounded-xl">
+            <span class="inline-block px-3 py-1 text-xs rounded-full font-medium mb-2 ${typeColors[e.type] || 'bg-gray-100 text-gray-600'}">${this.t.events.type[e.type] || e.type}</span>
+            <h4 class="font-semibold text-gray-800 text-sm">${e.title}</h4>
+            ${e.description ? `<p class="text-gray-600 text-sm mt-1">${e.description}</p>` : ''}
+            <div class="flex flex-wrap items-center gap-4 text-xs text-gray-500 mt-2">
+              ${e.location ? `<span>📍 ${e.location}</span>` : ''}
+            </div>
+          </div>
+        `).join('')}
+        <div class="flex gap-2 pt-2">
+          <button class="modal-cancel flex-1 py-2.5 bg-gray-100 active:bg-gray-200 text-gray-600 rounded-lg text-sm font-medium">${this.t.profile.cancel}</button>
         </div>
       </div>
     `;

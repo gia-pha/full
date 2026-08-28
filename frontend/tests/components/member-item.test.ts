@@ -1,8 +1,7 @@
-import { describe, expect, it, vi } from 'vitest';
 import { svg } from 'lit';
+import { describe, expect, it, vi } from 'vitest';
 import '../../src/components/member-item.js';
 import type { MemberItem } from '../../src/components/member-item.js';
-import type { MemberAction } from '../../src/types/index.js';
 import type { Person } from '../../src/types/index.js';
 
 const makePerson = (

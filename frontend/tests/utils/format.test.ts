@@ -2,11 +2,11 @@ import { describe, expect, it } from 'vitest';
 import type { Person } from '../../src/types/index.js';
 import {
   formatCurrency,
+  formatDate,
   getFullName,
   getGenderSymbol,
   getInitials,
   isDeceased,
-  formatDate,
 } from '../../src/utils/format.js';
 
 const makePerson = (overrides?: Partial<typeof mockPerson.data>): Person => ({
@@ -87,6 +87,10 @@ describe('formatDate', () => {
 
   it('returns "-" for empty string', () => {
     expect(formatDate('')).toBe('-');
+  });
+
+  it('returns "-" for an unparseable date', () => {
+    expect(formatDate('not-a-date')).toBe('-');
   });
 
   it('formats a different date correctly', () => {
