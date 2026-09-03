@@ -27,6 +27,7 @@ export class Sidebar extends LitElement {
   @property({ type: String }) roleLabel = '';
 
   @state() private drawerOpen = false;
+  @state() private clansExpanded = false;
 
   override createRenderRoot() {
     return this;
@@ -45,6 +46,13 @@ export class Sidebar extends LitElement {
   }
 
   private handleClanClick = (id: string) => {
+    const collapsible = this.clans.length > 1;
+    const current =
+      this.clans.find((c) => c.id === this.currentClanId) ?? this.clans[0];
+    if (collapsible && !this.clansExpanded && id === current?.id) {
+      this.clansExpanded = true;
+      return;
+    }
     this.dispatchEvent(
       new CustomEvent('clan-select', {
         bubbles: true,
@@ -53,6 +61,7 @@ export class Sidebar extends LitElement {
       }),
     );
     this.drawerOpen = false;
+    this.clansExpanded = false;
   };
 
   private handlePageClick = (page: string) => {
@@ -80,7 +89,7 @@ export class Sidebar extends LitElement {
     if (e.target === e.currentTarget) this.drawerOpen = false;
   };
 
-  private renderClanButton(clan: Clan): TemplateResult {
+  private renderClanButton(clan: Clan, expandable = false): TemplateResult {
     const active = this.currentClanId === clan.id;
     return html`
       <button
@@ -105,7 +114,43 @@ export class Sidebar extends LitElement {
             >`
             : html``
         }
+        ${
+          expandable
+            ? html`<span
+              class="clan-chevron text-xs text-gray-400"
+              aria-hidden="true"
+              >▾</span
+            >`
+            : html``
+        }
       </button>
+    `;
+  }
+
+  private renderClanSection(): TemplateResult {
+    const collapsible = this.clans.length > 1;
+    const current =
+      this.clans.find((c) => c.id === this.currentClanId) ?? this.clans[0];
+    const collapsed = collapsible && !this.clansExpanded;
+    const visible = collapsed && current ? [current] : this.clans;
+    return html`
+      <div
+        class="flex-shrink-0 border-b p-4 dark:border-gray-700"
+        role="group"
+        aria-label=${t(this.language, 'app.sidebar.clans')}
+      >
+        <div
+          class=${`space-y-2 ${
+            collapsible && this.clansExpanded
+              ? 'max-h-56 overflow-y-auto pr-1'
+              : ''
+          }`}
+        >
+          ${visible.map((c) =>
+            this.renderClanButton(c, collapsed && c.id === current?.id),
+          )}
+        </div>
+      </div>
     `;
   }
 
@@ -165,16 +210,7 @@ export class Sidebar extends LitElement {
           `
           : html``
       }
-      <div class="flex-shrink-0 border-b p-4 dark:border-gray-700">
-        <p
-          class="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-400"
-        >
-          ${t(this.language, 'app.sidebar.clans')}
-        </p>
-        <div class="space-y-2">
-          ${this.clans.map((c) => this.renderClanButton(c))}
-        </div>
-      </div>
+      ${this.renderClanSection()}
       <nav class="flex-1 space-y-1 overflow-y-auto p-4">
         ${this.navItems.map((item) => this.renderNavButton(item))}
       </nav>

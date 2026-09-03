@@ -165,8 +165,14 @@ describe('Sidebar', () => {
     expect(pages).toEqual(['tree', 'funds']);
   });
 
-  it('renders a clan button for each clan', async () => {
+  it('renders a clan button for each clan when expanded', async () => {
     const el = await renderSidebar({ clans: makeClans() });
+    (
+      el.querySelector(
+        '.sidebar-panel .clan-btn[data-clan="c1"]',
+      ) as HTMLButtonElement
+    ).click();
+    await el.updateComplete;
     const buttons = el.querySelectorAll('.sidebar-panel .clan-btn');
     expect(buttons.length).toBe(2);
     expect(buttons[0].getAttribute('data-clan')).toBe('c1');
@@ -179,12 +185,19 @@ describe('Sidebar', () => {
       currentClanId: 'c2',
     });
     const buttons = el.querySelectorAll('.sidebar-panel .clan-btn');
-    expect(buttons[0].className).not.toContain('bg-emerald-50');
-    expect(buttons[1].className).toContain('bg-emerald-50');
+    expect(buttons.length).toBe(1);
+    expect(buttons[0].getAttribute('data-clan')).toBe('c2');
+    expect(buttons[0].className).toContain('bg-emerald-50');
   });
 
   it('uses lineage-specific dot colors', async () => {
     const el = await renderSidebar({ clans: makeClans() });
+    (
+      el.querySelector(
+        '.sidebar-panel .clan-btn[data-clan="c1"]',
+      ) as HTMLButtonElement
+    ).click();
+    await el.updateComplete;
     const buttons = el.querySelectorAll('.sidebar-panel .clan-btn');
     const dot0 = buttons[0].querySelector('span')!;
     const dot1 = buttons[1].querySelector('span')!;
@@ -211,6 +224,12 @@ describe('Sidebar', () => {
 
   it('renders Vietnamese labels by default', async () => {
     const el = await renderSidebar({ clans: makeClans() });
+    (
+      el.querySelector(
+        '.sidebar-panel .clan-btn[data-clan="c1"]',
+      ) as HTMLButtonElement
+    ).click();
+    await el.updateComplete;
     expect(el.innerHTML).toContain('Cây Phổ Hệ');
     expect(el.innerHTML).toContain('Dòng Họ');
     expect(el.innerHTML).toContain('Theo cha');
@@ -259,8 +278,101 @@ describe('Sidebar', () => {
     expect(idle!.className).not.toContain('bg-emerald-50');
   });
 
+  it('shows only the current clan when more than one clan', async () => {
+    const el = await renderSidebar({ clans: makeClans(), currentClanId: 'c2' });
+    const buttons = el.querySelectorAll('.sidebar-panel .clan-btn');
+    expect(buttons.length).toBe(1);
+    expect(buttons[0].getAttribute('data-clan')).toBe('c2');
+    expect(el.querySelector('.sidebar-panel .clan-chevron')).not.toBeNull();
+  });
+  it('shows the first clan when collapsed and no active clan', async () => {
+    const el = await renderSidebar({
+      clans: [...makeClans(), { ...makeClans()[0], id: 'c3', name: 'Họ Lê' }],
+    });
+    const buttons = el.querySelectorAll('.sidebar-panel .clan-btn');
+    expect(buttons.length).toBe(1);
+    expect(buttons[0].getAttribute('data-clan')).toBe('c1');
+  });
+  it('shows all clans without collapse when there is a single clan', async () => {
+    const el = await renderSidebar({ clans: [makeClans()[0]] });
+    const btn = el.querySelector(
+      '.sidebar-panel .clan-btn',
+    ) as HTMLButtonElement;
+    expect(el.querySelectorAll('.sidebar-panel .clan-btn').length).toBe(1);
+    expect(el.querySelector('.sidebar-panel .clan-chevron')).toBeNull();
+    const eventPromise = awaitEvent(el, 'clan-select');
+    btn.click();
+    const event = await eventPromise;
+    expect(event.detail).toEqual({ id: 'c1' });
+  });
+  it('expands the clan list when the collapsed current clan is clicked', async () => {
+    const el = await renderSidebar({
+      clans: [...makeClans(), { ...makeClans()[0], id: 'c3', name: 'Họ Lê' }],
+      currentClanId: 'c2',
+    });
+    let dispatched = false;
+    el.addEventListener('clan-select', () => {
+      dispatched = true;
+    });
+    (
+      el.querySelector(
+        '.sidebar-panel .clan-btn[data-clan="c2"]',
+      ) as HTMLButtonElement
+    ).click();
+    await el.updateComplete;
+    expect(dispatched).toBe(false);
+    expect(el.querySelectorAll('.sidebar-panel .clan-btn').length).toBe(3);
+    expect(
+      el.querySelector('.sidebar-panel .clan-btn')!.closest('div')!.className,
+    ).toContain('max-h-56');
+  });
+  it('collapses the clan list when the current clan is clicked while expanded', async () => {
+    const el = await renderSidebar({ clans: makeClans(), currentClanId: 'c1' });
+    (
+      el.querySelector(
+        '.sidebar-panel .clan-btn[data-clan="c1"]',
+      ) as HTMLButtonElement
+    ).click();
+    await el.updateComplete;
+    expect(el.querySelectorAll('.sidebar-panel .clan-btn').length).toBe(2);
+    (
+      el.querySelector(
+        '.sidebar-panel .clan-btn[data-clan="c1"]',
+      ) as HTMLButtonElement
+    ).click();
+    await el.updateComplete;
+    expect(el.querySelectorAll('.sidebar-panel .clan-btn').length).toBe(1);
+  });
+  it('collapses the clan list after selecting a clan', async () => {
+    const el = await renderSidebar({
+      clans: [...makeClans(), { ...makeClans()[0], id: 'c3', name: 'Họ Lê' }],
+      currentClanId: 'c2',
+    });
+    (
+      el.querySelector(
+        '.sidebar-panel .clan-btn[data-clan="c2"]',
+      ) as HTMLButtonElement
+    ).click();
+    await el.updateComplete;
+    const eventPromise = awaitEvent(el, 'clan-select');
+    (
+      el.querySelector(
+        '.sidebar-panel .clan-btn[data-clan="c3"]',
+      ) as HTMLButtonElement
+    ).click();
+    const event = await eventPromise;
+    expect(event.detail).toEqual({ id: 'c3' });
+    expect(el.querySelectorAll('.sidebar-panel .clan-btn').length).toBe(1);
+  });
+
   it('dispatches clan-select with clan id on clan button click', async () => {
     const el = await renderSidebar({ clans: makeClans() });
+    (
+      el.querySelector(
+        '.sidebar-panel .clan-btn[data-clan="c1"]',
+      ) as HTMLButtonElement
+    ).click();
+    await el.updateComplete;
     const eventPromise = awaitEvent(el, 'clan-select');
     (
       el.querySelector(
@@ -435,14 +547,20 @@ describe('Sidebar', () => {
       el.querySelector('.sidebar-mobile .menu-btn') as HTMLButtonElement
     ).click();
     await el.updateComplete;
-    const eventPromise = awaitEvent(el, 'clan-select');
     (
       el.querySelector(
         '.drawer-panel .clan-btn[data-clan="c1"]',
       ) as HTMLButtonElement
     ).click();
+    await el.updateComplete;
+    const eventPromise = awaitEvent(el, 'clan-select');
+    (
+      el.querySelector(
+        '.drawer-panel .clan-btn[data-clan="c2"]',
+      ) as HTMLButtonElement
+    ).click();
     const event = await eventPromise;
-    expect(event.detail).toEqual({ id: 'c1' });
+    expect(event.detail).toEqual({ id: 'c2' });
     expect(el.querySelector('.drawer-panel')!.className).toContain(
       '-translate-x-full',
     );
