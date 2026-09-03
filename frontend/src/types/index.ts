@@ -21,6 +21,7 @@ export interface Person {
 export interface Clan {
   id: string;
   name: string;
+  lineage?: 'father' | 'mother' | 'spouse';
   origin: string;
   history: string;
   notableFigures: string[];

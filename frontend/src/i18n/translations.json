@@ -3,12 +3,64 @@
     "notifications": {
       "markRead": "Đánh dấu đã đọc",
       "markAllRead": "Đánh dấu tất cả đã đọc"
+    },
+    "app": {
+      "sidebar": {
+        "tree": "Cây Phổ Hệ",
+        "members": "Thành Viên",
+        "clanInfo": "Thông Tin Họ Tộc",
+        "events": "Sự Kiện",
+        "calendar": "Lịch",
+        "funds": "Quỹ",
+        "admin": "Quản Trị",
+        "notifications": "Thông Báo",
+        "profile": "Hồ Sơ Cá Nhân",
+        "logout": "Đăng Xuất",
+        "publicPage": "Trang Công Khai",
+        "invite": "Mời Thành Viên",
+        "language": "Ngôn ngữ",
+        "clans": "Dòng Họ",
+        "switchLanguage": "Switch to English"
+      }
+    },
+    "clan": {
+      "lineage": {
+        "father": "Theo cha",
+        "mother": "Theo mẹ",
+        "spouse": "Theo vợ/chồng"
+      }
     }
   },
   "en": {
     "notifications": {
       "markRead": "Mark as Read",
       "markAllRead": "Mark All Read"
+    },
+    "app": {
+      "sidebar": {
+        "tree": "Family Tree",
+        "members": "Members",
+        "clanInfo": "Clan Info",
+        "events": "Events",
+        "calendar": "Calendar",
+        "funds": "Clan Fund",
+        "admin": "Admin",
+        "notifications": "Notifications",
+        "profile": "Profile",
+        "logout": "Logout",
+        "publicPage": "Public Page",
+        "invite": "Invite Member",
+        "language": "Language",
+        "clans": "Clans",
+        "switchLanguage": "Chuyển sang Tiếng Việt"
+      }
+    },
+    "clan": {
+      "lineage": {
+        "father": "Father's Line",
+        "mother": "Mother's Line",
+        "spouse": "Spouse's Line"
+      }
     }
   }
 }
