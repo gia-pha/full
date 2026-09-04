@@ -91,6 +91,10 @@ export interface PlaygroundState {
   sidebarUnread: number;
   sidebarLanguage: 'vi' | 'en';
   sidebarEvent: string;
+  calendarType: 'solar' | 'lunar';
+  calendarLanguage: 'vi' | 'en';
+  calendarShowEvents: boolean;
+  calendarEvent: string;
 }
 
 export const state: PlaygroundState = {
@@ -174,6 +178,10 @@ export const state: PlaygroundState = {
   sidebarUnread: 3,
   sidebarLanguage: 'vi',
   sidebarEvent: '',
+  calendarType: 'solar',
+  calendarLanguage: 'vi',
+  calendarShowEvents: true,
+  calendarEvent: '',
 };
 
 const chartSample: Transaction[] = [

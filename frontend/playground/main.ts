@@ -21,8 +21,10 @@ import '../src/components/fund-summary.js';
 import '../src/components/fund-transactions-table.js';
 import '../src/components/app-button.js';
 import '../src/components/sidebar.js';
+import '../src/components/calendar.js';
 import { appButtonSection } from './components/app-button.js';
 import { avatarStackSection } from './components/avatar-stack.js';
+import { calendarSection } from './components/calendar.js';
 import { cardsSection } from './components/cards.js';
 import { eventCardSection } from './components/event-card.js';
 import { formControlsSection } from './components/form-controls.js';
@@ -77,6 +79,7 @@ function renderPlayground() {
           ${fundChartSection()}
           ${fundSummarySection()}
           ${fundTransactionsTableSection()}
+          ${calendarSection()}
         </div>
       </div>
     `,
