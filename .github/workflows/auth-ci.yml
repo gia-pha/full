@@ -93,10 +93,18 @@
 
 
 name: Test AUTH CI V2
-on: push
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'auth/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'auth/**'
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - name: Say test
-        run: echo "Day la test branch, CI dang chay!"
+        run: echo "Day la test v3, CI dang chay!"
