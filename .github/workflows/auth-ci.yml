@@ -23,68 +23,32 @@ jobs:
         uses: actions/setup-go@v6
         with:
           go-version: '1.25.0'
+          # cache: true
           # cache-dependency-path: auth/go.sum
 
+      - name: Install dependencies
+        run: go mod download
+
       - name: Build
-        run: go build 
+        run: go build -v
 
       - name: Run tests
-        run: go test ./... -v -race
+        run: go test -v ./...
 
-  # check_v2:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: Checkout code
-  #     uses: actions/checkout@v4
+  test:
+    needs: check
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./auth
+    steps:
+      - uses: actions/checkout@v6
 
-  #   - name: Set up Go
-  #     uses: actions/setup-go@v5
-  #     with:
-  #       go-version: '1.25' 
-  #       cache: true        # Tự động cache GOCACHE và GOMODCACHE cực mạnh
-
-  #   - name: Verify Dependencies
-  #     run: go mod verify
-
-  #   - name: Golangci-lint
-  #     uses: golangci/golangci-lint-action@v6
-  #     with:
-  #       version: latest
-
-  #   - name: Run Tests
-  #     run: go test -v -race -covermode=atomic -coverprofile=coverage.out ./...
-
-  #   - name: Build Optimized Binary
-  #     run: |
-  #       CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -v -o auth-server .
+      - uses: actions/setup-go@v6
+        with:
+          go-version: '1.25.0'
+          # cache-dependency-path: auth/go.sum
+      - run: go test ./... -v 
 
 
-  # test:
-  #   needs: check
-  #   runs-on: ubuntu-latest
-  #   defaults:
-  #     run:
-  #       working-directory: ./auth
-  #   steps:
-  #     - uses: actions/checkout@v4
-
-  #     - uses: actions/setup-go@v5
-  #       with:
-  #         go-version: '1.25'
-  #         cache-dependency-path: auth/go.sum
-  #     - run: go test ./... -v -race
-  # build:
-  #   needs: check
-  #   runs-on: ubuntu-latest
-  #   defaults:
-  #     run:
-  #       working-directory: ./auth
-  #   steps:
-  #     - uses: actions/checkout@v4
-
-  #     - uses: actions/setup-go@v5
-  #       with:
-  #         go-version: '1.25'
-  #         cache-dependency-path: auth/go.sum
-  #     - run: go build -v -o auth-server .
 
