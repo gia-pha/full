@@ -94,6 +94,7 @@ export interface PlaygroundState {
   calendarType: 'solar' | 'lunar';
   calendarLanguage: 'vi' | 'en';
   calendarShowEvents: boolean;
+  calendarSelectedDate: string;
   calendarEvent: string;
 }
 
@@ -181,6 +182,7 @@ export const state: PlaygroundState = {
   calendarType: 'solar',
   calendarLanguage: 'vi',
   calendarShowEvents: true,
+  calendarSelectedDate: '',
   calendarEvent: '',
 };
 
