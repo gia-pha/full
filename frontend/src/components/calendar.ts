@@ -2,9 +2,12 @@ import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { t } from '../i18n.js';
 import type { Event } from '../types/index.js';
+import './toggle.js';
 import {
   dayNamesEn,
   dayNamesVi,
+  formatLunarDateEn,
+  formatLunarDateVi,
   getDaysInMonth,
   getFirstDayOfMonth,
   getVietnameseYearName,
@@ -13,8 +16,8 @@ import {
   monthNamesVi,
   solarToLunar,
 } from '../utils/lunar.js';
+import type { ToggleDetail } from './toggle.js';
 
-export type CalendarType = 'solar' | 'lunar';
 export type CalendarLanguage = 'vi' | 'en';
 
 export interface CalendarNavDetail {
@@ -22,13 +25,15 @@ export interface CalendarNavDetail {
   month: number;
 }
 
-export interface CalendarTypeDetail {
-  type: CalendarType;
+export interface CalendarLunarDetail {
+  lunar: boolean;
 }
 
 export interface DaySelectDetail {
   date: string;
   events: Event[];
+  lunarDate?: string;
+  lunarYearName?: string;
 }
 
 interface CalendarCell {
@@ -54,32 +59,37 @@ const textColors: Record<string, string> = {
   anniversary: 'text-purple-600',
 };
 
-const lunarMonthRoman = [
-  '',
-  'I',
-  'II',
-  'III',
-  'IV',
-  'V',
-  'VI',
-  'VII',
-  'VIII',
-  'IX',
-  'X',
-  'XI',
-  'XII',
-];
-
 const pad2 = (n: number): string => String(n).padStart(2, '0');
+
+const formatLunarDate = (
+  lunar: LunarDate,
+  language: CalendarLanguage,
+): string =>
+  language === 'en'
+    ? formatLunarDateEn(lunar.year, lunar.month, lunar.day, lunar.isLeapMonth)
+    : formatLunarDateVi(lunar.year, lunar.month, lunar.day, lunar.isLeapMonth);
+
+const formatSelectedDate = (
+  date: string,
+  language: CalendarLanguage,
+): string => {
+  const d = new Date(`${date}T00:00:00`);
+  return d.toLocaleDateString(language === 'vi' ? 'vi-VN' : 'en-GB', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+};
 
 @customElement('app-calendar')
 export class AppCalendar extends LitElement {
   @property({ type: Number }) year = new Date().getFullYear();
   @property({ type: Number }) month = new Date().getMonth() + 1;
-  @property({ type: String, reflect: true }) calendarType: CalendarType =
-    'solar';
+  @property({ type: Boolean, reflect: true }) lunar = false;
   @property({ type: Array }) events: Event[] = [];
   @property({ type: String }) language: CalendarLanguage = 'vi';
+  @property({ type: String }) selectedDate = '';
 
   override createRenderRoot() {
     return this;
@@ -138,6 +148,7 @@ export class AppCalendar extends LitElement {
     }
     this.year = year;
     this.month = month;
+    this.selectedDate = '';
     this.dispatchEvent(
       new CustomEvent<CalendarNavDetail>('calendar-nav', {
         bubbles: true,
@@ -151,6 +162,7 @@ export class AppCalendar extends LitElement {
     const now = new Date();
     this.year = now.getFullYear();
     this.month = now.getMonth() + 1;
+    this.selectedDate = '';
     this.dispatchEvent(
       new CustomEvent<CalendarNavDetail>('calendar-nav', {
         bubbles: true,
@@ -160,59 +172,51 @@ export class AppCalendar extends LitElement {
     );
   }
 
-  private setType(type: CalendarType) {
-    if (type === this.calendarType) return;
-    this.calendarType = type;
+  private handleLunarChange(e: CustomEvent<ToggleDetail>) {
+    e.stopPropagation();
+    this.lunar = e.detail.checked;
     this.dispatchEvent(
-      new CustomEvent<CalendarTypeDetail>('calendar-type-change', {
+      new CustomEvent<CalendarLunarDetail>('calendar-lunar-toggle', {
         bubbles: true,
         composed: true,
-        detail: { type },
+        detail: { lunar: this.lunar },
       }),
     );
   }
 
   private handleDayClick(cell: CalendarCell) {
     if (!cell.current || !cell.dateStr) return;
+    this.selectedDate = cell.dateStr;
+    const detail: DaySelectDetail = {
+      date: cell.dateStr,
+      events: cell.events ?? [],
+    };
+    if (this.lunar && cell.lunar) {
+      detail.lunarDate = formatLunarDate(cell.lunar, this.language);
+      detail.lunarYearName = getVietnameseYearName(cell.lunar.year);
+    }
     this.dispatchEvent(
       new CustomEvent<DaySelectDetail>('day-select', {
         bubbles: true,
         composed: true,
-        detail: { date: cell.dateStr, events: cell.events ?? [] },
+        detail,
       }),
     );
   }
 
-  private renderTypeButton(type: CalendarType): TemplateResult {
-    const active = this.calendarType === type;
-    const activeClass =
-      type === 'solar'
-        ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300'
-        : 'bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300';
+  private renderLunarToggle(): TemplateResult {
     return html`
-      <button
-        type="button"
-        class="cal-type-btn px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-          active
-            ? activeClass
-            : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
-        }"
-        data-type=${type}
-        aria-pressed=${active}
-        @click=${() => this.setType(type)}
-      >
-        ${t(this.language, `events.${type}`)}
-      </button>
+      <app-toggle
+        class="cal-lunar-toggle"
+        .checked=${this.lunar}
+        .label=${`🌙 ${t(this.language, 'events.lunar')}`}
+        @change=${this.handleLunarChange}
+      ></app-toggle>
     `;
   }
 
   private renderLegend(): TemplateResult {
-    const types: CalendarType[] | string[] = [
-      'memorial',
-      'meeting',
-      'reunion',
-      'anniversary',
-    ];
+    const types: string[] = ['memorial', 'meeting', 'reunion', 'anniversary'];
     return html`
       <div class="flex items-center gap-2 text-sm text-gray-500">
         ${types.map(
@@ -230,9 +234,14 @@ export class AppCalendar extends LitElement {
   }
 
   private renderLunarDisplay(lunar: LunarDate): TemplateResult {
+    const leap = lunar.isLeapMonth
+      ? this.language === 'vi'
+        ? ' (N)'
+        : ' (L)'
+      : '';
     return html`
       <div class="text-[9px] text-amber-500 mt-0.5">
-        ${lunar.day}/${lunarMonthRoman[lunar.month] ?? lunar.month}
+        ${lunar.day}/${lunar.month}${leap}
       </div>
     `;
   }
@@ -268,11 +277,7 @@ export class AppCalendar extends LitElement {
           <span class="text-xs font-medium text-gray-700 dark:text-gray-200 ${dayClass}"
             >${cell.day}</span
           >
-          ${
-            this.calendarType === 'lunar' && cell.lunar
-              ? this.renderLunarDisplay(cell.lunar)
-              : ''
-          }
+          ${this.lunar && cell.lunar ? this.renderLunarDisplay(cell.lunar) : ''}
         </div>
         ${
           cellEvents.length > 0
@@ -309,11 +314,6 @@ export class AppCalendar extends LitElement {
                     : ''
                 }
               </div>
-              ${
-                this.calendarType === 'solar' && cell.lunar
-                  ? this.renderLunarDisplay(cell.lunar)
-                  : ''
-              }
             `
             : ''
         }
@@ -321,12 +321,96 @@ export class AppCalendar extends LitElement {
     `;
   }
 
+  private renderSelectedPanel(): TemplateResult | '' {
+    if (!this.selectedDate) return '';
+    const events = this.events.filter((evt) => evt.date === this.selectedDate);
+    if (events.length === 0) return '';
+    const countLabel =
+      this.language === 'vi'
+        ? `${events.length} sự kiện`
+        : `${events.length} ${events.length === 1 ? 'event' : 'events'}`;
+    const [y, m, d] = this.selectedDate.split('-').map(Number);
+    const lunar = solarToLunar(y, m, d);
+    return html`
+      <div
+        id="cal-selected"
+        class="cal-selected-panel mt-4 rounded-2xl border border-emerald-200 dark:border-emerald-800 bg-gradient-to-br from-emerald-50 via-white to-emerald-50 dark:from-emerald-900/20 dark:via-gray-900 dark:to-emerald-900/20 p-4 space-y-3"
+      >
+        <div class="flex items-center justify-between gap-3">
+          <div class="flex items-center gap-2 min-w-0">
+            <span class="text-lg leading-none">📅</span>
+            <div class="min-w-0">
+              <h3
+                class="cal-selected-date truncate text-sm font-bold uppercase tracking-wide text-emerald-700 dark:text-emerald-300"
+              >
+                ${formatSelectedDate(this.selectedDate, this.language)}
+              </h3>
+              ${
+                this.lunar
+                  ? html`<p
+                      class="cal-selected-lunar mt-0.5 text-xs font-medium text-amber-600 dark:text-amber-400"
+                    >
+                      🌙 ${formatLunarDate(lunar, this.language)} -
+                      ${getVietnameseYearName(lunar.year)}
+                    </p>`
+                  : ''
+              }
+            </div>
+          </div>
+          <span
+            class="shrink-0 px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 text-xs font-semibold"
+            >${countLabel}</span
+          >
+        </div>
+        <ul class="space-y-2">
+          ${events.map(
+            (evt) => html`
+              <li
+                class="flex items-start gap-3 rounded-xl bg-white/80 dark:bg-gray-800/80 border border-gray-100 dark:border-gray-700 px-3 py-2.5 shadow-sm"
+              >
+                <span
+                  class="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full ${
+                    dotColors[evt.type ?? ''] ?? 'bg-gray-400'
+                  }"
+                ></span>
+                <div class="min-w-0">
+                  <p
+                    class="truncate text-sm font-semibold text-gray-800 dark:text-gray-100"
+                  >
+                    ${evt.title}
+                  </p>
+                  ${
+                    evt.type
+                      ? html`<p
+                        class="text-xs font-medium ${
+                          textColors[evt.type] ?? 'text-gray-500'
+                        }"
+                      >
+                        ${t(this.language, `events.type.${evt.type}`)}
+                      </p>`
+                      : ''
+                  }
+                  ${
+                    evt.location
+                      ? html`<p class="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
+                        📍 ${evt.location}
+                      </p>`
+                      : ''
+                  }
+                </div>
+              </li>
+            `,
+          )}
+        </ul>
+      </div>
+    `;
+  }
+
   override render() {
-    const { year, month, calendarType } = this;
+    const { year, month } = this;
     const monthNames = this.language === 'vi' ? monthNamesVi : monthNamesEn;
     const dayNames = this.language === 'vi' ? dayNamesVi : dayNamesEn;
-    const lunarYearName =
-      calendarType === 'lunar' ? getVietnameseYearName(year) : '';
+    const lunarYearName = this.lunar ? getVietnameseYearName(year) : '';
     const cells = this.buildCells();
 
     return html`
@@ -335,10 +419,7 @@ export class AppCalendar extends LitElement {
           ${t(this.language, 'events.calendarView')}
         </h2>
         <div class="flex items-center gap-2">
-          <span class="text-sm text-gray-500 dark:text-gray-400"
-            >${t(this.language, 'events.calendarType')}:</span
-          >
-          ${this.renderTypeButton('solar')} ${this.renderTypeButton('lunar')}
+          ${this.renderLunarToggle()}
         </div>
       </div>
       <div class="p-4 sm:p-6 lg:p-8">
@@ -396,6 +477,7 @@ export class AppCalendar extends LitElement {
             ${cells.map((cell) => this.renderCell(cell))}
           </div>
         </div>
+        ${this.renderSelectedPanel()}
       </div>
     `;
   }

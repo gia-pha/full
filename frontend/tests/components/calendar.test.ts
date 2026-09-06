@@ -3,7 +3,6 @@ import '../../src/components/calendar.js';
 import type {
   AppCalendar,
   CalendarLanguage,
-  CalendarType,
 } from '../../src/components/calendar.js';
 import type { Event } from '../../src/types/index.js';
 import { getDaysInMonth } from '../../src/utils/lunar.js';
@@ -37,7 +36,7 @@ async function renderCalendar(
   opts: {
     year?: number;
     month?: number;
-    calendarType?: CalendarType;
+    lunar?: boolean;
     events?: Event[];
     language?: CalendarLanguage;
   } = {},
@@ -45,7 +44,7 @@ async function renderCalendar(
   const el = document.createElement('app-calendar');
   if (opts.year !== undefined) el.year = opts.year;
   if (opts.month !== undefined) el.month = opts.month;
-  if (opts.calendarType !== undefined) el.calendarType = opts.calendarType;
+  if (opts.lunar !== undefined) el.lunar = opts.lunar;
   if (opts.events !== undefined) el.events = opts.events;
   if (opts.language !== undefined) el.language = opts.language;
   document.body.appendChild(el);
@@ -96,16 +95,12 @@ describe('AppCalendar', () => {
     expect(en.querySelector('h3')!.textContent).toContain('June');
   });
 
-  it('shows the zodiac year name only in lunar mode', async () => {
+  it('shows the zodiac year name only when the lunar toggle is on', async () => {
     const solar = await renderCalendar({ year: 2025, month: 6 });
     expect(solar.querySelector('h3')!.textContent).not.toContain('Ất Tỵ');
     solar.remove();
-    const lunar = await renderCalendar({
-      year: 2025,
-      month: 6,
-      calendarType: 'lunar',
-    });
-    expect(lunar.querySelector('h3')!.textContent).toContain('Ất Tỵ');
+    const lunar = await renderCalendar({ year: 2025, month: 6, lunar: true });
+    expect(lunar.querySelector('h3')!.textContent).toContain('2025 - Ất Tỵ');
   });
 
   it('highlights today', async () => {
@@ -153,39 +148,36 @@ describe('AppCalendar', () => {
     });
   });
 
-  it('switches calendar type and dispatches calendar-type-change', async () => {
+  it('toggles lunar mode on and dispatches calendar-lunar-toggle', async () => {
     const el = await renderCalendar();
-    const promise = awaitEvent(el, 'calendar-type-change');
-    (
-      el.querySelector('.cal-type-btn[data-type="lunar"]') as HTMLButtonElement
-    ).click();
+    const promise = awaitEvent(el, 'calendar-lunar-toggle');
+    (el.querySelector('.cal-lunar-toggle button') as HTMLButtonElement).click();
     const event = await promise;
-    expect(event.detail).toEqual({ type: 'lunar' });
-    expect(el.calendarType).toBe('lunar');
-    expect(el.getAttribute('calendartype')).toBe('lunar');
+    expect(event.detail).toEqual({ lunar: true });
+    expect(el.lunar).toBe(true);
+    expect(el.hasAttribute('lunar')).toBe(true);
   });
 
-  it('does not dispatch when the active type is clicked', async () => {
-    const el = await renderCalendar({ calendarType: 'solar' });
-    let dispatched = false;
-    el.addEventListener('calendar-type-change', () => {
-      dispatched = true;
-    });
-    (
-      el.querySelector('.cal-type-btn[data-type="solar"]') as HTMLButtonElement
-    ).click();
-    await el.updateComplete;
-    expect(dispatched).toBe(false);
+  it('toggles lunar mode back off', async () => {
+    const el = await renderCalendar({ lunar: true });
+    const promise = awaitEvent(el, 'calendar-lunar-toggle');
+    (el.querySelector('.cal-lunar-toggle button') as HTMLButtonElement).click();
+    const event = await promise;
+    expect(event.detail).toEqual({ lunar: false });
+    expect(el.lunar).toBe(false);
   });
 
-  it('shows lunar dates on cells in lunar mode', async () => {
-    const el = await renderCalendar({
-      year: 2025,
-      month: 6,
-      calendarType: 'lunar',
-    });
+  it('shows lunar dates on cells when the lunar toggle is on', async () => {
+    const el = await renderCalendar({ year: 2025, month: 6, lunar: true });
     const cell = dayCells(el).find((c) => c.dataset.date === '2025-06-01')!;
-    expect(cell.textContent).toContain('6/V');
+    expect(cell.textContent).toContain('6/5');
+    expect(cell.textContent).not.toContain('6/V');
+  });
+
+  it('hides lunar dates when the lunar toggle is off', async () => {
+    const el = await renderCalendar({ year: 2025, month: 6 });
+    const cell = dayCells(el).find((c) => c.dataset.date === '2025-06-01')!;
+    expect(cell.textContent).not.toContain('6/5');
   });
 
   it('renders event dots and titles on event days', async () => {
@@ -236,6 +228,96 @@ describe('AppCalendar', () => {
       date: dateStr(currentYear, currentMonth, 15),
       events: [event],
     });
+  });
+
+  it('includes lunar date and year name in day-select when lunar is on', async () => {
+    const el = await renderCalendar({
+      year: 2025,
+      month: 6,
+      lunar: true,
+      events: [makeEvent({ id: 'e1', title: 'Giỗ tổ' })],
+    });
+    const promise = awaitEvent(el, 'day-select');
+    (
+      dayCells(el).find((c) => c.dataset.date === '2025-06-01') as HTMLElement
+    ).click();
+    const detail = await promise;
+    expect(detail.detail.date).toBe('2025-06-01');
+    expect(detail.detail.lunarDate).toBeDefined();
+    expect(detail.detail.lunarYearName).toBe('Ất Tỵ');
+  });
+
+  it('renders the selected-day panel on day click', async () => {
+    const el = await renderCalendar({
+      events: [
+        makeEvent({
+          id: 'e1',
+          title: 'Giỗ tổ',
+          type: 'memorial',
+          location: 'Nhà thờ họ',
+        }),
+      ],
+    });
+    expect(el.querySelector('.cal-selected-panel')).toBeNull();
+    (
+      dayCells(el).find(
+        (c) => c.dataset.date === dateStr(currentYear, currentMonth, 15),
+      ) as HTMLElement
+    ).click();
+    await el.updateComplete;
+    expect(el.selectedDate).toBe(dateStr(currentYear, currentMonth, 15));
+    const panel = el.querySelector('.cal-selected-panel');
+    expect(panel).not.toBeNull();
+    expect(panel!.textContent).toContain('Giỗ tổ');
+    expect(panel!.textContent).toContain('Nhà thờ họ');
+    expect(panel!.querySelector('.cal-selected-lunar')).toBeNull();
+  });
+
+  it('does not render the selected-day panel for event-less days', async () => {
+    const el = await renderCalendar({
+      events: [makeEvent({ id: 'e1', title: 'Giỗ tổ' })],
+    });
+    (
+      dayCells(el).find(
+        (c) => c.dataset.date === dateStr(currentYear, currentMonth, 1),
+      ) as HTMLElement
+    ).click();
+    await el.updateComplete;
+    expect(el.selectedDate).toBe(dateStr(currentYear, currentMonth, 1));
+    expect(el.querySelector('.cal-selected-panel')).toBeNull();
+  });
+
+  it('shows lunar date and year name in the selected panel when lunar is on', async () => {
+    const el = await renderCalendar({
+      year: 2025,
+      month: 6,
+      lunar: true,
+      events: [makeEvent({ id: 'e1', date: '2025-06-01' })],
+    });
+    (
+      dayCells(el).find((c) => c.dataset.date === '2025-06-01') as HTMLElement
+    ).click();
+    await el.updateComplete;
+    const lunar = el.querySelector('.cal-selected-lunar');
+    expect(lunar).not.toBeNull();
+    expect(lunar!.textContent).toContain('Ất Tỵ');
+  });
+
+  it('clears the selection when navigating months', async () => {
+    const el = await renderCalendar({
+      year: 2025,
+      month: 6,
+      events: [makeEvent({ id: 'e1', date: '2025-06-15' })],
+    });
+    (
+      dayCells(el).find((c) => c.dataset.date === '2025-06-15') as HTMLElement
+    ).click();
+    await el.updateComplete;
+    expect(el.querySelector('.cal-selected-panel')).not.toBeNull();
+    (el.querySelector('.cal-prev') as HTMLButtonElement).click();
+    await el.updateComplete;
+    expect(el.selectedDate).toBe('');
+    expect(el.querySelector('.cal-selected-panel')).toBeNull();
   });
 
   it('does not dispatch day-select for adjacent-month cells', async () => {

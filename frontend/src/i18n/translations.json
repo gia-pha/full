@@ -6,8 +6,6 @@
     },
     "events": {
       "calendarView": "Xem Lịch",
-      "calendarType": "Lịch",
-      "solar": "Dương lịch",
       "lunar": "Âm lịch",
       "today": "Hôm nay",
       "type": {
@@ -51,8 +49,6 @@
     },
     "events": {
       "calendarView": "Calendar",
-      "calendarType": "Calendar",
-      "solar": "Solar",
       "lunar": "Lunar",
       "today": "Today",
       "type": {

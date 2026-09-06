@@ -91,10 +91,9 @@ export interface PlaygroundState {
   sidebarUnread: number;
   sidebarLanguage: 'vi' | 'en';
   sidebarEvent: string;
-  calendarType: 'solar' | 'lunar';
+  calendarLunar: boolean;
   calendarLanguage: 'vi' | 'en';
   calendarShowEvents: boolean;
-  calendarSelectedDate: string;
   calendarEvent: string;
 }
 
@@ -179,10 +178,9 @@ export const state: PlaygroundState = {
   sidebarUnread: 3,
   sidebarLanguage: 'vi',
   sidebarEvent: '',
-  calendarType: 'solar',
+  calendarLunar: false,
   calendarLanguage: 'vi',
   calendarShowEvents: true,
-  calendarSelectedDate: '',
   calendarEvent: '',
 };
 

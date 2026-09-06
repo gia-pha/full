@@ -1,25 +1,10 @@
 import type { TemplateResult } from 'lit';
 import { html } from 'lit';
-import { t } from '../../src/i18n.js';
 import type { Event as AppEvent } from '../../src/types/index.js';
 import { notify, state } from '../state.js';
 
 const inputClass =
   'w-full px-3 py-2 text-sm border border-gray-300 os-dark:border-gray-600 rounded-lg bg-white os-dark:bg-gray-700 text-gray-800 os-dark:text-gray-200';
-
-const dotColors: Record<string, string> = {
-  memorial: 'bg-amber-400',
-  meeting: 'bg-blue-400',
-  reunion: 'bg-emerald-400',
-  anniversary: 'bg-purple-400',
-};
-
-const typeTextColors: Record<string, string> = {
-  memorial: 'text-amber-600 dark:text-amber-400',
-  meeting: 'text-blue-600 dark:text-blue-400',
-  reunion: 'text-emerald-600 dark:text-emerald-400',
-  anniversary: 'text-purple-600 dark:text-purple-400',
-};
 
 function pad2(n: number): string {
   return String(n).padStart(2, '0');
@@ -52,87 +37,8 @@ function sampleEvents(): AppEvent[] {
   }));
 }
 
-function formatSelectedDate(date: string, language: 'vi' | 'en'): string {
-  const d = new Date(`${date}T00:00:00`);
-  return d.toLocaleDateString(language === 'vi' ? 'vi-VN' : 'en-GB', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
-}
-
-function selectedDayPanel(date: string, events: AppEvent[]): TemplateResult {
-  const lang = state.calendarLanguage;
-  const countLabel =
-    lang === 'vi'
-      ? `${events.length} sự kiện`
-      : `${events.length} ${events.length === 1 ? 'event' : 'events'}`;
-  return html`
-    <div
-      id="cal-selected"
-      class="cal-selected-panel mt-4 rounded-2xl border border-emerald-200 dark:border-emerald-800 bg-gradient-to-br from-emerald-50 via-white to-emerald-50 dark:from-emerald-900/20 dark:via-gray-900 dark:to-emerald-900/20 p-4 space-y-3"
-    >
-      <div class="flex items-center justify-between gap-3">
-        <div class="flex items-center gap-2 min-w-0">
-          <span class="text-lg leading-none">📅</span>
-          <h3
-            class="truncate text-sm font-bold uppercase tracking-wide text-emerald-700 dark:text-emerald-300"
-          >
-            ${formatSelectedDate(date, lang)}
-          </h3>
-        </div>
-        <span
-          class="shrink-0 px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 text-xs font-semibold"
-          >${countLabel}</span
-        >
-      </div>
-      <ul class="space-y-2">
-        ${events.map(
-          (evt) => html`
-            <li
-              class="flex items-start gap-3 rounded-xl bg-white/80 dark:bg-gray-800/80 border border-gray-100 dark:border-gray-700 px-3 py-2.5 shadow-sm"
-            >
-              <span
-                class="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full ${dotColors[evt.type ?? ''] ?? 'bg-gray-400'}"
-              ></span>
-              <div class="min-w-0">
-                <p
-                  class="truncate text-sm font-semibold text-gray-800 dark:text-gray-100"
-                >
-                  ${evt.title}
-                </p>
-                ${
-                  evt.type
-                    ? html`<p
-                      class="text-xs font-medium ${typeTextColors[evt.type] ?? 'text-gray-500'}"
-                    >
-                      ${t(lang, `events.type.${evt.type}`)}
-                    </p>`
-                    : ''
-                }
-                ${
-                  evt.location
-                    ? html`<p class="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
-                      📍 ${evt.location}
-                    </p>`
-                    : ''
-                }
-              </div>
-            </li>
-          `,
-        )}
-      </ul>
-    </div>
-  `;
-}
-
 export function calendarSection(): TemplateResult {
   const events = state.calendarShowEvents ? sampleEvents() : [];
-  const selectedEvents =
-    state.calendarSelectedDate !== ''
-      ? events.filter((evt) => evt.date === state.calendarSelectedDate)
-      : [];
 
   return html`
     <section
@@ -147,30 +53,23 @@ export function calendarSection(): TemplateResult {
       <div class="${state.dark ? 'dark' : ''}">
         <div class="bg-white dark:bg-gray-900 rounded-xl overflow-hidden">
           <app-calendar
-            .calendarType=${state.calendarType}
+            .lunar=${state.calendarLunar}
             .language=${state.calendarLanguage}
             .events=${events}
             @calendar-nav=${(e: CustomEvent) => {
-              state.calendarSelectedDate = '';
               state.calendarEvent = `calendar-nav: ${JSON.stringify(e.detail)}`;
               notify();
             }}
-            @calendar-type-change=${(e: CustomEvent) => {
-              state.calendarType = e.detail.type;
-              state.calendarEvent = `calendar-type-change: ${e.detail.type}`;
+            @calendar-lunar-toggle=${(e: CustomEvent) => {
+              state.calendarLunar = e.detail.lunar;
+              state.calendarEvent = `calendar-lunar-toggle: ${e.detail.lunar}`;
               notify();
             }}
             @day-select=${(e: CustomEvent) => {
-              state.calendarSelectedDate = e.detail.date as string;
               state.calendarEvent = `day-select: ${e.detail.date} (${e.detail.events.length} events)`;
               notify();
             }}
           ></app-calendar>
-          ${
-            selectedEvents.length > 0
-              ? selectedDayPanel(state.calendarSelectedDate, selectedEvents)
-              : ''
-          }
         </div>
       </div>
 
