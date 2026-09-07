@@ -331,10 +331,9 @@ export class AppCalendar extends LitElement {
     if (!this.selectedDate) return '';
     const events = this.events.filter((evt) => evt.date === this.selectedDate);
     if (events.length === 0) return '';
-    const countLabel =
-      this.language === 'vi'
-        ? `${events.length} sự kiện`
-        : `${events.length} ${events.length === 1 ? 'event' : 'events'}`;
+    const countLabel = t(this.language, 'events.eventCount', {
+      count: events.length,
+    });
     const [y, m, d] = this.selectedDate.split('-').map(Number);
     const lunar = solarToLunar(y, m, d);
     return html`

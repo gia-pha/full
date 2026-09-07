@@ -8,6 +8,7 @@
       "calendarView": "Xem Lịch",
       "lunar": "Âm lịch",
       "today": "Hôm nay",
+      "eventCount": "{count} sự kiện",
       "type": {
         "memorial": "Lễ giỗ tổ",
         "meeting": "Hội nghị",
@@ -51,6 +52,7 @@
       "calendarView": "Calendar",
       "lunar": "Lunar",
       "today": "Today",
+      "eventCount": "{count} event(s)",
       "type": {
         "memorial": "Memorial Ceremony",
         "meeting": "Meeting",
