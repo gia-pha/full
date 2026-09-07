@@ -64,38 +64,14 @@ export function lunarToSolar(
   }
 }
 
-const stems = [
-  'Giáp',
-  'Ất',
-  'Bính',
-  'Đinh',
-  'Mậu',
-  'Kỷ',
-  'Canh',
-  'Tân',
-  'Nhâm',
-  'Quý',
-];
-
-const branches = [
-  'Tý',
-  'Sửu',
-  'Dần',
-  'Mão',
-  'Thìn',
-  'Tỵ',
-  'Ngọ',
-  'Mùi',
-  'Thân',
-  'Dậu',
-  'Tuất',
-  'Hợi',
-];
-
 export function getVietnameseYearName(year: number): string {
-  const stemIdx = (((year - 4) % 10) + 10) % 10;
-  const branchIdx = (((year - 4) % 12) + 12) % 12;
-  return `${stems[stemIdx]} ${branches[branchIdx]}`;
+  return new LunarDateLib({
+    year,
+    yearIndex: year,
+    month: 1,
+    day: 1,
+    hour: 0,
+  }).getYearName();
 }
 
 export function getVietnameseDayName(
