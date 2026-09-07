@@ -14,6 +14,9 @@ importers:
       lit:
         specifier: ^3.3.0
         version: 3.3.3
+      lunar-date-vn:
+        specifier: 1.0.6
+        version: 1.0.6
     devDependencies:
       '@biomejs/biome':
         specifier: ^2.5.2
@@ -732,6 +735,9 @@ packages:
   lru-cache@11.5.1:
     resolution: {integrity: sha512-RPimw/7aMdv2oqRrxKwvZXcPfwBrn/JZ2xYcY9Hus/6LaS3VOAKVWKWgNLCFSiOm1ESXinjsDlidVU7JlnCN2A==}
     engines: {node: 20 || >=22}
+
+  lunar-date-vn@1.0.6:
+    resolution: {integrity: sha512-OBKW6eleP8r8fnWAqzoCKJDaCv04nKvsyVhNg1UWR/xogVia1vTlMsAIr7qj/0IvIH4QCebHTOnCKNdxMvO/jg==}
 
   magic-string@0.30.21:
     resolution: {integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==}
@@ -1496,6 +1502,8 @@ snapshots:
       lit-html: 3.3.3
 
   lru-cache@11.5.1: {}
+
+  lunar-date-vn@1.0.6: {}
 
   magic-string@0.30.21:
     dependencies:

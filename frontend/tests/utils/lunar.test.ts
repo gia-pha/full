@@ -8,6 +8,7 @@ import {
   getFirstDayOfMonth,
   getVietnameseYearName,
   lunarMonthNamesVi,
+  lunarToSolar,
   monthNamesEn,
   monthNamesVi,
   solarToLunar,
@@ -61,22 +62,74 @@ describe('lunar utils', () => {
       expect(lunar.day).toBe(29);
     });
 
-    it('marks leap months in leap years', () => {
+    it('marks the real leap month (tháng 6 nhuận of 2025)', () => {
+      expect(solarToLunar(2025, 7, 25)).toEqual({
+        year: 2025,
+        month: 6,
+        day: 1,
+        isLeapMonth: true,
+      });
+    });
+
+    it('does not mark regular months in leap years', () => {
       const lunar = solarToLunar(2025, 5, 27);
-      expect(lunar.isLeapMonth).toBe(true);
+      expect(lunar).toMatchObject({ year: 2025, month: 5, day: 1 });
+      expect(lunar.isLeapMonth).toBe(false);
+    });
+
+    it('converts known dates astronomically (Mid-Autumn 2025)', () => {
+      expect(solarToLunar(2025, 10, 6)).toMatchObject({
+        year: 2025,
+        month: 8,
+        day: 15,
+      });
     });
 
     it('does not mark leap months in regular years', () => {
       expect(solarToLunar(2024, 3, 10).isLeapMonth).toBe(false);
     });
 
-    it('falls back for dates outside the table', () => {
-      expect(solarToLunar(1800, 1, 1)).toEqual({
-        year: 1800,
+    it('falls back for dates outside the supported range', () => {
+      expect(solarToLunar(1100, 1, 1)).toEqual({
+        year: 1100,
         month: 1,
         day: 1,
         isLeapMonth: false,
       });
+    });
+  });
+
+  describe('lunarToSolar', () => {
+    it('maps Lunar New Year 2026 to 2026-02-17', () => {
+      expect(lunarToSolar(2026, 1, 1)).toEqual({
+        year: 2026,
+        month: 2,
+        day: 17,
+      });
+    });
+
+    it('maps a leap-month date (15/6 nhuận 2025) to 2025-08-08', () => {
+      expect(lunarToSolar(2025, 6, 15, true)).toEqual({
+        year: 2025,
+        month: 8,
+        day: 8,
+      });
+    });
+
+    it('round-trips with solarToLunar', () => {
+      const lunar = solarToLunar(2025, 10, 6);
+      const solar = lunarToSolar(
+        lunar.year,
+        lunar.month,
+        lunar.day,
+        lunar.isLeapMonth,
+      );
+      expect(solar).toEqual({ year: 2025, month: 10, day: 6 });
+    });
+
+    it('returns null for invalid lunar dates', () => {
+      expect(lunarToSolar(2025, 13, 1)).toBeNull();
+      expect(lunarToSolar(2025, 1, 31)).toBeNull();
     });
   });
 
@@ -100,7 +153,7 @@ describe('lunar utils', () => {
     });
 
     it('marks leap months', () => {
-      expect(formatLunarDateVi(2025, 6, 15, true)).toContain('Nhường');
+      expect(formatLunarDateVi(2025, 6, 15, true)).toContain('Nhuận');
     });
   });
 
