@@ -4,6 +4,17 @@
       "markRead": "Đánh dấu đã đọc",
       "markAllRead": "Đánh dấu tất cả đã đọc"
     },
+    "events": {
+      "calendarView": "Xem Lịch",
+      "lunar": "Âm lịch",
+      "today": "Hôm nay",
+      "type": {
+        "memorial": "Lễ giỗ tổ",
+        "meeting": "Hội nghị",
+        "reunion": "Hội ngộ",
+        "anniversary": "Kỷ niệm"
+      }
+    },
     "app": {
       "sidebar": {
         "tree": "Cây Phổ Hệ",
@@ -35,6 +46,17 @@
     "notifications": {
       "markRead": "Mark as Read",
       "markAllRead": "Mark All Read"
+    },
+    "events": {
+      "calendarView": "Calendar",
+      "lunar": "Lunar",
+      "today": "Today",
+      "type": {
+        "memorial": "Memorial Ceremony",
+        "meeting": "Meeting",
+        "reunion": "Reunion",
+        "anniversary": "Anniversary"
+      }
     },
     "app": {
       "sidebar": {
