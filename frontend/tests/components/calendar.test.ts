@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import '../../src/components/calendar.js';
 import type {
   AppCalendar,
+  CalendarEventType,
   CalendarLanguage,
 } from '../../src/components/calendar.js';
 import type { Event } from '../../src/types/index.js';
@@ -38,6 +39,7 @@ async function renderCalendar(
     month?: number;
     lunar?: boolean;
     events?: Event[];
+    eventTypes?: CalendarEventType[];
     language?: CalendarLanguage;
   } = {},
 ): Promise<AppCalendar> {
@@ -46,6 +48,7 @@ async function renderCalendar(
   if (opts.month !== undefined) el.month = opts.month;
   if (opts.lunar !== undefined) el.lunar = opts.lunar;
   if (opts.events !== undefined) el.events = opts.events;
+  if (opts.eventTypes !== undefined) el.eventTypes = opts.eventTypes;
   if (opts.language !== undefined) el.language = opts.language;
   document.body.appendChild(el);
   await el.updateComplete;
@@ -186,14 +189,52 @@ describe('AppCalendar', () => {
         makeEvent({ id: 'e1', title: 'Giỗ tổ', type: 'memorial' }),
         makeEvent({ id: 'e2', title: 'Họp họ', type: 'meeting' }),
       ],
+      eventTypes: [
+        { type: 'memorial', color: '#f59e0b' },
+        { type: 'meeting', color: '#3b82f6' },
+      ],
     });
     const cell = dayCells(el).find(
       (c) => c.dataset.date === dateStr(currentYear, currentMonth, 15),
     )!;
-    expect(cell.querySelector('.bg-amber-400')).not.toBeNull();
-    expect(cell.querySelector('.bg-blue-400')).not.toBeNull();
+    const memorialDot = cell.querySelector('span[title="Giỗ tổ"]')!;
+    const meetingDot = cell.querySelector('span[title="Họp họ"]')!;
+    expect(memorialDot.getAttribute('style')).toContain(
+      'background-color: #f59e0b',
+    );
+    expect(meetingDot.getAttribute('style')).toContain(
+      'background-color: #3b82f6',
+    );
     expect(cell.textContent).toContain('Giỗ tổ');
     expect(cell.textContent).toContain('Họp họ');
+  });
+
+  it('uses event types and colors passed from outside', async () => {
+    const el = await renderCalendar({
+      events: [makeEvent({ id: 'e1', title: 'Lễ cưới', type: 'wedding' })],
+      eventTypes: [{ type: 'wedding', label: 'Wedding', color: '#ec4899' }],
+    });
+    const cell = dayCells(el).find(
+      (c) => c.dataset.date === dateStr(currentYear, currentMonth, 15),
+    )!;
+    const dot = cell.querySelector('span[title="Lễ cưới"]')!;
+    expect(dot.getAttribute('style')).toContain('background-color: #ec4899');
+    const title = cell.querySelector('.truncate')!;
+    expect(title.getAttribute('style')).toContain('color: #ec4899');
+    expect(el.textContent).toContain('Wedding');
+    expect(el.textContent).not.toContain('Memorial Ceremony');
+  });
+
+  it('falls back to gray for events whose type is not provided', async () => {
+    const el = await renderCalendar({
+      events: [makeEvent({ id: 'e1', title: 'No type', type: 'unknown' })],
+      eventTypes: [{ type: 'wedding', color: '#ec4899' }],
+    });
+    const cell = dayCells(el).find(
+      (c) => c.dataset.date === dateStr(currentYear, currentMonth, 15),
+    )!;
+    const dot = cell.querySelector('span[title="No type"]')!;
+    expect(dot.getAttribute('style')).toContain('background-color: #6b7280');
   });
 
   it('lists at most two events and shows an overflow count', async () => {
@@ -332,14 +373,23 @@ describe('AppCalendar', () => {
   });
 
   it('renders localized day names and legend', async () => {
-    const vi = await renderCalendar({ language: 'vi' });
+    const eventTypes = [{ type: 'memorial', color: '#f59e0b' }];
+    const vi = await renderCalendar({ language: 'vi', eventTypes });
     expect(vi.innerHTML).toContain('CN');
-    expect(vi.innerHTML).toContain('Lễ giỗ tổ');
+    expect(vi.querySelector('.cal-legend')!.textContent).toContain('Lễ giỗ tổ');
     vi.remove();
-    const en = await renderCalendar({ language: 'en' });
+    const en = await renderCalendar({ language: 'en', eventTypes });
     expect(en.innerHTML).toContain('Sun');
-    expect(en.innerHTML).toContain('Memorial Ceremony');
+    expect(en.querySelector('.cal-legend')!.textContent).toContain(
+      'Memorial Ceremony',
+    );
     expect(en.innerHTML).not.toContain('Lễ giỗ tổ');
+  });
+
+  it('renders no legend when no event types are provided', async () => {
+    const el = await renderCalendar();
+    expect(el.querySelector('.cal-legend')).toBeNull();
+    expect(el.eventTypes).toEqual([]);
   });
 
   it('re-renders when month changes', async () => {

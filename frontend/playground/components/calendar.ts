@@ -1,5 +1,6 @@
 import type { TemplateResult } from 'lit';
 import { html } from 'lit';
+import type { CalendarEventType } from '../../src/components/calendar.js';
 import type { Event as AppEvent } from '../../src/types/index.js';
 import { notify, state } from '../state.js';
 
@@ -37,6 +38,13 @@ function sampleEvents(): AppEvent[] {
   }));
 }
 
+const calendarEventTypes: CalendarEventType[] = [
+  { type: 'memorial', color: '#f59e0b' },
+  { type: 'meeting', color: '#3b82f6' },
+  { type: 'reunion', color: '#10b981' },
+  { type: 'anniversary', color: '#a855f7' },
+];
+
 export function calendarSection(): TemplateResult {
   const events = state.calendarShowEvents ? sampleEvents() : [];
 
@@ -56,6 +64,7 @@ export function calendarSection(): TemplateResult {
             .lunar=${state.calendarLunar}
             .language=${state.calendarLanguage}
             .events=${events}
+            .eventTypes=${state.calendarShowTypes ? calendarEventTypes : []}
             @calendar-nav=${(e: CustomEvent) => {
               state.calendarEvent = `calendar-nav: ${JSON.stringify(e.detail)}`;
               notify();
@@ -107,6 +116,23 @@ export function calendarSection(): TemplateResult {
           >
             <option value="events">Sample events (this + next month)</option>
             <option value="empty">No events</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs text-gray-500 os-dark:text-gray-400 mb-1"
+            >Event types</label
+          >
+          <select
+            class=${inputClass}
+            .value=${state.calendarShowTypes ? 'types' : 'none'}
+            @change=${(e: Event) => {
+              state.calendarShowTypes =
+                (e.target as HTMLSelectElement).value === 'types';
+              notify();
+            }}
+          >
+            <option value="types">With event types</option>
+            <option value="none">No event types</option>
           </select>
         </div>
       </div>

@@ -45,19 +45,13 @@ interface CalendarCell {
   lunar?: LunarDate;
 }
 
-const dotColors: Record<string, string> = {
-  memorial: 'bg-amber-400',
-  meeting: 'bg-blue-400',
-  reunion: 'bg-emerald-400',
-  anniversary: 'bg-purple-400',
-};
+export interface CalendarEventType {
+  type: string;
+  label?: string;
+  color: string;
+}
 
-const textColors: Record<string, string> = {
-  memorial: 'text-amber-600',
-  meeting: 'text-blue-600',
-  reunion: 'text-emerald-600',
-  anniversary: 'text-purple-600',
-};
+const fallbackColor = '#6b7280';
 
 const pad2 = (n: number): string => String(n).padStart(2, '0');
 
@@ -88,6 +82,7 @@ export class AppCalendar extends LitElement {
   @property({ type: Number }) month = new Date().getMonth() + 1;
   @property({ type: Boolean, reflect: true }) lunar = false;
   @property({ type: Array }) events: Event[] = [];
+  @property({ type: Array }) eventTypes: CalendarEventType[] = [];
   @property({ type: String }) language: CalendarLanguage = 'vi';
   @property({ type: String }) selectedDate = '';
 
@@ -215,18 +210,28 @@ export class AppCalendar extends LitElement {
     `;
   }
 
-  private renderLegend(): TemplateResult {
-    const types: string[] = ['memorial', 'meeting', 'reunion', 'anniversary'];
+  private typeColor(type?: string): string | undefined {
+    return this.eventTypes.find((et) => et.type === type)?.color;
+  }
+
+  private typeLabel(type: string): string {
+    return (
+      this.eventTypes.find((et) => et.type === type)?.label ??
+      t(this.language, `events.type.${type}`)
+    );
+  }
+
+  private renderLegend(): TemplateResult | '' {
+    if (this.eventTypes.length === 0) return '';
     return html`
-      <div class="flex items-center gap-2 text-sm text-gray-500">
-        ${types.map(
-          (type, i) => html`
+      <div class="cal-legend flex items-center gap-2 text-sm text-gray-500">
+        ${this.eventTypes.map(
+          (et, i) => html`
             <span
-              class="w-2 h-2 rounded-full ${dotColors[type]} ${
-                i > 0 ? 'ml-2' : ''
-              }"
+              class="w-2 h-2 rounded-full ${i > 0 ? 'ml-2' : ''}"
+              style="background-color: ${et.color}"
             ></span>
-            <span>${t(this.language, `events.type.${type}`)}</span>
+            <span>${this.typeLabel(et.type)}</span>
           `,
         )}
       </div>
@@ -286,8 +291,9 @@ export class AppCalendar extends LitElement {
                 ${cellEvents.map(
                   (evt) => html`
                     <span
-                      class="w-1.5 h-1.5 rounded-full ${
-                        dotColors[evt.type ?? ''] ?? 'bg-gray-400'
+                      class="w-1.5 h-1.5 rounded-full"
+                      style="background-color: ${
+                        this.typeColor(evt.type) ?? fallbackColor
                       }"
                       title=${evt.title}
                     ></span>
@@ -298,8 +304,9 @@ export class AppCalendar extends LitElement {
                 ${cellEvents.slice(0, 2).map(
                   (evt) => html`
                       <div
-                        class="text-[10px] truncate ${
-                          textColors[evt.type ?? ''] ?? 'text-gray-600'
+                        class="text-[10px] truncate"
+                        style="color: ${
+                          this.typeColor(evt.type) ?? fallbackColor
                         }"
                       >
                         ${evt.title}
@@ -369,8 +376,9 @@ export class AppCalendar extends LitElement {
                 class="flex items-start gap-3 rounded-xl bg-white/80 dark:bg-gray-800/80 border border-gray-100 dark:border-gray-700 px-3 py-2.5 shadow-sm"
               >
                 <span
-                  class="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full ${
-                    dotColors[evt.type ?? ''] ?? 'bg-gray-400'
+                  class="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full"
+                  style="background-color: ${
+                    this.typeColor(evt.type) ?? fallbackColor
                   }"
                 ></span>
                 <div class="min-w-0">
@@ -382,11 +390,12 @@ export class AppCalendar extends LitElement {
                   ${
                     evt.type
                       ? html`<p
-                        class="text-xs font-medium ${
-                          textColors[evt.type] ?? 'text-gray-500'
+                        class="text-xs font-medium"
+                        style="color: ${
+                          this.typeColor(evt.type) ?? fallbackColor
                         }"
                       >
-                        ${t(this.language, `events.type.${evt.type}`)}
+                        ${this.typeLabel(evt.type)}
                       </p>`
                       : ''
                   }
