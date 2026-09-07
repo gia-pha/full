@@ -22,6 +22,7 @@ export function memberItemSection(person: Person): TemplateResult {
             ?selected=${state.selected}
             .honorific=${state.honorific}
             ?locked=${state.locked}
+            .locale=${state.language}
             .actions=${[
               {
                 label: 'View',

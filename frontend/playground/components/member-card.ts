@@ -141,6 +141,7 @@ export function memberCardSection(): TemplateResult {
             .persons=${persons}
             .currentPersonId=${state.memberCardIsCurrent ? 'mc-1' : ''}
             .honorific=${person.id === 'mc-1' ? state.memberCardHonorific : ''}
+            .locale=${state.language}
             ?locked=${state.memberCardLocked}
             @select=${(e: CustomEvent) => {
               state.memberCardSelectedId = e.detail.id as string;

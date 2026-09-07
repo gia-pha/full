@@ -54,7 +54,7 @@ export class NotificationItem extends LitElement {
               ${unread ? html`<span class="w-2.5 h-2.5 bg-emerald-500 rounded-full flex-shrink-0"></span>` : ''}
               <button
                 class="p-1 text-gray-300 hover:text-red-500 dark:text-gray-600 dark:hover:text-red-400 transition-colors"
-                title="Delete"
+                title=${t(this.locale, 'common.delete')}
                 @click=${this.handleDismiss}
               >✕</button>
             </div>

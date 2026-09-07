@@ -97,7 +97,7 @@ describe('Modal', () => {
       const close = el.querySelector('.modal-close');
       expect(close).not.toBeNull();
       expect(getContent(el)).toContain('✕');
-      expect(close?.getAttribute('aria-label')).toBe('Close');
+      expect(close?.getAttribute('aria-label')).toBe('Đóng');
     });
 
     it('renders without shadow DOM', async () => {

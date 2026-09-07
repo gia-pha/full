@@ -51,15 +51,27 @@ function renderPlayground() {
             <h1 class="text-xl font-bold text-gray-800 os-dark:text-gray-100">
               Component Playground
             </h1>
-            <button
-              class="px-3 py-1.5 text-sm rounded-lg bg-gray-100 hover:bg-gray-200 os-dark:bg-gray-700 os-dark:hover:bg-gray-600 text-gray-700 os-dark:text-gray-200 transition-colors"
-              @click=${() => {
-                state.dark = !state.dark;
-                notify();
-              }}
-            >
-              ${state.dark ? '☀️ Light' : '🌙 Dark'}
-            </button>
+            <div class="flex items-center gap-2">
+              <button
+                class="px-3 py-1.5 text-sm rounded-lg bg-gray-100 hover:bg-gray-200 os-dark:bg-gray-700 os-dark:hover:bg-gray-600 text-gray-700 os-dark:text-gray-200 transition-colors"
+                title=${state.language === 'vi' ? 'Switch to English' : 'Chuyển sang Tiếng Việt'}
+                @click=${() => {
+                  state.language = state.language === 'vi' ? 'en' : 'vi';
+                  notify();
+                }}
+              >
+                🌐 ${state.language === 'vi' ? 'EN' : 'VI'}
+              </button>
+              <button
+                class="px-3 py-1.5 text-sm rounded-lg bg-gray-100 hover:bg-gray-200 os-dark:bg-gray-700 os-dark:hover:bg-gray-600 text-gray-700 os-dark:text-gray-200 transition-colors"
+                @click=${() => {
+                  state.dark = !state.dark;
+                  notify();
+                }}
+              >
+                ${state.dark ? '☀️ Light' : '🌙 Dark'}
+              </button>
+            </div>
           </div>
         </header>
 

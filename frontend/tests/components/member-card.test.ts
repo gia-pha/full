@@ -107,12 +107,12 @@ describe('MemberCard', () => {
 
   it('shows honorific when provided', async () => {
     const el = await renderComponent(makePerson('p1'), { honorific: 'Bố' });
-    expect(el.textContent).toContain('Honorific: Bố');
+    expect(el.textContent).toContain('Danh xưng: Bố');
   });
 
   it('does not show honorific when empty', async () => {
     const el = await renderComponent(makePerson('p1'));
-    expect(el.textContent).not.toContain('Honorific:');
+    expect(el.textContent).not.toContain('Danh xưng');
   });
 
   it('shows You badge when person is current person', async () => {
@@ -120,7 +120,7 @@ describe('MemberCard', () => {
       currentPersonId: 'p1',
     });
     const content = el.querySelector('.member-card-panel')!.innerHTML;
-    expect(content).toContain('You');
+    expect(content).toContain('Bạn');
   });
 
   it('does not show You badge for other persons', async () => {
@@ -128,18 +128,18 @@ describe('MemberCard', () => {
       currentPersonId: 'p2',
     });
     expect(el.querySelector('.member-card-panel')!.innerHTML).not.toContain(
-      'You',
+      'Bạn',
     );
   });
 
   it('shows deceased badge for deceased person', async () => {
     const el = await renderComponent(makePerson('p1', { deathYear: '2020' }));
-    expect(el.innerHTML).toContain('✝ Deceased');
+    expect(el.textContent).toContain('✝ Mất');
   });
 
   it('does not show deceased badge for living person', async () => {
     const el = await renderComponent(makePerson('p1'));
-    expect(el.innerHTML).not.toContain('✝ Deceased');
+    expect(el.textContent).not.toContain('✝ Mất');
   });
 
   it('renders info cards for birth year, gender, generation, role', async () => {
@@ -152,14 +152,14 @@ describe('MemberCard', () => {
       }),
     );
     const content = el.innerHTML;
-    expect(content).toContain('Birth year');
+    expect(content).toContain('Năm sinh');
     expect(content).toContain('1980');
-    expect(content).toContain('Gender');
-    expect(content).toContain('Female');
-    expect(content).toContain('Generation');
+    expect(content).toContain('Giới tính');
+    expect(content).toContain('Nữ');
+    expect(content).toContain('Thế hệ');
     expect(content).toContain('>3<');
-    expect(content).toContain('Role');
-    expect(content).toContain('Admin');
+    expect(content).toContain('Vai trò');
+    expect(content).toContain('Quản trị');
   });
 
   it('shows dash for missing birth year', async () => {
@@ -190,7 +190,7 @@ describe('MemberCard', () => {
       '.member-card-panel app-relation-card',
     ) as RelationCard | null;
     expect(card).not.toBeNull();
-    expect(card?.label).toBe('Spouse');
+    expect(card?.label).toBe('Vợ/chồng');
     expect(card?.person).toBe(spouse);
     expect(card?.color).toBe('pink');
   });
@@ -229,7 +229,7 @@ describe('MemberCard', () => {
       '.member-card-panel app-relation-card',
     ) as RelationCard | null;
     expect(card).not.toBeNull();
-    expect(card?.label).toBe('Parent');
+    expect(card?.label).toBe('Bố mẹ');
     expect(card?.person).toBe(parent);
     expect(card?.color).toBe('blue');
   });
@@ -271,7 +271,7 @@ describe('MemberCard', () => {
       persons: [person, c1, c2],
     });
     const sheet = el.querySelector('.member-card-panel')!;
-    expect(sheet.textContent).toContain('Children (2)');
+    expect(sheet.textContent).toContain('Con cái (2)');
     expect(sheet.textContent).toContain('An Nguyễn');
     expect(sheet.textContent).toContain('Bình Nguyễn');
     expect(sheet.textContent).toContain('2010');
@@ -296,13 +296,13 @@ describe('MemberCard', () => {
 
   it('does not render children section without children', async () => {
     const el = await renderComponent(makePerson('p1'));
-    expect(el.innerHTML).not.toContain('Children (');
+    expect(el.innerHTML).not.toContain('Con cái (');
   });
 
   it('shows notes when not locked and person has notes', async () => {
     const el = await renderComponent(makePerson('p1', { notes: 'A note' }));
     const content = el.querySelector('.member-card-panel')!.innerHTML;
-    expect(content).toContain('Notes');
+    expect(content).toContain('Ghi chú');
     expect(content).toContain('A note');
   });
 
@@ -311,8 +311,8 @@ describe('MemberCard', () => {
       locked: true,
       currentPersonId: 'p2',
     });
-    const content = el.querySelector('.member-card-panel')!.innerHTML;
-    expect(content).toContain('🔒 Limited access');
+    const content = el.querySelector('.member-card-panel')!.textContent!;
+    expect(content).toContain('🔒 Truy cập hạn chế');
     expect(content).not.toContain('A note');
   });
 
@@ -321,8 +321,8 @@ describe('MemberCard', () => {
       locked: true,
       currentPersonId: 'p1',
     });
-    const content = el.querySelector('.member-card-panel')!.innerHTML;
-    expect(content).not.toContain('🔒 Limited access');
+    const content = el.querySelector('.member-card-panel')!.textContent!;
+    expect(content).not.toContain('🔒 Truy cập hạn chế');
     expect(content).toContain('A note');
   });
 
@@ -395,7 +395,7 @@ describe('MemberCard', () => {
       makePerson('p1', { gender: 'F', firstName: 'Hương', lastName: 'Trần' }),
     );
     expect(el.innerHTML).toContain('Hương Trần');
-    expect(el.innerHTML).toContain('Female');
+    expect(el.innerHTML).toContain('Nữ');
   });
 
   it('re-renders when person changes', async () => {

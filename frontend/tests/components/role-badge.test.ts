@@ -5,10 +5,12 @@ import type { RoleBadge } from '../../src/components/role-badge.js';
 async function renderComponent(opts?: {
   name?: string;
   label?: string;
+  locale?: string;
 }): Promise<RoleBadge> {
   const el = document.createElement('role-badge');
   if (opts?.name !== undefined) el.name = opts.name;
   if (opts?.label !== undefined) el.label = opts.label;
+  if (opts?.locale !== undefined) el.locale = opts.locale;
   document.body.appendChild(el);
   await el.updateComplete;
   return el;
@@ -22,29 +24,36 @@ describe('RoleBadge', () => {
   it('renders admin role with correct label and color', async () => {
     const el = await renderComponent({ name: 'admin' });
     const rendered = getContent(el);
-    expect(rendered).toContain('Admin');
+    expect(rendered).toContain('Quản trị');
     expect(rendered).toContain('bg-red-100');
   });
 
   it('renders editor role with correct label and color', async () => {
     const el = await renderComponent({ name: 'editor' });
     const rendered = getContent(el);
-    expect(rendered).toContain('Editor');
+    expect(rendered).toContain('Biên tập');
     expect(rendered).toContain('bg-blue-100');
   });
 
   it('renders treasurer role with correct label and color', async () => {
     const el = await renderComponent({ name: 'treasurer' });
     const rendered = getContent(el);
-    expect(rendered).toContain('Treasurer');
+    expect(rendered).toContain('Thủ quỹ');
     expect(rendered).toContain('bg-amber-100');
   });
 
   it('renders member role with correct label and color', async () => {
     const el = await renderComponent({ name: 'member' });
     const rendered = getContent(el);
-    expect(rendered).toContain('Member');
+    expect(rendered).toContain('Thành viên');
     expect(rendered).toContain('bg-gray-100');
+  });
+
+  it('renders English labels when locale is en', async () => {
+    const el = await renderComponent({ name: 'admin', locale: 'en' });
+    const rendered = getContent(el);
+    expect(rendered).toContain('Admin');
+    expect(rendered).toContain('bg-red-100');
   });
 
   it('renders nothing for unknown role', async () => {

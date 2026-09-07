@@ -13,8 +13,11 @@ import type {
 import { pad2 } from '../src/utils/format.js';
 import type { FundSortDir, FundSortKey } from '../src/utils/fund.js';
 
+export type Language = 'vi' | 'en';
+
 export interface PlaygroundState {
   dark: boolean;
+  language: Language;
   avatarSize: AvatarSize;
   stackMax: number;
   stackLabel: string;
@@ -90,10 +93,8 @@ export interface PlaygroundState {
   sidebarClanId: string;
   sidebarOpen: boolean;
   sidebarUnread: number;
-  sidebarLanguage: 'vi' | 'en';
   sidebarEvent: string;
   calendarLunar: boolean;
-  calendarLanguage: 'vi' | 'en';
   calendarShowEvents: boolean;
   calendarShowTypes: boolean;
   calendarEvent: string;
@@ -101,6 +102,7 @@ export interface PlaygroundState {
 
 export const state: PlaygroundState = {
   dark: false,
+  language: 'vi',
   avatarSize: 'md',
   stackMax: 3,
   stackLabel: '4 người tham gia',
@@ -178,10 +180,8 @@ export const state: PlaygroundState = {
   sidebarClanId: 'sb-c1',
   sidebarOpen: true,
   sidebarUnread: 3,
-  sidebarLanguage: 'vi',
   sidebarEvent: '',
   calendarLunar: false,
-  calendarLanguage: 'vi',
   calendarShowEvents: true,
   calendarShowTypes: false,
   calendarEvent: '',

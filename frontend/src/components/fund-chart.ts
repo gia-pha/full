@@ -1,5 +1,6 @@
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { t } from '../i18n.js';
 import type { Transaction } from '../types/index.js';
 import { formatCurrency } from '../utils/format.js';
 import './empty-state.js';
@@ -15,10 +16,8 @@ export class FundChart extends LitElement {
   @property({ type: Array }) transactions: Transaction[] = [];
   @property({ type: String }) title = '';
   @property({ type: String }) currency = 'VND';
-  @property({ type: String }) contributionLabel = 'Contributions';
-  @property({ type: String }) expenseLabel = 'Expenses';
   @property({ type: Boolean }) showLegend = true;
-  @property({ type: String }) emptyMessage = 'No data';
+  @property({ type: String }) locale = 'vi';
   @property({ attribute: false })
   formatLabel: (key: string) => string = (key) => key;
 
@@ -53,7 +52,7 @@ export class FundChart extends LitElement {
           <div class="bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-4 lg:p-6 border border-gray-200 dark:border-gray-700">
             <app-empty-state
               icon="📊"
-              .message=${this.emptyMessage}
+              .message=${t(this.locale, 'fund.noData')}
             ></app-empty-state>
           </div>
         </div>
@@ -99,8 +98,8 @@ export class FundChart extends LitElement {
             ${
               this.showLegend
                 ? html`<div class="fund-chart-legend flex items-center gap-6 mt-4 justify-center">
-                    <div class="flex items-center gap-2"><div class="w-3 h-3 bg-emerald-400 rounded"></div><span class="text-sm text-gray-500 dark:text-gray-400">${this.contributionLabel}</span></div>
-                    <div class="flex items-center gap-2"><div class="w-3 h-3 bg-red-400 rounded"></div><span class="text-sm text-gray-500 dark:text-gray-400">${this.expenseLabel}</span></div>
+                    <div class="flex items-center gap-2"><div class="w-3 h-3 bg-emerald-400 rounded"></div><span class="text-sm text-gray-500 dark:text-gray-400">${t(this.locale, 'fund.contributions')}</span></div>
+                    <div class="flex items-center gap-2"><div class="w-3 h-3 bg-red-400 rounded"></div><span class="text-sm text-gray-500 dark:text-gray-400">${t(this.locale, 'fund.expenses')}</span></div>
                   </div>`
                 : ''
             }

@@ -1,5 +1,6 @@
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { t } from '../i18n.js';
 import { formatCurrency } from '../utils/format.js';
 
 @customElement('app-fund-summary')
@@ -8,9 +9,7 @@ export class FundSummary extends LitElement {
   @property({ type: Number }) totalContributions = 0;
   @property({ type: Number }) totalExpenses = 0;
   @property({ type: String }) currency = 'VND';
-  @property({ type: String }) balanceLabel = 'Balance';
-  @property({ type: String }) contributionLabel = 'Total contributions';
-  @property({ type: String }) expenseLabel = 'Total expenses';
+  @property({ type: String }) locale = 'vi';
 
   override createRenderRoot() {
     return this;
@@ -25,7 +24,7 @@ export class FundSummary extends LitElement {
           class="fund-summary-card fund-summary-card--balance bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-6 text-white"
         >
           <p class="fund-summary-label text-sm opacity-80 mb-2"
-            >${this.balanceLabel}</p
+            >${t(this.locale, 'fund.balance')}</p
           >
           <p class="fund-summary-value text-2xl lg:text-3xl font-bold">${formatCurrency(this.balance, this.currency)}</p>
         </div>
@@ -33,7 +32,7 @@ export class FundSummary extends LitElement {
           class="fund-summary-card fund-summary-card--contributions bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl p-6 text-white"
         >
           <p class="fund-summary-label text-sm opacity-80 mb-2"
-            >${this.contributionLabel}</p
+            >${t(this.locale, 'fund.totalContributions')}</p
           >
           <p class="fund-summary-value text-2xl lg:text-3xl font-bold">${formatCurrency(this.totalContributions, this.currency)}</p>
         </div>
@@ -41,7 +40,7 @@ export class FundSummary extends LitElement {
           class="fund-summary-card fund-summary-card--expenses bg-gradient-to-br from-red-500 to-pink-600 rounded-2xl p-6 text-white"
         >
           <p class="fund-summary-label text-sm opacity-80 mb-2"
-            >${this.expenseLabel}</p
+            >${t(this.locale, 'fund.totalExpenses')}</p
           >
           <p class="fund-summary-value text-2xl lg:text-3xl font-bold">${formatCurrency(this.totalExpenses, this.currency)}</p>
         </div>

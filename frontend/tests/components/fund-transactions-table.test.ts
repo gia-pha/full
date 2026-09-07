@@ -49,43 +49,28 @@ async function renderComponent(opts?: {
   events?: Event[];
   query?: string;
   title?: string;
-  dateLabel?: string;
-  descriptionLabel?: string;
-  personLabel?: string;
-  amountLabel?: string;
   currency?: string;
   emptyMessage?: string;
   noResultsMessage?: string;
-  searchPlaceholder?: string;
-  showingLabel?: string;
-  pageLabel?: string;
-  ofLabel?: string;
   page?: number;
   pageSize?: number;
   sortKey?: FundSortKey;
   sortDir?: FundSortDir;
+  locale?: string;
 }): Promise<FundTransactionsTable> {
   const el = document.createElement('app-fund-transactions-table');
+  el.locale = 'en';
+  if (opts?.locale !== undefined) el.locale = opts.locale;
   if (opts?.transactions !== undefined) el.transactions = opts.transactions;
   if (opts?.totalCount !== undefined) el.totalCount = opts.totalCount;
   if (opts?.persons !== undefined) el.persons = opts.persons;
   if (opts?.events !== undefined) el.events = opts.events;
   if (opts?.query !== undefined) el.query = opts.query;
   if (opts?.title !== undefined) el.title = opts.title;
-  if (opts?.dateLabel !== undefined) el.dateLabel = opts.dateLabel;
-  if (opts?.descriptionLabel !== undefined)
-    el.descriptionLabel = opts.descriptionLabel;
-  if (opts?.personLabel !== undefined) el.personLabel = opts.personLabel;
-  if (opts?.amountLabel !== undefined) el.amountLabel = opts.amountLabel;
   if (opts?.currency !== undefined) el.currency = opts.currency;
   if (opts?.emptyMessage !== undefined) el.emptyMessage = opts.emptyMessage;
   if (opts?.noResultsMessage !== undefined)
     el.noResultsMessage = opts.noResultsMessage;
-  if (opts?.searchPlaceholder !== undefined)
-    el.searchPlaceholder = opts.searchPlaceholder;
-  if (opts?.showingLabel !== undefined) el.showingLabel = opts.showingLabel;
-  if (opts?.pageLabel !== undefined) el.pageLabel = opts.pageLabel;
-  if (opts?.ofLabel !== undefined) el.ofLabel = opts.ofLabel;
   if (opts?.page !== undefined) el.page = opts.page;
   if (opts?.pageSize !== undefined) el.pageSize = opts.pageSize;
   if (opts?.sortKey !== undefined) el.sortKey = opts.sortKey;
@@ -197,13 +182,21 @@ describe('FundTransactionsTable', () => {
     it('renders header labels on all four columns', async () => {
       const el = await renderComponent({
         transactions: [tx()],
-        dateLabel: 'Ngày',
-        descriptionLabel: 'Mô tả',
-        personLabel: 'Người',
-        amountLabel: 'Số tiền',
       });
       const ths = [...el.querySelectorAll('thead th')];
       expect(ths).toHaveLength(4);
+      expect(ths[0].textContent).toContain('Date');
+      expect(ths[1].textContent).toContain('Description');
+      expect(ths[2].textContent).toContain('Person');
+      expect(ths[3].textContent).toContain('Amount');
+    });
+
+    it('renders translated header labels when locale is vi', async () => {
+      const el = await renderComponent({
+        transactions: [tx()],
+        locale: 'vi',
+      });
+      const ths = [...el.querySelectorAll('thead th')];
       expect(ths[0].textContent).toContain('Ngày');
       expect(ths[1].textContent).toContain('Mô tả');
       expect(ths[2].textContent).toContain('Người');
@@ -401,11 +394,10 @@ describe('FundTransactionsTable', () => {
       const el = await renderComponent({
         transactions: [tx()],
         query: 'nhà thờ',
-        searchPlaceholder: 'Tìm kiếm…',
       });
       const input = getSearchInput(el);
       expect(input.value).toBe('nhà thờ');
-      expect(input.placeholder).toBe('Tìm kiếm…');
+      expect(input.placeholder).toBe('Search…');
     });
 
     it('dispatches fund-search-change with the typed value', async () => {
@@ -454,15 +446,13 @@ describe('FundTransactionsTable', () => {
       expect(pageInfo(el)).toBe('Page 2 of 3');
     });
 
-    it('supports custom footer labels', async () => {
+    it('supports Vietnamese footer labels when locale is vi', async () => {
       const el = await renderComponent({
         transactions: [tx()],
         totalCount: 25,
         page: 2,
         pageSize: 10,
-        showingLabel: 'Hiển thị',
-        pageLabel: 'Trang',
-        ofLabel: 'trên',
+        locale: 'vi',
       });
       expect(countLabel(el)).toBe('Hiển thị 11–20 trên 25');
       expect(pageInfo(el)).toBe('Trang 2 trên 3');
@@ -559,6 +549,26 @@ describe('FundTransactionsTable', () => {
       await empty.updateComplete;
       expect(empty.message).toBe('Không tìm thấy giao dịch');
       expect(empty.icon).toBe('🔍');
+    });
+
+    it('falls back to translated messages when no override is given', async () => {
+      const empty = await renderComponent({ transactions: [], locale: 'vi' });
+      const emptyState = empty.querySelector(
+        'app-empty-state',
+      ) as AppEmptyState;
+      await emptyState.updateComplete;
+      expect(emptyState.message).toBe('Chưa có dữ liệu');
+
+      const noResults = await renderComponent({
+        transactions: [],
+        query: 'zzz',
+        locale: 'vi',
+      });
+      const noResultsState = noResults.querySelector(
+        'app-empty-state',
+      ) as AppEmptyState;
+      await noResultsState.updateComplete;
+      expect(noResultsState.message).toBe('Không tìm thấy kết quả');
     });
 
     it('keeps the search input available when the result is empty so the query can be changed', async () => {

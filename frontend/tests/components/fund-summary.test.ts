@@ -8,9 +8,7 @@ async function renderComponent(opts?: {
   totalContributions?: number;
   totalExpenses?: number;
   currency?: string;
-  balanceLabel?: string;
-  contributionLabel?: string;
-  expenseLabel?: string;
+  locale?: string;
 }): Promise<FundSummary> {
   const el = document.createElement('app-fund-summary');
   if (opts?.balance !== undefined) el.balance = opts.balance;
@@ -18,10 +16,7 @@ async function renderComponent(opts?: {
     el.totalContributions = opts.totalContributions;
   if (opts?.totalExpenses !== undefined) el.totalExpenses = opts.totalExpenses;
   if (opts?.currency !== undefined) el.currency = opts.currency;
-  if (opts?.balanceLabel !== undefined) el.balanceLabel = opts.balanceLabel;
-  if (opts?.contributionLabel !== undefined)
-    el.contributionLabel = opts.contributionLabel;
-  if (opts?.expenseLabel !== undefined) el.expenseLabel = opts.expenseLabel;
+  if (opts?.locale !== undefined) el.locale = opts.locale;
   document.body.appendChild(el);
   await el.updateComplete;
   return el;
@@ -96,22 +91,18 @@ describe('FundSummary', () => {
     );
   });
 
-  it('uses the default English labels', async () => {
+  it('uses the default Vietnamese labels', async () => {
     const el = await renderComponent();
-    expect(getLabel(getCard(el, 'balance'))).toBe('Balance');
-    expect(getLabel(getCard(el, 'contributions'))).toBe('Total contributions');
-    expect(getLabel(getCard(el, 'expenses'))).toBe('Total expenses');
-  });
-
-  it('supports custom Vietnamese labels', async () => {
-    const el = await renderComponent({
-      balanceLabel: 'Số dư quỹ',
-      contributionLabel: 'Tổng đóng góp',
-      expenseLabel: 'Tổng chi tiêu',
-    });
     expect(getLabel(getCard(el, 'balance'))).toBe('Số dư quỹ');
     expect(getLabel(getCard(el, 'contributions'))).toBe('Tổng đóng góp');
     expect(getLabel(getCard(el, 'expenses'))).toBe('Tổng chi tiêu');
+  });
+
+  it('uses English labels when locale is en', async () => {
+    const el = await renderComponent({ locale: 'en' });
+    expect(getLabel(getCard(el, 'balance'))).toBe('Balance');
+    expect(getLabel(getCard(el, 'contributions'))).toBe('Total contributions');
+    expect(getLabel(getCard(el, 'expenses'))).toBe('Total expenses');
   });
 
   it('renders without shadow DOM', async () => {

@@ -1,5 +1,6 @@
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { t } from '../i18n.js';
 import type { Event, Person } from '../types/index.js';
 import './person-avatar.js';
 import { formatDate } from '../utils/format.js';
@@ -18,6 +19,7 @@ export class EventCard extends LitElement {
   @property({ type: Object }) declare event: Event;
   @property({ type: Boolean, reflect: true }) canEdit = false;
   @property({ type: Array }) persons: Person[] = [];
+  @property({ type: String }) locale = 'vi';
 
   onEdit?: () => void;
   onDelete?: () => void;
@@ -29,6 +31,12 @@ export class EventCard extends LitElement {
 
   private getAttendeePerson(id: string): Person | undefined {
     return this.persons.find((p) => p.id === id);
+  }
+
+  private typeLabel(type: string): string {
+    const key = `events.type.${type}`;
+    const label = t(this.locale, key);
+    return label === key ? type : label;
   }
 
   override render() {
@@ -59,11 +67,11 @@ export class EventCard extends LitElement {
               <div class="flex flex-wrap items-center gap-2 mb-2">
                 ${
                   typeClass
-                    ? html`<span class="px-3 py-1 text-xs rounded-full font-medium ${typeClass}">${evt.type}</span>`
+                    ? html`<span class="px-3 py-1 text-xs rounded-full font-medium ${typeClass}">${this.typeLabel(evt.type ?? '')}</span>`
                     : html``
                 }
                 <span class="px-3 py-1 text-xs rounded-full font-medium ${isUpcoming ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300' : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'}">
-                  ${isUpcoming ? 'Upcoming' : 'Past'}
+                  ${isUpcoming ? t(this.locale, 'events.upcoming') : t(this.locale, 'events.past')}
                 </span>
               </div>
               <h3 class="font-bold text-gray-800 dark:text-gray-100 text-lg">${evt.title}</h3>
@@ -74,14 +82,14 @@ export class EventCard extends LitElement {
                   <div class="flex gap-2 ml-4 flex-shrink-0">
                     <button
                        class="event-edit p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:bg-gray-700 rounded-lg transition-colors"
-                      title="Edit"
+                      title=${t(this.locale, 'common.edit')}
                       @click=${() => this.onEdit?.()}
                     >
                       ✏️
                     </button>
                     <button
                        class="event-delete p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:text-gray-400 dark:hover:text-red-400 dark:hover:bg-red-900/30 rounded-lg transition-colors"
-                      title="Delete"
+                      title=${t(this.locale, 'common.delete')}
                       @click=${() => this.onDelete?.()}
                     >
                       🗑️
@@ -108,12 +116,12 @@ export class EventCard extends LitElement {
             evt.mapUrl
               ? html`
                 <div class="flex flex-wrap gap-3 mb-4">
-                  <a href="${evt.mapUrl}" target="_blank" class="px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 dark:text-blue-400 rounded-lg text-sm font-medium transition-colors">🗺️ View Map</a>
+                  <a href="${evt.mapUrl}" target="_blank" class="px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 dark:text-blue-400 rounded-lg text-sm font-medium transition-colors">🗺️ ${t(this.locale, 'events.viewMap')}</a>
                   <button
                     class="px-4 py-2 bg-purple-50 hover:bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:hover:bg-purple-900/50 dark:text-purple-400 rounded-lg text-sm font-medium transition-colors"
                     @click=${() => this.onAddToCalendar?.()}
                   >
-                    📆 Add to Calendar
+                    📆 ${t(this.locale, 'events.addToCalendar')}
                   </button>
                 </div>
               `
@@ -124,7 +132,7 @@ export class EventCard extends LitElement {
             evt.images && evt.images.length > 0
               ? html`
                 <div class="mb-4">
-                  <p class="text-sm text-gray-400 dark:text-gray-500 mb-3">🖼️ Images (${evt.images.length})</p>
+                  <p class="text-sm text-gray-400 dark:text-gray-500 mb-3">🖼️ ${t(this.locale, 'events.images', { count: evt.images.length })}</p>
                   <div class="flex gap-3 overflow-x-auto pb-2">
                     ${evt.images.map(
                       (img) => html`
@@ -146,7 +154,7 @@ export class EventCard extends LitElement {
                   <div class="flex -space-x-2">
                     ${attendeeAvatars}
                   </div>
-                  <span class="text-sm text-gray-400 dark:text-gray-500">${evt.attendees.length} attendees</span>
+                  <span class="text-sm text-gray-400 dark:text-gray-500">${t(this.locale, 'events.attendees', { count: evt.attendees.length })}</span>
                 </div>
               `
               : html``

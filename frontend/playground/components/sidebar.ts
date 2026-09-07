@@ -133,22 +133,6 @@ export function sidebarSection(): TemplateResult {
         </div>
 
         <div>
-          <label class=${labelClass}>Language</label>
-          <select
-            class=${controlClass}
-            value=${state.sidebarLanguage}
-            @change=${(e: Event) => {
-              state.sidebarLanguage = (e.target as HTMLSelectElement)
-                .value as typeof state.sidebarLanguage;
-              notify();
-            }}
-          >
-            <option value="vi">Tiếng Việt</option>
-            <option value="en">English</option>
-          </select>
-        </div>
-
-        <div>
           <label class=${labelClass}>Unread count</label>
           <input
             type="number"
@@ -195,7 +179,7 @@ export function sidebarSection(): TemplateResult {
             .currentPage=${state.sidebarPage}
             ?sidebarOpen=${state.sidebarOpen}
             .unreadCount=${state.sidebarUnread}
-            .language=${state.sidebarLanguage}
+            .language=${state.language}
             .currentPerson=${person}
             .roleLabel=${roleLabel}
             @clan-select=${(e: CustomEvent) => {
@@ -207,8 +191,7 @@ export function sidebarSection(): TemplateResult {
               log(`page-select → ${e.detail.page}`);
             }}
             @toggle-language=${() => {
-              state.sidebarLanguage =
-                state.sidebarLanguage === 'vi' ? 'en' : 'vi';
+              state.language = state.language === 'vi' ? 'en' : 'vi';
               log('toggle-language');
             }}
           ></app-sidebar>

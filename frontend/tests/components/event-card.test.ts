@@ -95,7 +95,7 @@ describe('EventCard', () => {
     it('shows Upcoming badge with green background for upcoming event', async () => {
       const el = await renderComponent(makeEvent({ status: 'upcoming' }));
       const rendered = getContent(el);
-      expect(rendered).toContain('Upcoming');
+      expect(rendered).toContain('Sắp tới');
       expect(rendered).toContain('bg-emerald-100');
       expect(rendered).toContain('text-emerald-700');
     });
@@ -103,7 +103,7 @@ describe('EventCard', () => {
     it('shows Past badge with gray background for past event', async () => {
       const el = await renderComponent(makeEvent({ status: 'past' }));
       const rendered = getContent(el);
-      expect(rendered).toContain('Past');
+      expect(rendered).toContain('Đã qua');
       expect(rendered).toContain('bg-gray-100');
       expect(rendered).toContain('text-gray-500');
     });
@@ -113,7 +113,7 @@ describe('EventCard', () => {
     it('shows memorial type badge with amber color', async () => {
       const el = await renderComponent(makeEvent({ type: 'memorial' }));
       const rendered = getContent(el);
-      expect(rendered).toContain('memorial');
+      expect(rendered).toContain('Lễ giỗ tổ');
       expect(rendered).toContain('bg-amber-100');
       expect(rendered).toContain('text-amber-700');
     });
@@ -121,7 +121,7 @@ describe('EventCard', () => {
     it('shows meeting type badge with blue color', async () => {
       const el = await renderComponent(makeEvent({ type: 'meeting' }));
       const rendered = getContent(el);
-      expect(rendered).toContain('meeting');
+      expect(rendered).toContain('Hội nghị');
       expect(rendered).toContain('bg-blue-100');
       expect(rendered).toContain('text-blue-700');
     });
@@ -129,7 +129,7 @@ describe('EventCard', () => {
     it('shows reunion type badge with emerald color', async () => {
       const el = await renderComponent(makeEvent({ type: 'reunion' }));
       const rendered = getContent(el);
-      expect(rendered).toContain('reunion');
+      expect(rendered).toContain('Hội ngộ');
       expect(rendered).toContain('bg-emerald-100');
       expect(rendered).toContain('text-emerald-700');
     });
@@ -137,7 +137,7 @@ describe('EventCard', () => {
     it('shows anniversary type badge with purple color', async () => {
       const el = await renderComponent(makeEvent({ type: 'anniversary' }));
       const rendered = getContent(el);
-      expect(rendered).toContain('anniversary');
+      expect(rendered).toContain('Kỷ niệm');
       expect(rendered).toContain('bg-purple-100');
       expect(rendered).toContain('text-purple-700');
     });
@@ -201,14 +201,14 @@ describe('EventCard', () => {
       );
       const rendered = getContent(el);
       expect(rendered).toContain('https://maps.google.com/?q=hanoi');
-      expect(rendered).toContain('View Map');
-      expect(rendered).toContain('Add to Calendar');
+      expect(rendered).toContain('Xem bản đồ');
+      expect(rendered).toContain('Thêm vào lịch');
     });
 
     it('does not show map link when mapUrl is not provided', async () => {
       const el = await renderComponent(makeEvent({ mapUrl: undefined }));
       const rendered = getContent(el);
-      expect(rendered).not.toContain('View Map');
+      expect(rendered).not.toContain('Xem bản đồ');
     });
 
     it('calls onAddToCalendar when add to calendar button is clicked', async () => {
@@ -218,10 +218,10 @@ describe('EventCard', () => {
       );
       el.onAddToCalendar = onAddToCalendar;
       await el.updateComplete;
-      const buttons = el.innerHTML.match(/Add to Calendar/g);
+      const buttons = el.innerHTML.match(/Thêm vào lịch/g);
       expect(buttons).not.toBeNull();
       const calendarBtn = Array.from(el.querySelectorAll('button')).find((b) =>
-        b.textContent?.includes('Add to Calendar'),
+        b.textContent?.includes('Thêm vào lịch'),
       );
       expect(calendarBtn).toBeDefined();
       calendarBtn?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
@@ -240,7 +240,7 @@ describe('EventCard', () => {
         }),
       );
       const text = el.textContent;
-      expect(text).toContain('Images');
+      expect(text).toContain('Ảnh');
       const imgs = el.querySelectorAll('img[src*="example.com"]');
       expect(imgs.length).toBe(2);
     });
@@ -248,13 +248,13 @@ describe('EventCard', () => {
     it('does not show image gallery when images are empty', async () => {
       const el = await renderComponent(makeEvent({ images: [] }));
       const rendered = getContent(el);
-      expect(rendered).not.toContain('Images');
+      expect(rendered).not.toContain('Ảnh');
     });
 
     it('does not show image gallery when images are undefined', async () => {
       const el = await renderComponent(makeEvent({ images: undefined }));
       const rendered = getContent(el);
-      expect(rendered).not.toContain('Images');
+      expect(rendered).not.toContain('Ảnh');
     });
   });
 
@@ -264,7 +264,7 @@ describe('EventCard', () => {
         makeEvent({ attendees: ['person-1', 'person-2', 'person-3'] }),
       );
       const rendered = getContent(el);
-      expect(rendered).toContain('3 attendees');
+      expect(rendered).toContain('3 người tham gia');
     });
 
     it('shows attendee avatars when persons are provided', async () => {
@@ -279,13 +279,13 @@ describe('EventCard', () => {
     it('does not show attendees section when attendees are undefined', async () => {
       const el = await renderComponent(makeEvent({ attendees: undefined }));
       const rendered = getContent(el);
-      expect(rendered).not.toContain('attendees');
+      expect(rendered).not.toContain('người tham gia');
     });
 
     it('does not show attendees section when attendees array is empty', async () => {
       const el = await renderComponent(makeEvent({ attendees: [] }));
       const rendered = getContent(el);
-      expect(rendered).not.toContain('attendees');
+      expect(rendered).not.toContain('người tham gia');
     });
   });
 
@@ -396,7 +396,7 @@ describe('EventCard', () => {
         { persons: [p1, p2, p3] },
       );
       const rendered = getContent(el);
-      expect(rendered).toContain('3 attendees');
+      expect(rendered).toContain('3 người tham gia');
       expect(rendered).toContain('https://example.com/avatar.jpg');
       expect(rendered).toContain('Văn Nguyễn');
     });
