@@ -10,6 +10,7 @@ import type {
   Person,
   Transaction,
 } from '../src/types/index.js';
+import { pad2 } from '../src/utils/format.js';
 import type { FundSortDir, FundSortKey } from '../src/utils/fund.js';
 
 export interface PlaygroundState {
@@ -726,8 +727,6 @@ function mulberry32(seed: number): () => number {
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 }
-
-const pad2 = (v: number): string => String(v).padStart(2, '0');
 
 const bigContribDescriptions = [
   'Đóng góp quỹ họ',

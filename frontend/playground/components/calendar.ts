@@ -2,14 +2,11 @@ import type { TemplateResult } from 'lit';
 import { html } from 'lit';
 import type { CalendarEventType } from '../../src/components/calendar.js';
 import type { Event as AppEvent } from '../../src/types/index.js';
+import { pad2 } from '../../src/utils/format.js';
 import { notify, state } from '../state.js';
 
 const inputClass =
   'w-full px-3 py-2 text-sm border border-gray-300 os-dark:border-gray-600 rounded-lg bg-white os-dark:bg-gray-700 text-gray-800 os-dark:text-gray-200';
-
-function pad2(n: number): string {
-  return String(n).padStart(2, '0');
-}
 
 function inMonth(monthOffset: number, day: number): string {
   const base = new Date();

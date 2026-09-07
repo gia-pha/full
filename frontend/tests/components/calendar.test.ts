@@ -6,16 +6,13 @@ import type {
   CalendarLanguage,
 } from '../../src/components/calendar.js';
 import type { Event } from '../../src/types/index.js';
+import { pad2 } from '../../src/utils/format.js';
 import { getDaysInMonth } from '../../src/utils/lunar.js';
 
 const now = new Date();
 const currentYear = now.getFullYear();
 const currentMonth = now.getMonth() + 1;
 const currentDay = now.getDate();
-
-function pad2(n: number): string {
-  return String(n).padStart(2, '0');
-}
 
 function dateStr(year: number, month: number, day: number): string {
   return `${year}-${pad2(month)}-${pad2(day)}`;

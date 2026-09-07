@@ -2,6 +2,7 @@ import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { t } from '../i18n.js';
 import type { Event } from '../types/index.js';
+import { pad2 } from '../utils/format.js';
 import './toggle.js';
 import {
   dayNamesEn,
@@ -52,8 +53,6 @@ export interface CalendarEventType {
 }
 
 const fallbackColor = '#6b7280';
-
-const pad2 = (n: number): string => String(n).padStart(2, '0');
 
 const formatLunarDate = (
   lunar: LunarDate,

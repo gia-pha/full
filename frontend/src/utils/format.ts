@@ -1,5 +1,7 @@
 import type { Person } from '../types/index.js';
 
+export const pad2 = (n: number): string => String(n).padStart(2, '0');
+
 export function getFullName(person: Person): string {
   return `${person.data.firstName} ${person.data.lastName}`.trim();
 }
