@@ -22,7 +22,6 @@ export function eventCardSection(): TemplateResult {
             .event=${event}
             ?canEdit=${state.eventCanEdit}
             .persons=${persons}
-            .locale=${state.language}
             .onEdit=${() => alert('Edit event')}
             .onDelete=${() => alert('Delete event')}
             .onAddToCalendar=${() => alert('Added to calendar')}

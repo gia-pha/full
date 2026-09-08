@@ -179,7 +179,6 @@ export function sidebarSection(): TemplateResult {
             .currentPage=${state.sidebarPage}
             ?sidebarOpen=${state.sidebarOpen}
             .unreadCount=${state.sidebarUnread}
-            .language=${state.language}
             .currentPerson=${person}
             .roleLabel=${roleLabel}
             @clan-select=${(e: CustomEvent) => {

@@ -1,13 +1,12 @@
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { defaultRoles } from '../consts/index.js';
-import { t } from '../i18n.js';
+import { I18nMixin } from '../i18n/i18n-mixin.js';
 
 @customElement('role-badge')
-export class RoleBadge extends LitElement {
+export class RoleBadge extends I18nMixin(LitElement) {
   @property({ type: String }) name = '';
   @property({ type: String }) label = '';
-  @property({ type: String }) locale = 'vi';
 
   override createRenderRoot() {
     return this;
@@ -18,7 +17,7 @@ export class RoleBadge extends LitElement {
     if (!role) return html``;
 
     const key = `roles.${role.name}`;
-    const translated = t(this.locale, key);
+    const translated = this.t(key);
     const displayLabel =
       this.label || (translated === key ? role.label : translated);
 

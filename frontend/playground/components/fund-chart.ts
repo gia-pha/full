@@ -25,7 +25,6 @@ export function fundChartSection(): TemplateResult {
             .transactions=${transactions}
             .title=${state.chartTitle}
             .currency=${currency}
-            .locale=${state.language}
             .showLegend=${state.chartShowLegend}
             .formatLabel=${(key: string) =>
               state.chartSlashedLabels ? key.replaceAll('-', '/') : key}

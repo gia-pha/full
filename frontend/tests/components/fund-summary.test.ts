@@ -1,14 +1,16 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import '../../src/components/fund-summary.js';
 import type { FundSummary } from '../../src/components/fund-summary.js';
+import type { Locale } from '../../src/i18n/context.js';
 import { formatCurrency } from '../../src/utils/format.js';
+import { mountWithLocale } from '../utils/i18n.js';
 
 async function renderComponent(opts?: {
   balance?: number;
   totalContributions?: number;
   totalExpenses?: number;
   currency?: string;
-  locale?: string;
+  locale?: Locale;
 }): Promise<FundSummary> {
   const el = document.createElement('app-fund-summary');
   if (opts?.balance !== undefined) el.balance = opts.balance;
@@ -16,8 +18,7 @@ async function renderComponent(opts?: {
     el.totalContributions = opts.totalContributions;
   if (opts?.totalExpenses !== undefined) el.totalExpenses = opts.totalExpenses;
   if (opts?.currency !== undefined) el.currency = opts.currency;
-  if (opts?.locale !== undefined) el.locale = opts.locale;
-  document.body.appendChild(el);
+  mountWithLocale(el, opts?.locale);
   await el.updateComplete;
   return el;
 }

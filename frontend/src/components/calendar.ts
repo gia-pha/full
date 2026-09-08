@@ -1,6 +1,7 @@
 import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { t } from '../i18n.js';
+import type { Locale } from '../i18n/context.js';
+import { I18nMixin } from '../i18n/i18n-mixin.js';
 import type { Event } from '../types/index.js';
 import { pad2 } from '../utils/format.js';
 import './toggle.js';
@@ -18,8 +19,6 @@ import {
   solarToLunar,
 } from '../utils/lunar.js';
 import type { ToggleDetail } from './toggle.js';
-
-export type CalendarLanguage = 'vi' | 'en';
 
 export interface CalendarNavDetail {
   year: number;
@@ -54,18 +53,12 @@ export interface CalendarEventType {
 
 const fallbackColor = '#6b7280';
 
-const formatLunarDate = (
-  lunar: LunarDate,
-  language: CalendarLanguage,
-): string =>
+const formatLunarDate = (lunar: LunarDate, language: Locale): string =>
   language === 'en'
     ? formatLunarDateEn(lunar.year, lunar.month, lunar.day, lunar.isLeapMonth)
     : formatLunarDateVi(lunar.year, lunar.month, lunar.day, lunar.isLeapMonth);
 
-const formatSelectedDate = (
-  date: string,
-  language: CalendarLanguage,
-): string => {
+const formatSelectedDate = (date: string, language: Locale): string => {
   const d = new Date(`${date}T00:00:00`);
   return d.toLocaleDateString(language === 'vi' ? 'vi-VN' : 'en-GB', {
     weekday: 'long',
@@ -76,13 +69,12 @@ const formatSelectedDate = (
 };
 
 @customElement('app-calendar')
-export class AppCalendar extends LitElement {
+export class AppCalendar extends I18nMixin(LitElement) {
   @property({ type: Number }) year = new Date().getFullYear();
   @property({ type: Number }) month = new Date().getMonth() + 1;
   @property({ type: Boolean, reflect: true }) lunar = false;
   @property({ type: Array }) events: Event[] = [];
   @property({ type: Array }) eventTypes: CalendarEventType[] = [];
-  @property({ type: String }) language: CalendarLanguage = 'vi';
   @property({ type: String }) selectedDate = '';
 
   override createRenderRoot() {
@@ -186,7 +178,7 @@ export class AppCalendar extends LitElement {
       events: cell.events ?? [],
     };
     if (this.lunar && cell.lunar) {
-      detail.lunarDate = formatLunarDate(cell.lunar, this.language);
+      detail.lunarDate = formatLunarDate(cell.lunar, this.locale);
       detail.lunarYearName = getVietnameseYearName(cell.lunar.year);
     }
     this.dispatchEvent(
@@ -203,7 +195,7 @@ export class AppCalendar extends LitElement {
       <app-toggle
         class="cal-lunar-toggle"
         .checked=${this.lunar}
-        .label=${`🌙 ${t(this.language, 'events.lunar')}`}
+        .label=${`🌙 ${this.t('events.lunar')}`}
         @change=${this.handleLunarChange}
       ></app-toggle>
     `;
@@ -216,7 +208,7 @@ export class AppCalendar extends LitElement {
   private typeLabel(type: string): string {
     return (
       this.eventTypes.find((et) => et.type === type)?.label ??
-      t(this.language, `events.type.${type}`)
+      this.t(`events.type.${type}`)
     );
   }
 
@@ -239,7 +231,7 @@ export class AppCalendar extends LitElement {
 
   private renderLunarDisplay(lunar: LunarDate): TemplateResult {
     const leap = lunar.isLeapMonth
-      ? this.language === 'vi'
+      ? this.locale === 'vi'
         ? ' (N)'
         : ' (L)'
       : '';
@@ -331,7 +323,7 @@ export class AppCalendar extends LitElement {
     if (!this.selectedDate) return '';
     const events = this.events.filter((evt) => evt.date === this.selectedDate);
     if (events.length === 0) return '';
-    const countLabel = t(this.language, 'events.eventCount', {
+    const countLabel = this.t('events.eventCount', {
       count: events.length,
     });
     const [y, m, d] = this.selectedDate.split('-').map(Number);
@@ -348,14 +340,14 @@ export class AppCalendar extends LitElement {
               <h3
                 class="cal-selected-date truncate text-sm font-bold uppercase tracking-wide text-emerald-700 dark:text-emerald-300"
               >
-                ${formatSelectedDate(this.selectedDate, this.language)}
+                ${formatSelectedDate(this.selectedDate, this.locale)}
               </h3>
               ${
                 this.lunar
                   ? html`<p
                       class="cal-selected-lunar mt-0.5 text-xs font-medium text-amber-600 dark:text-amber-400"
                     >
-                      🌙 ${formatLunarDate(lunar, this.language)} -
+                      🌙 ${formatLunarDate(lunar, this.locale)} -
                       ${getVietnameseYearName(lunar.year)}
                     </p>`
                   : ''
@@ -415,15 +407,15 @@ export class AppCalendar extends LitElement {
 
   override render() {
     const { year, month } = this;
-    const monthNames = this.language === 'vi' ? monthNamesVi : monthNamesEn;
-    const dayNames = this.language === 'vi' ? dayNamesVi : dayNamesEn;
+    const monthNames = this.locale === 'vi' ? monthNamesVi : monthNamesEn;
+    const dayNames = this.locale === 'vi' ? dayNamesVi : dayNamesEn;
     const lunarYearName = this.lunar ? getVietnameseYearName(year) : '';
     const cells = this.buildCells();
 
     return html`
       <div class="p-4 sm:p-6 lg:p-8 border-b border-gray-200 dark:border-gray-700 flex flex-wrap items-center justify-between gap-3">
         <h2 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-100">
-          ${t(this.language, 'events.calendarView')}
+          ${this.t('events.calendarView')}
         </h2>
         <div class="flex items-center gap-2">
           ${this.renderLunarToggle()}
@@ -445,7 +437,7 @@ export class AppCalendar extends LitElement {
               class="cal-today px-3 py-2 bg-emerald-100 hover:bg-emerald-200 dark:bg-emerald-900 dark:hover:bg-emerald-800 text-emerald-700 dark:text-emerald-300 rounded-lg text-sm font-medium transition-colors"
               @click=${this.goToday}
             >
-              ${t(this.language, 'events.today')}
+              ${this.t('events.today')}
             </button>
             <button
               type="button"

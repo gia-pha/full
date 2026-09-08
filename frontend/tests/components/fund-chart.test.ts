@@ -2,8 +2,10 @@ import { afterEach, describe, expect, it } from 'vitest';
 import '../../src/components/fund-chart.js';
 import type { AppEmptyState } from '../../src/components/empty-state.js';
 import type { FundChart } from '../../src/components/fund-chart.js';
+import type { Locale } from '../../src/i18n/context.js';
 import type { Transaction } from '../../src/types/index.js';
 import { formatCurrency } from '../../src/utils/format.js';
+import { mountWithLocale } from '../utils/i18n.js';
 
 function tx(
   id: string,
@@ -29,7 +31,7 @@ async function renderComponent(opts?: {
   currency?: string;
   showLegend?: boolean;
   formatLabel?: (key: string) => string;
-  locale?: string;
+  locale?: Locale;
 }): Promise<FundChart> {
   const el = document.createElement('app-fund-chart');
   if (opts?.transactions !== undefined) el.transactions = opts.transactions;
@@ -37,8 +39,7 @@ async function renderComponent(opts?: {
   if (opts?.currency !== undefined) el.currency = opts.currency;
   if (opts?.showLegend !== undefined) el.showLegend = opts.showLegend;
   if (opts?.formatLabel !== undefined) el.formatLabel = opts.formatLabel;
-  if (opts?.locale !== undefined) el.locale = opts.locale;
-  document.body.appendChild(el);
+  mountWithLocale(el, opts?.locale);
   await el.updateComplete;
   return el;
 }

@@ -2,9 +2,11 @@ import { afterEach, describe, expect, it } from 'vitest';
 import '../../src/components/fund-transactions-table.js';
 import type { AppEmptyState } from '../../src/components/empty-state.js';
 import type { FundTransactionsTable } from '../../src/components/fund-transactions-table.js';
+import type { Locale } from '../../src/i18n/context.js';
 import type { Event, Person, Transaction } from '../../src/types/index.js';
 import { formatCurrency } from '../../src/utils/format.js';
 import type { FundSortDir, FundSortKey } from '../../src/utils/fund.js';
+import { mountWithLocale } from '../utils/i18n.js';
 
 function tx(overrides?: Partial<Transaction>): Transaction {
   return {
@@ -56,11 +58,9 @@ async function renderComponent(opts?: {
   pageSize?: number;
   sortKey?: FundSortKey;
   sortDir?: FundSortDir;
-  locale?: string;
+  locale?: Locale;
 }): Promise<FundTransactionsTable> {
   const el = document.createElement('app-fund-transactions-table');
-  el.locale = 'en';
-  if (opts?.locale !== undefined) el.locale = opts.locale;
   if (opts?.transactions !== undefined) el.transactions = opts.transactions;
   if (opts?.totalCount !== undefined) el.totalCount = opts.totalCount;
   if (opts?.persons !== undefined) el.persons = opts.persons;
@@ -75,7 +75,7 @@ async function renderComponent(opts?: {
   if (opts?.pageSize !== undefined) el.pageSize = opts.pageSize;
   if (opts?.sortKey !== undefined) el.sortKey = opts.sortKey;
   if (opts?.sortDir !== undefined) el.sortDir = opts.sortDir;
-  document.body.appendChild(el);
+  mountWithLocale(el, opts?.locale ?? 'en');
   await el.updateComplete;
   return el;
 }

@@ -1,6 +1,6 @@
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { t } from '../i18n.js';
+import { I18nMixin } from '../i18n/i18n-mixin.js';
 import type { Event, Person, Transaction } from '../types/index.js';
 import { formatCurrency, formatDate } from '../utils/format.js';
 import type { FundSortDir, FundSortKey } from '../utils/fund.js';
@@ -8,7 +8,7 @@ import { getEventTitle, getPersonName } from '../utils/fund.js';
 import './empty-state.js';
 
 @customElement('app-fund-transactions-table')
-export class FundTransactionsTable extends LitElement {
+export class FundTransactionsTable extends I18nMixin(LitElement) {
   @property({ type: Array }) transactions: Transaction[] = [];
   @property({ type: Number }) totalCount = 0;
   @property({ type: Array }) persons: Person[] = [];
@@ -22,7 +22,6 @@ export class FundTransactionsTable extends LitElement {
   @property({ type: Number }) pageSize = 10;
   @property({ type: String }) sortKey: FundSortKey = 'date';
   @property({ type: String }) sortDir: FundSortDir = 'desc';
-  @property({ type: String }) locale = 'vi';
 
   override createRenderRoot() {
     return this;
@@ -79,7 +78,7 @@ export class FundTransactionsTable extends LitElement {
         <input
           type="search"
           class="fund-transactions-search w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-          placeholder=${t(this.locale, 'fund.search')}
+          placeholder=${this.t('fund.search')}
           .value=${this.query}
           @input=${this.onSearch}
         />
@@ -138,7 +137,7 @@ export class FundTransactionsTable extends LitElement {
                   icon=${searching ? '🔍' : '📄'}
                   .message=${
                     (searching ? this.noResultsMessage : this.emptyMessage) ||
-                    t(this.locale, searching ? 'fund.noResults' : 'fund.noData')
+                    this.t(searching ? 'fund.noResults' : 'fund.noData')
                   }
                 ></app-empty-state>`
           }
@@ -158,25 +157,22 @@ export class FundTransactionsTable extends LitElement {
               <th
                 class="text-left px-4 lg:px-6 py-3 text-gray-500 dark:text-gray-400 font-medium"
               >
-                ${this.sortHeader('date', t(this.locale, 'fund.date'))}
+                ${this.sortHeader('date', this.t('fund.date'))}
               </th>
               <th
                 class="text-left px-4 lg:px-6 py-3 text-gray-500 dark:text-gray-400 font-medium"
               >
-                ${this.sortHeader(
-                  'description',
-                  t(this.locale, 'fund.description'),
-                )}
+                ${this.sortHeader('description', this.t('fund.description'))}
               </th>
               <th
                 class="text-left px-4 lg:px-6 py-3 text-gray-500 dark:text-gray-400 font-medium hidden sm:table-cell"
               >
-                ${this.sortHeader('person', t(this.locale, 'fund.person'))}
+                ${this.sortHeader('person', this.t('fund.person'))}
               </th>
               <th
                 class="text-right px-4 lg:px-6 py-3 text-gray-500 dark:text-gray-400 font-medium"
               >
-                ${this.sortHeader('amount', t(this.locale, 'fund.amount'))}
+                ${this.sortHeader('amount', this.t('fund.amount'))}
               </th>
             </tr>
           </thead>
@@ -243,7 +239,7 @@ export class FundTransactionsTable extends LitElement {
       class="fund-transactions-footer flex flex-col sm:flex-row items-center justify-between gap-2 px-4 lg:px-6 py-3 border-t border-gray-100 dark:border-gray-700 text-sm text-gray-500 dark:text-gray-400"
     >
       <span class="fund-transactions-count"
-        >${t(this.locale, 'fund.showing')} ${start}–${end} ${t(this.locale, 'fund.of')} ${total}</span
+        >${this.t('fund.showing')} ${start}–${end} ${this.t('fund.of')} ${total}</span
       >
       <div class="flex items-center gap-3">
         <button
@@ -254,7 +250,7 @@ export class FundTransactionsTable extends LitElement {
           >←</button
         >
         <span class="fund-transactions-page-info"
-          >${t(this.locale, 'fund.page')} ${page} ${t(this.locale, 'fund.of')} ${pageCount}</span
+          >${this.t('fund.page')} ${page} ${this.t('fund.of')} ${pageCount}</span
         >
         <button
           type="button"

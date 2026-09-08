@@ -1,10 +1,8 @@
 import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { t } from '../i18n.js';
+import { I18nMixin } from '../i18n/i18n-mixin.js';
 import type { Clan, Person } from '../types/index.js';
 import { getFullName, getGenderSymbol } from '../utils/format.js';
-
-export type SidebarLanguage = 'vi' | 'en';
 
 export interface NavItem {
   id: string;
@@ -14,7 +12,7 @@ export interface NavItem {
 }
 
 @customElement('app-sidebar')
-export class Sidebar extends LitElement {
+export class Sidebar extends I18nMixin(LitElement) {
   @property({ type: Array }) clans: Clan[] = [];
   @property({ type: Array }) navItems: NavItem[] = [];
   @property({ type: Array }) mobileNavItems: NavItem[] = [];
@@ -22,7 +20,6 @@ export class Sidebar extends LitElement {
   @property({ type: String }) currentPage = '';
   @property({ type: Boolean }) sidebarOpen = true;
   @property({ type: Number }) unreadCount = 0;
-  @property({ type: String }) language: SidebarLanguage = 'vi';
   @property({ type: Object }) currentPerson?: Person;
   @property({ type: String }) roleLabel = '';
 
@@ -110,7 +107,7 @@ export class Sidebar extends LitElement {
           clan.lineage
             ? html`<span
               class="text-xs text-gray-400"
-              >${t(this.language, `clan.lineage.${clan.lineage}`)}</span
+              >${this.t(`clan.lineage.${clan.lineage}`)}</span
             >`
             : html``
         }
@@ -137,7 +134,7 @@ export class Sidebar extends LitElement {
       <div
         class="flex-shrink-0 border-b p-4 dark:border-gray-700"
         role="group"
-        aria-label=${t(this.language, 'app.sidebar.clans')}
+        aria-label=${this.t('app.sidebar.clans')}
       >
         <div
           class=${`space-y-2 ${
@@ -170,7 +167,7 @@ export class Sidebar extends LitElement {
       >
         <span class="text-lg">${item.icon}</span>
         <span class="flex-1 text-left"
-          >${t(this.language, item.labelKey)}</span
+          >${this.t(item.labelKey)}</span
         >
         ${
           showUnread
@@ -221,7 +218,7 @@ export class Sidebar extends LitElement {
           @click=${() => this.dispatchToggle('toggle-language')}
         >
           <span class="text-lg">🌍</span>
-          <span>${t(this.language, 'app.sidebar.switchLanguage')}</span>
+          <span>${this.t('app.sidebar.switchLanguage')}</span>
         </button>
       </div>
     `;
@@ -288,7 +285,7 @@ export class Sidebar extends LitElement {
               class="lang-btn -mr-2 rounded-xl p-2 text-sm font-bold text-gray-600 active:bg-gray-100 dark:text-gray-300 dark:active:bg-gray-700"
               @click=${() => this.dispatchToggle('toggle-language')}
             >
-              ${this.language === 'vi' ? 'EN' : 'VI'}
+              ${this.locale === 'vi' ? 'EN' : 'VI'}
             </button>
           </div>
         </header>
@@ -327,7 +324,7 @@ export class Sidebar extends LitElement {
                     }</span
                   >
                   <span class="truncate text-[11px] font-medium"
-                    >${t(this.language, item.labelKey)}</span
+                    >${this.t(item.labelKey)}</span
                   >
                 </button>
               `;

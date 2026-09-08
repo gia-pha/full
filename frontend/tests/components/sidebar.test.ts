@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import '../../src/components/sidebar.js';
 import type { NavItem, Sidebar } from '../../src/components/sidebar.js';
+import type { Locale } from '../../src/i18n/context.js';
 import type { Clan, Person } from '../../src/types/index.js';
+import { mountWithLocale } from '../utils/i18n.js';
 
 function makeClans(): Clan[] {
   return [
@@ -86,7 +88,7 @@ async function renderSidebar(
     currentPage?: string;
     sidebarOpen?: boolean;
     unreadCount?: number;
-    language?: 'vi' | 'en';
+    language?: Locale;
     currentPerson?: Person;
     roleLabel?: string;
   } = {},
@@ -99,10 +101,9 @@ async function renderSidebar(
   if (opts.currentPage !== undefined) el.currentPage = opts.currentPage;
   if (opts.sidebarOpen !== undefined) el.sidebarOpen = opts.sidebarOpen;
   if (opts.unreadCount !== undefined) el.unreadCount = opts.unreadCount;
-  if (opts.language !== undefined) el.language = opts.language;
   if (opts.currentPerson !== undefined) el.currentPerson = opts.currentPerson;
   if (opts.roleLabel !== undefined) el.roleLabel = opts.roleLabel;
-  document.body.appendChild(el);
+  mountWithLocale(el, opts.language);
   await el.updateComplete;
   await el.updateComplete;
   return el;

@@ -1,10 +1,10 @@
-import data from './i18n/translations.json';
+import data from './translations.json';
 
 type TranslationNode = string | { [key: string]: TranslationNode };
 
 export const translations = data as Record<string, TranslationNode>;
 
-export function t(
+export function translate(
   locale: string,
   key: string,
   params?: Record<string, string | number>,

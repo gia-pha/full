@@ -59,7 +59,6 @@ export function calendarSection(): TemplateResult {
         <div class="bg-white dark:bg-gray-900 rounded-xl overflow-hidden">
           <app-calendar
             .lunar=${state.calendarLunar}
-            .language=${state.language}
             .events=${events}
             .eventTypes=${state.calendarShowTypes ? calendarEventTypes : []}
             @calendar-nav=${(e: CustomEvent) => {

@@ -1,19 +1,18 @@
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { t } from '../i18n.js';
+import { I18nMixin } from '../i18n/i18n-mixin.js';
 import type { MemberAction, Person } from '../types/index.js';
 import { getFullName, isDeceased } from '../utils/format.js';
 import './person-avatar.js';
 import './role-badge.js';
 
 @customElement('member-item')
-export class MemberItem extends LitElement {
+export class MemberItem extends I18nMixin(LitElement) {
   @property({ type: Object }) declare person: Person;
   @property({ type: Boolean, reflect: true }) selected = false;
   @property({ type: String }) honorific = '';
   @property({ type: Boolean }) locked = false;
   @property({ type: Array }) actions: MemberAction[] = [];
-  @property({ type: String }) locale = 'vi';
 
   override createRenderRoot() {
     return this;
@@ -47,7 +46,7 @@ export class MemberItem extends LitElement {
               <span class="font-semibold text-gray-800 text-base truncate dark:text-gray-200">${fullName}</span>
               ${
                 this.selected
-                  ? html`<span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-xs rounded-full font-medium flex-shrink-0 dark:bg-emerald-900 dark:text-emerald-300">${t(this.locale, 'members.you')}</span>`
+                  ? html`<span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-xs rounded-full font-medium flex-shrink-0 dark:bg-emerald-900 dark:text-emerald-300">${this.t('members.you')}</span>`
                   : ''
               }
               ${
@@ -68,7 +67,7 @@ export class MemberItem extends LitElement {
                   : ''
               }
               <span class="text-xs text-gray-400"
-                >${t(this.locale, 'members.generationShort', {
+                >${this.t('members.generationShort', {
                   n: person.data.generation,
                 })}</span
               >
@@ -77,7 +76,6 @@ export class MemberItem extends LitElement {
           <div class="flex items-center gap-2 flex-shrink-0">
             <role-badge
               name="${person.data.role || ''}"
-              locale=${this.locale}
             ></role-badge>
             ${this.locked ? html`<span class="text-gray-400">🔒</span>` : ''}
             ${this.actions.map(

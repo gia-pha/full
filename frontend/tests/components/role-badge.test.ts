@@ -1,17 +1,18 @@
 import { describe, expect, it } from 'vitest';
 import '../../src/components/role-badge.js';
 import type { RoleBadge } from '../../src/components/role-badge.js';
+import type { Locale } from '../../src/i18n/context.js';
+import { mountWithLocale } from '../utils/i18n.js';
 
 async function renderComponent(opts?: {
   name?: string;
   label?: string;
-  locale?: string;
+  locale?: Locale;
 }): Promise<RoleBadge> {
   const el = document.createElement('role-badge');
   if (opts?.name !== undefined) el.name = opts.name;
   if (opts?.label !== undefined) el.label = opts.label;
-  if (opts?.locale !== undefined) el.locale = opts.locale;
-  document.body.appendChild(el);
+  mountWithLocale(el, opts?.locale);
   await el.updateComplete;
   return el;
 }

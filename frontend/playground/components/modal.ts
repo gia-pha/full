@@ -79,7 +79,6 @@ export function modalSection(): TemplateResult {
         <app-modal
           ?open=${state.modalOpen}
           title="${state.modalTitle}"
-          .locale=${state.language}
           .body=${html`
             <div class="space-y-3">
               <div>

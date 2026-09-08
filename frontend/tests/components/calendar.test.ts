@@ -3,11 +3,12 @@ import '../../src/components/calendar.js';
 import type {
   AppCalendar,
   CalendarEventType,
-  CalendarLanguage,
 } from '../../src/components/calendar.js';
+import type { Locale } from '../../src/i18n/context.js';
 import type { Event } from '../../src/types/index.js';
 import { pad2 } from '../../src/utils/format.js';
 import { getDaysInMonth } from '../../src/utils/lunar.js';
+import { mountWithLocale } from '../utils/i18n.js';
 
 const now = new Date();
 const currentYear = now.getFullYear();
@@ -37,7 +38,7 @@ async function renderCalendar(
     lunar?: boolean;
     events?: Event[];
     eventTypes?: CalendarEventType[];
-    language?: CalendarLanguage;
+    language?: Locale;
   } = {},
 ): Promise<AppCalendar> {
   const el = document.createElement('app-calendar');
@@ -46,8 +47,7 @@ async function renderCalendar(
   if (opts.lunar !== undefined) el.lunar = opts.lunar;
   if (opts.events !== undefined) el.events = opts.events;
   if (opts.eventTypes !== undefined) el.eventTypes = opts.eventTypes;
-  if (opts.language !== undefined) el.language = opts.language;
-  document.body.appendChild(el);
+  mountWithLocale(el, opts.language);
   await el.updateComplete;
   return el;
 }

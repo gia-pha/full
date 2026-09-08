@@ -19,7 +19,6 @@ export function notificationItemSection(): TemplateResult {
         <div class="min-h-[100px] bg-white dark:bg-gray-900 rounded-xl p-4">
           <notification-item
             .notification=${notification}
-            .locale=${state.language}
           ></notification-item>
         </div>
       </div>

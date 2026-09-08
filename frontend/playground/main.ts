@@ -1,5 +1,6 @@
 import { html, render } from 'lit';
 import '../src/styles/main.css';
+import '../src/i18n/provider.js';
 import '../src/components/person-avatar.js';
 import '../src/components/avatar-stack.js';
 import '../src/components/member-item.js';
@@ -46,6 +47,7 @@ function renderPlayground() {
   render(
     html`
       <div class="min-h-screen">
+        <i18n-provider .locale=${state.language}>
         <header class="bg-white os-dark:bg-gray-800 shadow border-b border-gray-200 os-dark:border-gray-700">
           <div class="container mx-auto px-4 py-4 flex items-center justify-between">
             <h1 class="text-xl font-bold text-gray-800 os-dark:text-gray-100">
@@ -93,6 +95,7 @@ function renderPlayground() {
           ${fundTransactionsTableSection()}
           ${calendarSection()}
         </div>
+        </i18n-provider>
       </div>
     `,
     document.getElementById('playground')!,
