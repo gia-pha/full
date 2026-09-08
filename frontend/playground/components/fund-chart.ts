@@ -25,10 +25,7 @@ export function fundChartSection(): TemplateResult {
             .transactions=${transactions}
             .title=${state.chartTitle}
             .currency=${currency}
-            .contributionLabel=${'Đóng góp'}
-            .expenseLabel=${'Chi tiêu'}
             .showLegend=${state.chartShowLegend}
-            .emptyMessage=${'Chưa có dữ liệu'}
             .formatLabel=${(key: string) =>
               state.chartSlashedLabels ? key.replaceAll('-', '/') : key}
           ></app-fund-chart>

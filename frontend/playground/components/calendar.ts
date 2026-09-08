@@ -59,7 +59,6 @@ export function calendarSection(): TemplateResult {
         <div class="bg-white dark:bg-gray-900 rounded-xl overflow-hidden">
           <app-calendar
             .lunar=${state.calendarLunar}
-            .language=${state.calendarLanguage}
             .events=${events}
             .eventTypes=${state.calendarShowTypes ? calendarEventTypes : []}
             @calendar-nav=${(e: CustomEvent) => {
@@ -80,24 +79,6 @@ export function calendarSection(): TemplateResult {
       </div>
 
       <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-        <div>
-          <label class="block text-xs text-gray-500 os-dark:text-gray-400 mb-1"
-            >Language</label
-          >
-          <select
-            class=${inputClass}
-            .value=${state.calendarLanguage}
-            @change=${(e: Event) => {
-              state.calendarLanguage = (e.target as HTMLSelectElement).value as
-                | 'vi'
-                | 'en';
-              notify();
-            }}
-          >
-            <option value="vi">Tiếng Việt</option>
-            <option value="en">English</option>
-          </select>
-        </div>
         <div>
           <label class="block text-xs text-gray-500 os-dark:text-gray-400 mb-1"
             >Dataset</label

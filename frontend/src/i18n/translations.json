@@ -1,20 +1,114 @@
 {
   "vi": {
+    "common": {
+      "close": "Đóng",
+      "edit": "Chỉnh sửa",
+      "delete": "Xóa",
+      "save": "Lưu",
+      "cancel": "Hủy",
+      "view": "Xem",
+      "male": "Nam",
+      "female": "Nữ"
+    },
+    "roles": {
+      "admin": "Quản trị",
+      "editor": "Biên tập",
+      "treasurer": "Thủ quỹ",
+      "member": "Thành viên"
+    },
+    "members": {
+      "title": "Thành viên",
+      "you": "Bạn",
+      "deceased": "Mất",
+      "honorific": "Danh xưng: {value}",
+      "birthYear": "Năm sinh",
+      "gender": "Giới tính",
+      "generation": "Thế hệ",
+      "generationShort": "Thế hệ {n}",
+      "role": "Vai trò",
+      "spouses": "Vợ chồng",
+      "spouse": "Vợ/chồng",
+      "parents": "Bố mẹ",
+      "parent": "Bố mẹ",
+      "children": "Con cái",
+      "child": "Con",
+      "notes": "Ghi chú",
+      "limitedAccess": "Truy cập hạn chế"
+    },
     "notifications": {
       "markRead": "Đánh dấu đã đọc",
-      "markAllRead": "Đánh dấu tất cả đã đọc"
+      "markAllRead": "Đánh dấu tất cả đã đọc",
+      "type": {
+        "fund_change": "Biến động quỹ",
+        "new_event": "Sự kiện mới",
+        "memorial_reminder": "Nhắc lễ giỗ",
+        "member_joins": "Thành viên mới",
+        "other": "Khác"
+      }
     },
     "events": {
       "calendarView": "Xem Lịch",
       "lunar": "Âm lịch",
       "today": "Hôm nay",
       "eventCount": "{count} sự kiện",
+      "upcoming": "Sắp tới",
+      "past": "Đã qua",
+      "viewMap": "Xem bản đồ",
+      "addToCalendar": "Thêm vào lịch",
+      "images": "Ảnh ({count})",
+      "attendees": "{count} người tham gia",
       "type": {
         "memorial": "Lễ giỗ tổ",
         "meeting": "Hội nghị",
         "reunion": "Hội ngộ",
         "anniversary": "Kỷ niệm"
       }
+    },
+    "calendar": {
+      "months": {
+        "1": "Tháng 1",
+        "2": "Tháng 2",
+        "3": "Tháng 3",
+        "4": "Tháng 4",
+        "5": "Tháng 5",
+        "6": "Tháng 6",
+        "7": "Tháng 7",
+        "8": "Tháng 8",
+        "9": "Tháng 9",
+        "10": "Tháng 10",
+        "11": "Tháng 11",
+        "12": "Tháng 12"
+      },
+      "weekdays": {
+        "1": "CN",
+        "2": "T2",
+        "3": "T3",
+        "4": "T4",
+        "5": "T5",
+        "6": "T6",
+        "7": "T7"
+      },
+      "lunarLabel": "âm lịch",
+      "lunarLeapLabel": "tháng nhuận",
+      "lunarLeapMark": "(nhuận)"
+    },
+    "fund": {
+      "title": "Giao dịch",
+      "date": "Ngày",
+      "description": "Mô tả",
+      "person": "Người",
+      "amount": "Số tiền",
+      "search": "Tìm kiếm…",
+      "noData": "Chưa có dữ liệu",
+      "noResults": "Không tìm thấy kết quả",
+      "balance": "Số dư quỹ",
+      "totalContributions": "Tổng đóng góp",
+      "totalExpenses": "Tổng chi tiêu",
+      "contributions": "Đóng góp",
+      "expenses": "Chi tiêu",
+      "showing": "Hiển thị",
+      "page": "Trang",
+      "of": "trên"
     },
     "app": {
       "sidebar": {
@@ -44,21 +138,115 @@
     }
   },
   "en": {
+    "common": {
+      "close": "Close",
+      "edit": "Edit",
+      "delete": "Delete",
+      "save": "Save",
+      "cancel": "Cancel",
+      "view": "View",
+      "male": "Male",
+      "female": "Female"
+    },
+    "roles": {
+      "admin": "Admin",
+      "editor": "Editor",
+      "treasurer": "Treasurer",
+      "member": "Member"
+    },
+    "members": {
+      "title": "Member",
+      "you": "You",
+      "deceased": "Deceased",
+      "honorific": "Honorific: {value}",
+      "birthYear": "Birth year",
+      "gender": "Gender",
+      "generation": "Generation",
+      "generationShort": "Gen {n}",
+      "role": "Role",
+      "spouses": "Spouses",
+      "spouse": "Spouse",
+      "parents": "Parents",
+      "parent": "Parent",
+      "children": "Children",
+      "child": "Child",
+      "notes": "Notes",
+      "limitedAccess": "Limited access"
+    },
     "notifications": {
       "markRead": "Mark as Read",
-      "markAllRead": "Mark All Read"
+      "markAllRead": "Mark All Read",
+      "type": {
+        "fund_change": "Fund Change",
+        "new_event": "New Event",
+        "memorial_reminder": "Memorial Reminder",
+        "member_joins": "Member Joins",
+        "other": "Other"
+      }
     },
     "events": {
       "calendarView": "Calendar",
       "lunar": "Lunar",
       "today": "Today",
       "eventCount": "{count} event(s)",
+      "upcoming": "Upcoming",
+      "past": "Past",
+      "viewMap": "View Map",
+      "addToCalendar": "Add to Calendar",
+      "images": "Images ({count})",
+      "attendees": "{count} attendees",
       "type": {
         "memorial": "Memorial Ceremony",
         "meeting": "Meeting",
         "reunion": "Reunion",
         "anniversary": "Anniversary"
       }
+    },
+    "calendar": {
+      "months": {
+        "1": "January",
+        "2": "February",
+        "3": "March",
+        "4": "April",
+        "5": "May",
+        "6": "June",
+        "7": "July",
+        "8": "August",
+        "9": "September",
+        "10": "October",
+        "11": "November",
+        "12": "December"
+      },
+      "weekdays": {
+        "1": "Sun",
+        "2": "Mon",
+        "3": "Tue",
+        "4": "Wed",
+        "5": "Thu",
+        "6": "Fri",
+        "7": "Sat"
+      },
+      "lunarLabel": "lunar",
+      "lunarLeapLabel": "leap month",
+      "lunarLeapMark": "(leap)"
+    },
+    "fund": {
+      "title": "Transactions",
+      "date": "Date",
+      "description": "Description",
+      "person": "Person",
+      "amount": "Amount",
+      "search": "Search…",
+      "noData": "No data",
+      "noResults": "No results",
+      "balance": "Balance",
+      "totalContributions": "Total contributions",
+      "totalExpenses": "Total expenses",
+      "contributions": "Contributions",
+      "expenses": "Expenses",
+      "showing": "Showing",
+      "page": "Page",
+      "of": "of"
     },
     "app": {
       "sidebar": {

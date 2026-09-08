@@ -1,16 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import {
-  dayNamesEn,
-  dayNamesVi,
-  formatLunarDateEn,
-  formatLunarDateVi,
   getDaysInMonth,
   getFirstDayOfMonth,
   getVietnameseYearName,
-  lunarMonthNamesVi,
   lunarToSolar,
-  monthNamesEn,
-  monthNamesVi,
   solarToLunar,
 } from '../../src/utils/lunar.js';
 
@@ -144,44 +137,6 @@ describe('lunar utils', () => {
 
     it('returns Tý for branch year 2020', () => {
       expect(getVietnameseYearName(2020)).toBe('Canh Tý');
-    });
-  });
-
-  describe('formatLunarDateVi', () => {
-    it('formats a regular lunar date', () => {
-      expect(formatLunarDateVi(2025, 1, 1)).toBe('1/Một/2025');
-    });
-
-    it('marks leap months', () => {
-      expect(formatLunarDateVi(2025, 6, 15, true)).toContain('Nhuận');
-    });
-  });
-
-  describe('formatLunarDateEn', () => {
-    it('formats a regular lunar date', () => {
-      expect(formatLunarDateEn(2025, 1, 1)).toBe('1 Month 1 2025 AL');
-    });
-
-    it('marks leap months', () => {
-      expect(formatLunarDateEn(2025, 6, 15, true)).toBe(
-        '15 Leap Month 6 2025 AL',
-      );
-    });
-  });
-
-  describe('name tables', () => {
-    it('are 1-indexed for months', () => {
-      expect(monthNamesVi[1]).toBe('Tháng 1');
-      expect(monthNamesEn[1]).toBe('January');
-      expect(monthNamesEn[12]).toBe('December');
-      expect(lunarMonthNamesVi[11]).toBe('Mười Một');
-    });
-
-    it('start the week on Sunday', () => {
-      expect(dayNamesVi[0]).toBe('CN');
-      expect(dayNamesEn[0]).toBe('Sun');
-      expect(dayNamesVi.length).toBe(7);
-      expect(dayNamesEn.length).toBe(7);
     });
   });
 });

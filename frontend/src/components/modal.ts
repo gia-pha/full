@@ -1,8 +1,9 @@
 import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { I18nMixin } from '../i18n/i18n-mixin.js';
 
 @customElement('app-modal')
-export class Modal extends LitElement {
+export class Modal extends I18nMixin(LitElement) {
   @property({ type: Boolean, reflect: true }) open = false;
   @property({ type: String }) title = '';
   @property({ type: Object }) body?: TemplateResult;
@@ -77,7 +78,7 @@ export class Modal extends LitElement {
             <button
               type="button"
               class="modal-close flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-sm text-gray-500 transition-colors hover:bg-gray-200 active:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
-              aria-label="Close"
+              aria-label=${this.t('common.close')}
               @click=${this.dispatchClose}
             >
               ✕

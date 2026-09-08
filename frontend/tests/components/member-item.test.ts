@@ -88,28 +88,28 @@ describe('MemberItem', () => {
   it('shows role badge with correct color for admin', async () => {
     const el = await renderComponent(makePerson({ role: 'admin' }));
     const rendered = getContent(el);
-    expect(rendered).toContain('Admin');
+    expect(rendered).toContain('Quản trị');
     expect(rendered).toContain('bg-red-100');
   });
 
   it('shows role badge with correct color for editor', async () => {
     const el = await renderComponent(makePerson({ role: 'editor' }));
     const rendered = getContent(el);
-    expect(rendered).toContain('Editor');
+    expect(rendered).toContain('Biên tập');
     expect(rendered).toContain('bg-blue-100');
   });
 
   it('shows role badge with correct color for treasurer', async () => {
     const el = await renderComponent(makePerson({ role: 'treasurer' }));
     const rendered = getContent(el);
-    expect(rendered).toContain('Treasurer');
+    expect(rendered).toContain('Thủ quỹ');
     expect(rendered).toContain('bg-amber-100');
   });
 
   it('shows role badge with correct color for member', async () => {
     const el = await renderComponent(makePerson({ role: 'member' }));
     const rendered = getContent(el);
-    expect(rendered).toContain('Member');
+    expect(rendered).toContain('Thành viên');
     expect(rendered).toContain('bg-gray-100');
   });
 
@@ -142,8 +142,7 @@ describe('MemberItem', () => {
   it('shows generation', async () => {
     const el = await renderComponent(makePerson({ generation: 5 }));
     const rendered = getContent(el);
-    expect(rendered).toContain('Gen');
-    expect(rendered).toContain('>5<');
+    expect(rendered).toContain('Thế hệ 5');
   });
 
   it('shows honorific when provided', async () => {
@@ -192,14 +191,14 @@ describe('MemberItem', () => {
     const rendered = getContent(el);
     expect(rendered).toContain('bg-emerald-50');
     expect(rendered).toContain('border-emerald-300');
-    expect(rendered).toContain('You');
+    expect(rendered).toContain('Bạn');
   });
 
   it('does not apply selected styles when selected is false', async () => {
     const el = await renderComponent(makePerson(), { selected: false });
     const rendered = getContent(el);
     expect(rendered).not.toContain('bg-emerald-50 border-emerald-300');
-    expect(rendered).not.toContain('You');
+    expect(rendered).not.toContain('Bạn');
   });
 
   it('renders female person name', async () => {

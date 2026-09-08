@@ -1,15 +1,14 @@
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { notificationTypes } from '../consts/index.js';
-import { t } from '../i18n.js';
+import { I18nMixin } from '../i18n/i18n-mixin.js';
 import type { Notification } from '../types/index.js';
 import { formatDate } from '../utils/format.js';
 
 @customElement('notification-item')
-export class NotificationItem extends LitElement {
+export class NotificationItem extends I18nMixin(LitElement) {
   @property({ type: Object }) declare notification: Notification;
   @property({ type: Boolean, reflect: true }) dismissed = false;
-  @property({ type: String }) locale = 'vi';
 
   override createRenderRoot() {
     return this;
@@ -54,13 +53,13 @@ export class NotificationItem extends LitElement {
               ${unread ? html`<span class="w-2.5 h-2.5 bg-emerald-500 rounded-full flex-shrink-0"></span>` : ''}
               <button
                 class="p-1 text-gray-300 hover:text-red-500 dark:text-gray-600 dark:hover:text-red-400 transition-colors"
-                title="Delete"
+                title=${this.t('common.delete')}
                 @click=${this.handleDismiss}
               >✕</button>
             </div>
           </div>
           <p class="text-sm text-gray-600 dark:text-gray-400 mt-1 leading-relaxed">${n.message}</p>
-          ${unread ? html`<button class="mt-2 text-xs text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 font-medium" @click=${this.handleMarkRead}>${t(this.locale, 'notifications.markRead')}</button>` : ''}
+          ${unread ? html`<button class="mt-2 text-xs text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 font-medium" @click=${this.handleMarkRead}>${this.t('notifications.markRead')}</button>` : ''}
         </div>
       </div>
     `;

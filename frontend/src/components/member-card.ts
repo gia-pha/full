@@ -1,6 +1,7 @@
 import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { defaultRoles } from '../consts/index.js';
+import { I18nMixin } from '../i18n/i18n-mixin.js';
 import type { Person } from '../types/index.js';
 import { getFullName, isDeceased } from '../utils/format.js';
 import './info-card.js';
@@ -9,7 +10,7 @@ import type { RelationCardColor } from './relation-card.js';
 import './person-avatar.js';
 
 @customElement('member-card')
-export class MemberCard extends LitElement {
+export class MemberCard extends I18nMixin(LitElement) {
   @property({ type: Object }) declare person: Person;
   @property({ type: Array }) persons: Person[] = [];
   @property({ type: String }) currentPersonId = '';
@@ -96,7 +97,7 @@ export class MemberCard extends LitElement {
           class="flex items-center justify-between border-b border-gray-200 p-4 dark:border-gray-700"
         >
           <h3 class="font-semibold text-gray-800 dark:text-gray-100">
-            Member
+            ${this.t('members.title')}
           </h3>
           <button
             type="button"
@@ -125,8 +126,14 @@ export class MemberCard extends LitElement {
       .filter((p): p is Person => Boolean(p));
     const notes = person.data.notes as string | undefined;
     const role = defaultRoles.find((r) => r.name === person.data.role);
-    const roleText = this.roleLabel || role?.label || person.data.role || '-';
-    const genderText = person.data.gender === 'M' ? 'Male' : 'Female';
+    const roleText =
+      this.roleLabel ||
+      (role ? this.t(`roles.${role.name}`) : person.data.role) ||
+      '-';
+    const genderText =
+      person.data.gender === 'M'
+        ? this.t('common.male')
+        : this.t('common.female');
     const canEdit =
       person.data.role === 'editor' || person.data.role === 'admin';
 
@@ -145,7 +152,9 @@ export class MemberCard extends LitElement {
                 ? html`<p
                     class="mt-0.5 text-sm font-medium text-emerald-600 dark:text-emerald-400"
                   >
-                    Honorific: ${this.honorific}
+                    ${this.t('members.honorific', {
+                      value: this.honorific,
+                    })}
                   </p>`
                 : html``
             }
@@ -154,7 +163,7 @@ export class MemberCard extends LitElement {
                 isSelf
                   ? html`<span
                       class="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300"
-                      >You</span
+                      >${this.t('members.you')}</span
                     >`
                   : html``
               }
@@ -162,7 +171,7 @@ export class MemberCard extends LitElement {
                 deceased
                   ? html`<span
                       class="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500 dark:bg-gray-700 dark:text-gray-400"
-                      >✝ Deceased</span
+                      >✝ ${this.t('members.deceased')}</span
                     >`
                   : html``
               }
@@ -172,30 +181,45 @@ export class MemberCard extends LitElement {
 
         <div class="grid grid-cols-2 gap-3">
           <app-info-card
-            label="Birth year"
+            label=${this.t('members.birthYear')}
             value=${person.data.birthYear || '-'}
             color="blue"
           ></app-info-card>
           <app-info-card
-            label="Gender"
+            label=${this.t('members.gender')}
             value=${genderText}
             color=${person.data.gender === 'M' ? 'blue' : 'pink'}
           ></app-info-card>
           <app-info-card
-            label="Generation"
+            label=${this.t('members.generation')}
             value=${String(person.data.generation)}
             color="purple"
           ></app-info-card>
           <app-info-card
-            label="Role"
+            label=${this.t('members.role')}
             value=${roleText}
             color="amber"
           ></app-info-card>
         </div>
 
-        ${this.renderRelationGroup('Spouses', 'Spouse', spouses, 'pink')}
-        ${this.renderRelationGroup('Parents', 'Parent', parents, 'blue')}
-        ${this.renderRelationGroup('Children', 'Child', children, 'green')}
+        ${this.renderRelationGroup(
+          this.t('members.spouses'),
+          this.t('members.spouse'),
+          spouses,
+          'pink',
+        )}
+        ${this.renderRelationGroup(
+          this.t('members.parents'),
+          this.t('members.parent'),
+          parents,
+          'blue',
+        )}
+        ${this.renderRelationGroup(
+          this.t('members.children'),
+          this.t('members.child'),
+          children,
+          'green',
+        )}
 
         ${
           this.locked && !isSelf
@@ -203,14 +227,16 @@ export class MemberCard extends LitElement {
                 class="rounded-xl bg-gray-100 p-4 text-center dark:bg-gray-700/50"
               >
                 <p class="text-sm text-gray-500 dark:text-gray-400">
-                  🔒 Limited access
+                  🔒 ${this.t('members.limitedAccess')}
                 </p>
               </div>`
             : notes
               ? html`<div
                   class="rounded-xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-900 dark:bg-amber-950"
                 >
-                  <p class="mb-1 text-xs text-amber-500">Notes</p>
+                  <p class="mb-1 text-xs text-amber-500">
+                    ${this.t('members.notes')}
+                  </p>
                   <p class="text-gray-700 dark:text-gray-200">${notes}</p>
                 </div>`
               : html``
@@ -230,7 +256,7 @@ export class MemberCard extends LitElement {
                       }),
                     )}
                 >
-                  ✏️ Edit
+                  ✏️ ${this.t('common.edit')}
                 </button>`
               : html``
           }
@@ -247,7 +273,7 @@ export class MemberCard extends LitElement {
                       }),
                     )}
                 >
-                  🗑️ Delete
+                  🗑️ ${this.t('common.delete')}
                 </button>`
               : html``
           }

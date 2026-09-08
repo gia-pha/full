@@ -1,5 +1,6 @@
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { I18nMixin } from '../i18n/i18n-mixin.js';
 import type { Event, Person, Transaction } from '../types/index.js';
 import { formatCurrency, formatDate } from '../utils/format.js';
 import type { FundSortDir, FundSortKey } from '../utils/fund.js';
@@ -7,24 +8,16 @@ import { getEventTitle, getPersonName } from '../utils/fund.js';
 import './empty-state.js';
 
 @customElement('app-fund-transactions-table')
-export class FundTransactionsTable extends LitElement {
+export class FundTransactionsTable extends I18nMixin(LitElement) {
   @property({ type: Array }) transactions: Transaction[] = [];
   @property({ type: Number }) totalCount = 0;
   @property({ type: Array }) persons: Person[] = [];
   @property({ type: Array }) events: Event[] = [];
   @property({ type: String }) query = '';
   @property({ type: String }) title = '';
-  @property({ type: String }) dateLabel = 'Date';
-  @property({ type: String }) descriptionLabel = 'Description';
-  @property({ type: String }) personLabel = 'Person';
-  @property({ type: String }) amountLabel = 'Amount';
   @property({ type: String }) currency = 'VND';
-  @property({ type: String }) emptyMessage = 'No data';
-  @property({ type: String }) noResultsMessage = 'No results';
-  @property({ type: String }) searchPlaceholder = 'Search…';
-  @property({ type: String }) showingLabel = 'Showing';
-  @property({ type: String }) pageLabel = 'Page';
-  @property({ type: String }) ofLabel = 'of';
+  @property({ type: String }) emptyMessage = '';
+  @property({ type: String }) noResultsMessage = '';
   @property({ type: Number }) page = 1;
   @property({ type: Number }) pageSize = 10;
   @property({ type: String }) sortKey: FundSortKey = 'date';
@@ -85,7 +78,7 @@ export class FundTransactionsTable extends LitElement {
         <input
           type="search"
           class="fund-transactions-search w-full pl-8 pr-3 py-2 text-sm rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-          placeholder=${this.searchPlaceholder}
+          placeholder=${this.t('fund.search')}
           .value=${this.query}
           @input=${this.onSearch}
         />
@@ -142,7 +135,10 @@ export class FundTransactionsTable extends LitElement {
                 `
               : html`<app-empty-state
                   icon=${searching ? '🔍' : '📄'}
-                  .message=${searching ? this.noResultsMessage : this.emptyMessage}
+                  .message=${
+                    (searching ? this.noResultsMessage : this.emptyMessage) ||
+                    this.t(searching ? 'fund.noResults' : 'fund.noData')
+                  }
                 ></app-empty-state>`
           }
         </div>
@@ -161,22 +157,22 @@ export class FundTransactionsTable extends LitElement {
               <th
                 class="text-left px-4 lg:px-6 py-3 text-gray-500 dark:text-gray-400 font-medium"
               >
-                ${this.sortHeader('date', this.dateLabel)}
+                ${this.sortHeader('date', this.t('fund.date'))}
               </th>
               <th
                 class="text-left px-4 lg:px-6 py-3 text-gray-500 dark:text-gray-400 font-medium"
               >
-                ${this.sortHeader('description', this.descriptionLabel)}
+                ${this.sortHeader('description', this.t('fund.description'))}
               </th>
               <th
                 class="text-left px-4 lg:px-6 py-3 text-gray-500 dark:text-gray-400 font-medium hidden sm:table-cell"
               >
-                ${this.sortHeader('person', this.personLabel)}
+                ${this.sortHeader('person', this.t('fund.person'))}
               </th>
               <th
                 class="text-right px-4 lg:px-6 py-3 text-gray-500 dark:text-gray-400 font-medium"
               >
-                ${this.sortHeader('amount', this.amountLabel)}
+                ${this.sortHeader('amount', this.t('fund.amount'))}
               </th>
             </tr>
           </thead>
@@ -243,7 +239,7 @@ export class FundTransactionsTable extends LitElement {
       class="fund-transactions-footer flex flex-col sm:flex-row items-center justify-between gap-2 px-4 lg:px-6 py-3 border-t border-gray-100 dark:border-gray-700 text-sm text-gray-500 dark:text-gray-400"
     >
       <span class="fund-transactions-count"
-        >${this.showingLabel} ${start}–${end} ${this.ofLabel} ${total}</span
+        >${this.t('fund.showing')} ${start}–${end} ${this.t('fund.of')} ${total}</span
       >
       <div class="flex items-center gap-3">
         <button
@@ -254,7 +250,7 @@ export class FundTransactionsTable extends LitElement {
           >←</button
         >
         <span class="fund-transactions-page-info"
-          >${this.pageLabel} ${page} ${this.ofLabel} ${pageCount}</span
+          >${this.t('fund.page')} ${page} ${this.t('fund.of')} ${pageCount}</span
         >
         <button
           type="button"

@@ -2,8 +2,10 @@ import { afterEach, describe, expect, it } from 'vitest';
 import '../../src/components/fund-chart.js';
 import type { AppEmptyState } from '../../src/components/empty-state.js';
 import type { FundChart } from '../../src/components/fund-chart.js';
+import type { Locale } from '../../src/i18n/context.js';
 import type { Transaction } from '../../src/types/index.js';
 import { formatCurrency } from '../../src/utils/format.js';
+import { mountWithLocale } from '../utils/i18n.js';
 
 function tx(
   id: string,
@@ -27,23 +29,17 @@ async function renderComponent(opts?: {
   transactions?: Transaction[];
   title?: string;
   currency?: string;
-  contributionLabel?: string;
-  expenseLabel?: string;
   showLegend?: boolean;
   formatLabel?: (key: string) => string;
-  emptyMessage?: string;
+  locale?: Locale;
 }): Promise<FundChart> {
   const el = document.createElement('app-fund-chart');
   if (opts?.transactions !== undefined) el.transactions = opts.transactions;
   if (opts?.title !== undefined) el.title = opts.title;
   if (opts?.currency !== undefined) el.currency = opts.currency;
-  if (opts?.contributionLabel !== undefined)
-    el.contributionLabel = opts.contributionLabel;
-  if (opts?.expenseLabel !== undefined) el.expenseLabel = opts.expenseLabel;
   if (opts?.showLegend !== undefined) el.showLegend = opts.showLegend;
   if (opts?.formatLabel !== undefined) el.formatLabel = opts.formatLabel;
-  if (opts?.emptyMessage !== undefined) el.emptyMessage = opts.emptyMessage;
-  document.body.appendChild(el);
+  mountWithLocale(el, opts?.locale);
   await el.updateComplete;
   return el;
 }
@@ -78,24 +74,21 @@ afterEach(() => {
 });
 
 describe('FundChart', () => {
-  it('shows the empty message when there are no transactions', async () => {
+  it('shows the translated empty message when there are no transactions', async () => {
     const el = await renderComponent({ transactions: [] });
     const empty = el.querySelector('app-empty-state') as AppEmptyState;
     expect(empty).not.toBeNull();
     await empty.updateComplete;
-    expect(empty.message).toBe('No data');
+    expect(empty.message).toBe('Chưa có dữ liệu');
     expect(el.querySelectorAll('.fund-chart-group')).toHaveLength(0);
   });
 
-  it('supports a custom empty message', async () => {
-    const el = await renderComponent({
-      transactions: [],
-      emptyMessage: 'Chưa có dữ liệu',
-    });
+  it('supports a custom locale for the empty message', async () => {
+    const el = await renderComponent({ transactions: [], locale: 'en' });
     const empty = el.querySelector('app-empty-state') as AppEmptyState;
     expect(empty).not.toBeNull();
     await empty.updateComplete;
-    expect(empty.message).toBe('Chưa có dữ liệu');
+    expect(empty.message).toBe('No data');
   });
 
   it('renders one group per month, sorted ascending', async () => {
@@ -164,23 +157,19 @@ describe('FundChart', () => {
     );
   });
 
-  it('renders the legend with default labels', async () => {
+  it('renders the legend with default Vietnamese labels', async () => {
     const el = await renderComponent({ transactions: TXNS });
     const legend = el.querySelector('.fund-chart-legend')!;
     expect(legend).not.toBeNull();
-    expect(legend.textContent).toContain('Contributions');
-    expect(legend.textContent).toContain('Expenses');
-  });
-
-  it('supports custom legend labels', async () => {
-    const el = await renderComponent({
-      transactions: TXNS,
-      contributionLabel: 'Đóng góp',
-      expenseLabel: 'Chi tiêu',
-    });
-    const legend = el.querySelector('.fund-chart-legend')!;
     expect(legend.textContent).toContain('Đóng góp');
     expect(legend.textContent).toContain('Chi tiêu');
+  });
+
+  it('renders English legend labels when locale is en', async () => {
+    const el = await renderComponent({ transactions: TXNS, locale: 'en' });
+    const legend = el.querySelector('.fund-chart-legend')!;
+    expect(legend.textContent).toContain('Contributions');
+    expect(legend.textContent).toContain('Expenses');
   });
 
   it('hides the legend when showLegend is false', async () => {

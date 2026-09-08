@@ -1,12 +1,13 @@
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { I18nMixin } from '../i18n/i18n-mixin.js';
 import type { MemberAction, Person } from '../types/index.js';
 import { getFullName, isDeceased } from '../utils/format.js';
 import './person-avatar.js';
 import './role-badge.js';
 
 @customElement('member-item')
-export class MemberItem extends LitElement {
+export class MemberItem extends I18nMixin(LitElement) {
   @property({ type: Object }) declare person: Person;
   @property({ type: Boolean, reflect: true }) selected = false;
   @property({ type: String }) honorific = '';
@@ -45,7 +46,7 @@ export class MemberItem extends LitElement {
               <span class="font-semibold text-gray-800 text-base truncate dark:text-gray-200">${fullName}</span>
               ${
                 this.selected
-                  ? html`<span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-xs rounded-full font-medium flex-shrink-0 dark:bg-emerald-900 dark:text-emerald-300">You</span>`
+                  ? html`<span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-xs rounded-full font-medium flex-shrink-0 dark:bg-emerald-900 dark:text-emerald-300">${this.t('members.you')}</span>`
                   : ''
               }
               ${
@@ -65,11 +66,17 @@ export class MemberItem extends LitElement {
                   ? html`<span class="text-xs text-gray-400">${years}</span>`
                   : ''
               }
-              <span class="text-xs text-gray-400">Gen ${person.data.generation}</span>
+              <span class="text-xs text-gray-400"
+                >${this.t('members.generationShort', {
+                  n: person.data.generation,
+                })}</span
+              >
             </div>
           </div>
           <div class="flex items-center gap-2 flex-shrink-0">
-            <role-badge name="${person.data.role || ''}"></role-badge>
+            <role-badge
+              name="${person.data.role || ''}"
+            ></role-badge>
             ${this.locked ? html`<span class="text-gray-400">🔒</span>` : ''}
             ${this.actions.map(
               (action) => html`

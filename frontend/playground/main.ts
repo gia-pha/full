@@ -1,5 +1,6 @@
 import { html, render } from 'lit';
 import '../src/styles/main.css';
+import '../src/i18n/provider.js';
 import '../src/components/person-avatar.js';
 import '../src/components/avatar-stack.js';
 import '../src/components/member-item.js';
@@ -46,20 +47,33 @@ function renderPlayground() {
   render(
     html`
       <div class="min-h-screen">
+        <i18n-provider .locale=${state.language}>
         <header class="bg-white os-dark:bg-gray-800 shadow border-b border-gray-200 os-dark:border-gray-700">
           <div class="container mx-auto px-4 py-4 flex items-center justify-between">
             <h1 class="text-xl font-bold text-gray-800 os-dark:text-gray-100">
               Component Playground
             </h1>
-            <button
-              class="px-3 py-1.5 text-sm rounded-lg bg-gray-100 hover:bg-gray-200 os-dark:bg-gray-700 os-dark:hover:bg-gray-600 text-gray-700 os-dark:text-gray-200 transition-colors"
-              @click=${() => {
-                state.dark = !state.dark;
-                notify();
-              }}
-            >
-              ${state.dark ? '☀️ Light' : '🌙 Dark'}
-            </button>
+            <div class="flex items-center gap-2">
+              <button
+                class="px-3 py-1.5 text-sm rounded-lg bg-gray-100 hover:bg-gray-200 os-dark:bg-gray-700 os-dark:hover:bg-gray-600 text-gray-700 os-dark:text-gray-200 transition-colors"
+                title=${state.language === 'vi' ? 'Switch to English' : 'Chuyển sang Tiếng Việt'}
+                @click=${() => {
+                  state.language = state.language === 'vi' ? 'en' : 'vi';
+                  notify();
+                }}
+              >
+                🌐 ${state.language === 'vi' ? 'EN' : 'VI'}
+              </button>
+              <button
+                class="px-3 py-1.5 text-sm rounded-lg bg-gray-100 hover:bg-gray-200 os-dark:bg-gray-700 os-dark:hover:bg-gray-600 text-gray-700 os-dark:text-gray-200 transition-colors"
+                @click=${() => {
+                  state.dark = !state.dark;
+                  notify();
+                }}
+              >
+                ${state.dark ? '☀️ Light' : '🌙 Dark'}
+              </button>
+            </div>
           </div>
         </header>
 
@@ -81,6 +95,7 @@ function renderPlayground() {
           ${fundTransactionsTableSection()}
           ${calendarSection()}
         </div>
+        </i18n-provider>
       </div>
     `,
     document.getElementById('playground')!,

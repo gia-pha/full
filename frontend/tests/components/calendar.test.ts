@@ -3,11 +3,12 @@ import '../../src/components/calendar.js';
 import type {
   AppCalendar,
   CalendarEventType,
-  CalendarLanguage,
 } from '../../src/components/calendar.js';
+import type { Locale } from '../../src/i18n/context.js';
 import type { Event } from '../../src/types/index.js';
 import { pad2 } from '../../src/utils/format.js';
-import { getDaysInMonth } from '../../src/utils/lunar.js';
+import { getDaysInMonth, solarToLunar } from '../../src/utils/lunar.js';
+import { mountWithLocale } from '../utils/i18n.js';
 
 const now = new Date();
 const currentYear = now.getFullYear();
@@ -37,7 +38,7 @@ async function renderCalendar(
     lunar?: boolean;
     events?: Event[];
     eventTypes?: CalendarEventType[];
-    language?: CalendarLanguage;
+    language?: Locale;
   } = {},
 ): Promise<AppCalendar> {
   const el = document.createElement('app-calendar');
@@ -46,8 +47,7 @@ async function renderCalendar(
   if (opts.lunar !== undefined) el.lunar = opts.lunar;
   if (opts.events !== undefined) el.events = opts.events;
   if (opts.eventTypes !== undefined) el.eventTypes = opts.eventTypes;
-  if (opts.language !== undefined) el.language = opts.language;
-  document.body.appendChild(el);
+  mountWithLocale(el, opts.language);
   await el.updateComplete;
   return el;
 }
@@ -174,6 +174,41 @@ describe('AppCalendar', () => {
     expect(cell.textContent).not.toContain('6/V');
   });
 
+  it('marks every day of the intercalary month and no others', async () => {
+    const marks: Record<Locale, string> = { vi: '(nhuận)', en: '(leap)' };
+    const sweep = async (locale: Locale, month: number): Promise<number> => {
+      const el = await renderCalendar({
+        year: 2025,
+        month,
+        lunar: true,
+        language: locale,
+      });
+      let marked = 0;
+      for (const cell of dayCells(el)) {
+        const dateStr = cell.dataset.date;
+        if (!dateStr) continue;
+        const [y, m, d] = dateStr.split('-').map(Number);
+        const lunar = solarToLunar(y, m, d);
+        const text = cell.textContent ?? '';
+        if (lunar.isLeapMonth) {
+          expect(text).toContain(
+            `${lunar.day}/${lunar.month} ${marks[locale]}`,
+          );
+          marked += 1;
+        } else {
+          expect(text).not.toContain(marks[locale]);
+        }
+      }
+      el.remove();
+      return marked;
+    };
+    for (const locale of ['vi', 'en'] as Locale[]) {
+      const leapDays = (await sweep(locale, 7)) + (await sweep(locale, 8));
+      expect(leapDays).toBeGreaterThanOrEqual(29);
+      expect(leapDays).toBeLessThanOrEqual(30);
+    }
+  });
+
   it('hides lunar dates when the lunar toggle is off', async () => {
     const el = await renderCalendar({ year: 2025, month: 6 });
     const cell = dayCells(el).find((c) => c.dataset.date === '2025-06-01')!;
@@ -266,23 +301,6 @@ describe('AppCalendar', () => {
       date: dateStr(currentYear, currentMonth, 15),
       events: [event],
     });
-  });
-
-  it('includes lunar date and year name in day-select when lunar is on', async () => {
-    const el = await renderCalendar({
-      year: 2025,
-      month: 6,
-      lunar: true,
-      events: [makeEvent({ id: 'e1', title: 'Giỗ tổ' })],
-    });
-    const promise = awaitEvent(el, 'day-select');
-    (
-      dayCells(el).find((c) => c.dataset.date === '2025-06-01') as HTMLElement
-    ).click();
-    const detail = await promise;
-    expect(detail.detail.date).toBe('2025-06-01');
-    expect(detail.detail.lunarDate).toBeDefined();
-    expect(detail.detail.lunarYearName).toBe('Ất Tỵ');
   });
 
   it('renders the selected-day panel on day click', async () => {

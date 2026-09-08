@@ -183,7 +183,7 @@ describe('NotificationItem', () => {
         });
       });
       const deleteBtn = el.querySelector(
-        'button[title="Delete"]',
+        'button[title="Xóa"]',
       ) as HTMLButtonElement;
       deleteBtn.click();
       const event = await dismissPromise;
@@ -193,7 +193,7 @@ describe('NotificationItem', () => {
     it('sets dismissed flag on dismiss', async () => {
       const el = await renderComponent(makeNotification());
       const deleteBtn = el.querySelector(
-        'button[title="Delete"]',
+        'button[title="Xóa"]',
       ) as HTMLButtonElement;
       deleteBtn.click();
       await el.updateComplete;
@@ -208,7 +208,7 @@ describe('NotificationItem', () => {
         markReadFired = true;
       });
       const deleteBtn = el.querySelector(
-        'button[title="Delete"]',
+        'button[title="Xóa"]',
       ) as HTMLButtonElement;
       deleteBtn.click();
       await el.updateComplete;
