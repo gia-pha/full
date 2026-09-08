@@ -6,16 +6,10 @@ import type { Event } from '../types/index.js';
 import { pad2 } from '../utils/format.js';
 import './toggle.js';
 import {
-  dayNamesEn,
-  dayNamesVi,
-  formatLunarDateEn,
-  formatLunarDateVi,
   getDaysInMonth,
   getFirstDayOfMonth,
   getVietnameseYearName,
   type LunarDate,
-  monthNamesEn,
-  monthNamesVi,
   solarToLunar,
 } from '../utils/lunar.js';
 import type { ToggleDetail } from './toggle.js';
@@ -32,8 +26,6 @@ export interface CalendarLunarDetail {
 export interface DaySelectDetail {
   date: string;
   events: Event[];
-  lunarDate?: string;
-  lunarYearName?: string;
 }
 
 interface CalendarCell {
@@ -52,11 +44,6 @@ export interface CalendarEventType {
 }
 
 const fallbackColor = '#6b7280';
-
-const formatLunarDate = (lunar: LunarDate, language: Locale): string =>
-  language === 'en'
-    ? formatLunarDateEn(lunar.year, lunar.month, lunar.day, lunar.isLeapMonth)
-    : formatLunarDateVi(lunar.year, lunar.month, lunar.day, lunar.isLeapMonth);
 
 const formatSelectedDate = (date: string, language: Locale): string => {
   const d = new Date(`${date}T00:00:00`);
@@ -170,6 +157,15 @@ export class AppCalendar extends I18nMixin(LitElement) {
     );
   }
 
+  private formatLunarDate(lunar: LunarDate): string {
+    const monthLong = this.t(`calendar.months.${lunar.month}`);
+    const label = this.t('calendar.lunarLabel');
+    const leap = lunar.isLeapMonth
+      ? `, ${this.t('calendar.lunarLeapLabel')}`
+      : '';
+    return `${lunar.day}/${monthLong}/${lunar.year} (${label}${leap})`;
+  }
+
   private handleDayClick(cell: CalendarCell) {
     if (!cell.current || !cell.dateStr) return;
     this.selectedDate = cell.dateStr;
@@ -177,10 +173,6 @@ export class AppCalendar extends I18nMixin(LitElement) {
       date: cell.dateStr,
       events: cell.events ?? [],
     };
-    if (this.lunar && cell.lunar) {
-      detail.lunarDate = formatLunarDate(cell.lunar, this.locale);
-      detail.lunarYearName = getVietnameseYearName(cell.lunar.year);
-    }
     this.dispatchEvent(
       new CustomEvent<DaySelectDetail>('day-select', {
         bubbles: true,
@@ -231,9 +223,7 @@ export class AppCalendar extends I18nMixin(LitElement) {
 
   private renderLunarDisplay(lunar: LunarDate): TemplateResult {
     const leap = lunar.isLeapMonth
-      ? this.locale === 'vi'
-        ? ' (N)'
-        : ' (L)'
+      ? ` ${this.t('calendar.lunarLeapMark')}`
       : '';
     return html`
       <div class="text-[9px] text-amber-500 mt-0.5">
@@ -347,7 +337,7 @@ export class AppCalendar extends I18nMixin(LitElement) {
                   ? html`<p
                       class="cal-selected-lunar mt-0.5 text-xs font-medium text-amber-600 dark:text-amber-400"
                     >
-                      🌙 ${formatLunarDate(lunar, this.locale)} -
+                      🌙 ${this.formatLunarDate(lunar)} -
                       ${getVietnameseYearName(lunar.year)}
                     </p>`
                   : ''
@@ -407,8 +397,10 @@ export class AppCalendar extends I18nMixin(LitElement) {
 
   override render() {
     const { year, month } = this;
-    const monthNames = this.locale === 'vi' ? monthNamesVi : monthNamesEn;
-    const dayNames = this.locale === 'vi' ? dayNamesVi : dayNamesEn;
+    const monthLabel = this.t(`calendar.months.${month}`);
+    const dayNames = Array.from({ length: 7 }, (_, i) =>
+      this.t(`calendar.weekdays.${i + 1}`),
+    );
     const lunarYearName = this.lunar ? getVietnameseYearName(year) : '';
     const cells = this.buildCells();
 
@@ -449,9 +441,7 @@ export class AppCalendar extends I18nMixin(LitElement) {
             </button>
           </div>
           <h3 class="text-lg font-bold text-gray-800 dark:text-gray-100">
-            ${monthNames[month]} ${year}${
-              lunarYearName ? ` - ${lunarYearName}` : ''
-            }
+            ${monthLabel} ${year}${lunarYearName ? ` - ${lunarYearName}` : ''}
           </h3>
           ${this.renderLegend()}
         </div>
