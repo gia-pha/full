@@ -51,6 +51,13 @@ export interface PlaygroundState {
   modalTitle: string;
   modalName: string;
   modalBirthYear: string;
+  confirmOpen: boolean;
+  confirmTitle: string;
+  confirmMessage: string;
+  confirmOkLabel: string;
+  confirmCancelLabel: string;
+  confirmDanger: boolean;
+  confirmResult: string;
   fieldLabel: string;
   fieldType: FieldType;
   fieldValue: string;
@@ -138,6 +145,13 @@ export const state: PlaygroundState = {
   modalTitle: 'Edit member',
   modalName: 'Nguyễn Văn A',
   modalBirthYear: '1985',
+  confirmOpen: false,
+  confirmTitle: 'Delete member',
+  confirmMessage: 'Xóa thành viên này? Không thể hoàn tác.',
+  confirmOkLabel: '',
+  confirmCancelLabel: '',
+  confirmDanger: true,
+  confirmResult: '',
   fieldLabel: 'Name',
   fieldType: 'text',
   fieldValue: 'Nguyễn Văn A',

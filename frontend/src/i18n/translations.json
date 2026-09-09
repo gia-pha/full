@@ -135,6 +135,9 @@
         "mother": "Theo mẹ",
         "spouse": "Theo vợ/chồng"
       }
+    },
+    "dialog": {
+      "confirm": "Xác nhận"
     }
   },
   "en": {
@@ -273,6 +276,9 @@
         "mother": "Mother's Line",
         "spouse": "Spouse's Line"
       }
+    },
+    "dialog": {
+      "confirm": "Confirm"
     }
   }
 }
