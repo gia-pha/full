@@ -1,14 +1,14 @@
 name: Auth CI
 
-on: push
-  # push:
-  #   branches: [main]
-  #   paths:
-  #     - 'auth/**'
-  # pull_request:
-  #   branches: [main]
-  #   paths:
-  #     - 'auth/**'
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'auth/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'auth/**'
 
 jobs:
   check:
@@ -19,18 +19,22 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Setup Go 1.25.0
-        uses: actions/setup-go@v6
+      - uses: actions/setup-go@v6
         with:
           go-version: '1.25.0'
-          # cache: true
-          # cache-dependency-path: auth/go.sum
+          cache-dependency-path: auth/go.sum
+          
+      - run: |
+          unformatted=$(gofmt -l .)
+          if test -n "$unformatted"; then
+            echo "The file format is invalid: "
+            echo "$unformatted"
+            exit 1
+          fi
 
-      # - name: Install dependencies
-      #   run: go mod download
-
-      - name: Install dependencies
-        run: go get .
+      - uses: golangci/golangci-lint-action@v6
+        with:
+          working-directory: auth
 
   test:
     needs: check
@@ -45,8 +49,10 @@ jobs:
         with:
           go-version: '1.25.0'
           cache-dependency-path: auth/go.sum
-      - name: Run tests
-        run: go test ./... -v -race
+
+      - run: go mod download
+
+      - run: go test ./... -v -race
 
   build:
     needs: check
@@ -61,6 +67,8 @@ jobs:
         with:
           go-version: '1.25.0'
           cache-dependency-path: auth/go.sum
-      - name: Build
-        run: go build -v ./...
+
+      - run: go mod download
+
+      - run: go build -v ./...
 
