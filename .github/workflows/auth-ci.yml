@@ -1,0 +1,74 @@
+name: Auth CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'auth/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'auth/**'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./auth
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version: '1.25.0'
+          cache-dependency-path: auth/go.sum
+          
+      - run: |
+          unformatted=$(gofmt -l .)
+          if test -n "$unformatted"; then
+            echo "The file format is invalid: "
+            echo "$unformatted"
+            exit 1
+          fi
+
+      - uses: golangci/golangci-lint-action@v6
+        with:
+          working-directory: auth
+
+  test:
+    needs: check
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./auth
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version: '1.25.0'
+          cache-dependency-path: auth/go.sum
+
+      - run: go mod download
+
+      - run: go test ./... -v -race
+
+  build:
+    needs: check
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./auth
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version: '1.25.0'
+          cache-dependency-path: auth/go.sum
+
+      - run: go mod download
+
+      - run: go build -v ./...
+
