@@ -8,6 +8,7 @@ import '../src/components/member-card.js';
 import '../src/components/event-card.js';
 import '../src/components/notification-item.js';
 import '../src/components/modal.js';
+import '../src/components/confirm-dialog.js';
 import '../src/components/app-input.js';
 import '../src/components/app-select.js';
 import '../src/components/app-textarea.js';
@@ -27,6 +28,7 @@ import { appButtonSection } from './components/app-button.js';
 import { avatarStackSection } from './components/avatar-stack.js';
 import { calendarSection } from './components/calendar.js';
 import { cardsSection } from './components/cards.js';
+import { confirmDialogSection } from './components/confirm-dialog.js';
 import { eventCardSection } from './components/event-card.js';
 import { formControlsSection } from './components/form-controls.js';
 import { fundChartSection } from './components/fund-chart.js';
@@ -86,6 +88,7 @@ function renderPlayground() {
           ${eventCardSection()}
           ${notificationItemSection()}
           ${modalSection()}
+          ${confirmDialogSection()}
           ${formControlsSection()}
           ${appButtonSection()}
           ${uiBasicsSection()}
