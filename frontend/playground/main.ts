@@ -12,6 +12,7 @@ import '../src/components/confirm-dialog.js';
 import '../src/components/app-input.js';
 import '../src/components/app-select.js';
 import '../src/components/app-textarea.js';
+import '../src/components/app-search-bar.js';
 import '../src/components/toggle.js';
 import '../src/components/tabs.js';
 import '../src/components/empty-state.js';
@@ -25,6 +26,7 @@ import '../src/components/app-button.js';
 import '../src/components/sidebar.js';
 import '../src/components/calendar.js';
 import { appButtonSection } from './components/app-button.js';
+import { appSearchBarSection } from './components/app-search-bar.js';
 import { avatarStackSection } from './components/avatar-stack.js';
 import { calendarSection } from './components/calendar.js';
 import { cardsSection } from './components/cards.js';
@@ -90,6 +92,7 @@ function renderPlayground() {
           ${modalSection()}
           ${confirmDialogSection()}
           ${formControlsSection()}
+          ${appSearchBarSection()}
           ${appButtonSection()}
           ${uiBasicsSection()}
           ${cardsSection()}

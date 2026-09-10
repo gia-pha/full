@@ -86,6 +86,7 @@ export interface PlaygroundState {
   fundSortKey: FundSortKey;
   fundSortDir: FundSortDir;
   fundPage: number;
+  searchValue: string;
   lastEvent: string;
   memberCardRole: 'admin' | 'editor' | 'treasurer' | 'member';
   memberCardIsCurrent: boolean;
@@ -180,6 +181,7 @@ export const state: PlaygroundState = {
   fundSortKey: 'date',
   fundSortDir: 'desc',
   fundPage: 1,
+  searchValue: '',
   lastEvent: '',
   memberCardRole: 'admin',
   memberCardIsCurrent: false,
