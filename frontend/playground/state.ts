@@ -106,6 +106,9 @@ export interface PlaygroundState {
   calendarShowEvents: boolean;
   calendarShowTypes: boolean;
   calendarEvent: string;
+  treeClan: string;
+  treeEvent: string;
+  treeEditable: boolean;
 }
 
 export const state: PlaygroundState = {
@@ -201,6 +204,9 @@ export const state: PlaygroundState = {
   calendarShowEvents: true,
   calendarShowTypes: false,
   calendarEvent: '',
+  treeClan: 'nguyen',
+  treeEvent: '',
+  treeEditable: false,
 };
 
 const chartSample: Transaction[] = [
