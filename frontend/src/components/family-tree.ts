@@ -1,4 +1,5 @@
 import 'family-chart/styles/family-chart.css';
+import './family-tree.css';
 import { createChart, type EditTree, icons } from 'family-chart';
 import { html, LitElement, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
@@ -156,7 +157,7 @@ export class AppFamilyTree extends I18nMixin(LitElement) {
       .setEditFirst(true);
     editTree.setEdit();
     editTree.setOnChange(() => this.emitChange());
-    editTree.setOnFormCreation(({ cont }) => this.addFormCloseButton(cont));
+    editTree.setOnFormCreation(({ cont }) => this.styleFormCloseButton(cont));
     this.editTree = editTree;
     const self = this;
     card.setOnCardUpdate(function (this: HTMLElement, d: { data: CardDatum }) {
@@ -224,19 +225,12 @@ export class AppFamilyTree extends I18nMixin(LitElement) {
     this.emitPersonClick(String(d.data.id));
   }
 
-  private addFormCloseButton(formCont: HTMLElement) {
-    if (formCont.querySelector('.f3-form-close')) return;
-    const closeBtn = document.createElement('button');
-    closeBtn.type = 'button';
-    closeBtn.className =
-      'f3-form-close absolute top-3 right-3 w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-500 z-50';
-    closeBtn.textContent = '✕';
-    closeBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      this.editTree?.closeForm();
-    });
-    formCont.style.position = 'relative';
-    formCont.insertBefore(closeBtn, formCont.firstChild);
+  private styleFormCloseButton(formCont: HTMLElement) {
+    const closeBtn = formCont.querySelector<HTMLElement>('.f3-close-btn');
+    if (!closeBtn || closeBtn.querySelector('svg')) return;
+    closeBtn.setAttribute('aria-label', 'Close');
+    closeBtn.innerHTML =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>';
   }
 
   private emitChange() {

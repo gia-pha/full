@@ -1,0 +1,102 @@
+/*
+ * The family tree (and its edit form/modal) is intentionally kept dark.
+ * The bundled family-chart stylesheet ships light-mode form chrome
+ * (#ddd input borders, light buttons, a stray top-left close glyph) that
+ * clashes with the dark panel. These rules re-theme the form/modal so it
+ * looks right on the dark tree. Scoped to `.tree-chart` so nothing leaks.
+ */
+.tree-chart {
+  color-scheme: dark;
+}
+
+.tree-chart .f3-form-cont {
+  background-color: #1f2937;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  color: #f9fafb;
+}
+
+.tree-chart .f3-form-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #f9fafb;
+}
+
+.tree-chart .f3-form-field > label,
+.tree-chart .f3-info-field-label {
+  color: #9ca3af;
+  opacity: 1;
+}
+
+.tree-chart .f3-form input[type="text"],
+.tree-chart .f3-form textarea,
+.tree-chart .f3-form select {
+  background-color: #111827;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #f9fafb;
+}
+
+.tree-chart .f3-form input[type="text"]::placeholder,
+.tree-chart .f3-form textarea::placeholder {
+  color: rgba(229, 231, 235, 0.35);
+}
+
+.tree-chart .f3-form input[type="text"]:focus,
+.tree-chart .f3-form textarea:focus,
+.tree-chart .f3-form select:focus {
+  outline: none;
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
+}
+
+.tree-chart .f3-form .f3-cancel-btn {
+  background-color: #374151;
+  color: #e5e7eb;
+}
+
+.tree-chart .f3-form .f3-cancel-btn:hover {
+  background-color: #4b5563;
+}
+
+.tree-chart .f3-form button[type="submit"] {
+  background-color: #059669;
+  color: #ffffff;
+}
+
+.tree-chart .f3-form button[type="submit"]:hover {
+  background-color: #047857;
+}
+
+.tree-chart .f3-form hr {
+  border-color: rgba(255, 255, 255, 0.12);
+  opacity: 1;
+}
+
+.tree-chart .f3-info-field-value {
+  border-bottom-color: rgba(255, 255, 255, 0.18);
+}
+
+.tree-chart .f3-close-btn {
+  top: 0.5rem;
+  left: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  font-size: 0;
+  border-radius: 9999px;
+  color: #d1d5db;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.tree-chart .f3-close-btn:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #f9fafb;
+}
+
+.tree-chart .f3-close-btn svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
