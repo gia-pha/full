@@ -25,6 +25,7 @@ import '../src/components/fund-transactions-table.js';
 import '../src/components/app-button.js';
 import '../src/components/sidebar.js';
 import '../src/components/calendar.js';
+import '../src/components/family-tree.js';
 import { appButtonSection } from './components/app-button.js';
 import { appSearchBarSection } from './components/app-search-bar.js';
 import { avatarStackSection } from './components/avatar-stack.js';
@@ -32,6 +33,7 @@ import { calendarSection } from './components/calendar.js';
 import { cardsSection } from './components/cards.js';
 import { confirmDialogSection } from './components/confirm-dialog.js';
 import { eventCardSection } from './components/event-card.js';
+import { familyTreeSection } from './components/family-tree.js';
 import { formControlsSection } from './components/form-controls.js';
 import { fundChartSection } from './components/fund-chart.js';
 import { fundSummarySection } from './components/fund-summary.js';
@@ -100,6 +102,7 @@ function renderPlayground() {
           ${fundSummarySection()}
           ${fundTransactionsTableSection()}
           ${calendarSection()}
+      ${familyTreeSection()}
         </div>
         </i18n-provider>
       </div>

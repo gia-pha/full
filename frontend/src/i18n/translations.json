@@ -138,6 +138,11 @@
     },
     "dialog": {
       "confirm": "Xác nhận"
+    },
+    "tree": {
+      "search": "Tìm Kiếm",
+      "reset": "Đặt Lại",
+      "noData": "Không có dữ liệu"
     }
   },
   "en": {
@@ -279,6 +284,11 @@
     },
     "dialog": {
       "confirm": "Confirm"
+    },
+    "tree": {
+      "search": "Search members",
+      "reset": "Reset",
+      "noData": "No data available"
     }
   }
 }
