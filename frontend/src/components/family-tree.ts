@@ -15,8 +15,8 @@ type TreeCard = ReturnType<TreeChart['setCardHtml']>;
 type CardDatum = Parameters<EditTree['open']>[0];
 
 const CARD_DISPLAY = [
-  ['firstName', 'lastName'],
   ['birthYear', 'deathYear'],
+  ['firstName', 'lastName'],
 ];
 
 const EDIT_FIELDS = [

@@ -18,6 +18,20 @@
   touch-action: none;
 }
 
+/*
+ * Widen the person card and keep each text row on a single line so the full
+ * name is readable. `.f3` and `.tree-chart` are the same element, so the
+ * extra class gives the selector enough specificity to beat the bundled
+ * `.f3 div.card-image-rect` rule.
+ */
+.tree-chart.f3 div.card-image-rect {
+  width: 250px;
+}
+
+.tree-chart .card-image-rect .card-label > div {
+  white-space: nowrap;
+}
+
 .tree-chart .f3-form-cont {
   background-color: #1f2937;
   border-left: 1px solid rgba(255, 255, 255, 0.08);
