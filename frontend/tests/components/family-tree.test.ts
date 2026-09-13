@@ -117,8 +117,8 @@ describe('AppFamilyTree', () => {
   it('renders the toolbar with search input and reset button', async () => {
     const el = await renderComponent({ persons: people });
     expect(el.querySelector('input[placeholder]')).toBeTruthy();
+    expect(el.querySelector('.tree-search')).toBeTruthy();
     expect(el.querySelector('.tree-reset')).toBeTruthy();
-    expect(el.querySelector('.tree-toggle-search')).toBeTruthy();
   });
 
   it('creates the chart with mapped data when persons are provided', async () => {

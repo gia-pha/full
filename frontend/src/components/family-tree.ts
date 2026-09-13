@@ -46,9 +46,6 @@ export class AppFamilyTree extends I18nMixin(LitElement) {
   @state()
   query = '';
 
-  @state()
-  mobileSearchOpen = false;
-
   private chart?: TreeChart;
   private chartContainer?: HTMLElement;
   private card?: TreeCard;
@@ -301,10 +298,6 @@ export class AppFamilyTree extends I18nMixin(LitElement) {
     this.chart.updateTree({ tree_position: 'fit' });
   };
 
-  private toggleMobileSearch = () => {
-    this.mobileSearchOpen = !this.mobileSearchOpen;
-  };
-
   override render() {
     const hasData = this.filtered().length > 0;
     return html`
@@ -312,11 +305,11 @@ export class AppFamilyTree extends I18nMixin(LitElement) {
         class="relative flex flex-col h-full overflow-hidden bg-gray-50 dark:bg-gray-900"
       >
         <div
-          class="hidden lg:flex items-center gap-3 p-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700"
+          class="flex items-center gap-3 p-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700"
         >
           <input
             type="text"
-            class="tree-search px-5 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-sm flex-1 max-w-xs bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            class="tree-search px-5 py-3 border border-gray-300 dark:border-gray-600 rounded-xl text-sm flex-1 min-w-0 lg:max-w-xs bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
             .value=${this.query}
             @input=${this.handleSearchInput}
             placeholder=${this.t('tree.search')}
@@ -324,36 +317,6 @@ export class AppFamilyTree extends I18nMixin(LitElement) {
           <button
             type="button"
             class="tree-reset px-5 py-3 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-xl text-sm font-medium flex-shrink-0 transition-colors"
-            @click=${this.handleReset}
-          >
-            ${this.t('tree.reset')}
-          </button>
-        </div>
-        <button
-          type="button"
-          class="tree-toggle-search lg:hidden absolute top-3 right-3 z-30 p-2.5 bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-xl text-sm transition-colors"
-          aria-label=${this.t('tree.search')}
-          @click=${this.toggleMobileSearch}
-        >
-          🔍
-        </button>
-        <div
-          class="tree-mobile-toolbar lg:hidden absolute top-14 left-3 right-3 z-30 bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 rounded-xl flex items-center gap-2 p-2 transform transition-all duration-300 ${
-            this.mobileSearchOpen
-              ? ''
-              : '-translate-y-full opacity-0 pointer-events-none'
-          }"
-        >
-          <input
-            type="text"
-            class="tree-search-mobile px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm flex-1 min-w-0 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-            .value=${this.query}
-            @input=${this.handleSearchInput}
-            placeholder=${this.t('tree.search')}
-          />
-          <button
-            type="button"
-            class="tree-reset-mobile px-3 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-lg text-sm font-medium flex-shrink-0 transition-colors"
             @click=${this.handleReset}
           >
             ${this.t('tree.reset')}

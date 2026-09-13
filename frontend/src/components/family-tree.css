@@ -9,6 +9,15 @@
   color-scheme: dark;
 }
 
+/*
+ * Let d3-zoom own all touch gestures (one-finger pan + pinch zoom).
+ * Without this the browser hijacks single-finger drags as page scroll
+ * and panning never reaches the chart on touch devices.
+ */
+.tree-chart #f3Canvas {
+  touch-action: none;
+}
+
 .tree-chart .f3-form-cont {
   background-color: #1f2937;
   border-left: 1px solid rgba(255, 255, 255, 0.08);
