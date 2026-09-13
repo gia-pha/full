@@ -121,6 +121,7 @@ export class AppFamilyTree extends I18nMixin(LitElement) {
     container: HTMLElement,
     data: ReturnType<typeof toFamilyChartData>,
   ) {
+    const self = this;
     const chart = createChart(container, data)
       .setTransitionTime(1000)
       .setCardXSpacing(350)
@@ -134,9 +135,12 @@ export class AppFamilyTree extends I18nMixin(LitElement) {
       )
       .setOnCardClick((e: MouseEvent, d: { data: CardDatum }) =>
         this.handleCardClick(e, d),
-      );
+      )
+      .setOnCardUpdate(function (this: HTMLElement, d: { data: CardDatum }) {
+        self.updateCard(this, d.data);
+      });
     if (this.editable) {
-      this.setupEditing(chart, card);
+      this.setupEditing(chart);
     }
     if (this.mainPersonId) {
       chart.updateMainId(this.mainPersonId);
@@ -146,7 +150,7 @@ export class AppFamilyTree extends I18nMixin(LitElement) {
     this.chartContainer = container;
   }
 
-  private setupEditing(chart: TreeChart, card: TreeCard) {
+  private setupEditing(chart: TreeChart) {
     const editTree = chart
       .editTree()
       .fixed()
@@ -156,10 +160,19 @@ export class AppFamilyTree extends I18nMixin(LitElement) {
     editTree.setOnChange(() => this.emitChange());
     editTree.setOnFormCreation(({ cont }) => this.styleFormCloseButton(cont));
     this.editTree = editTree;
-    const self = this;
-    card.setOnCardUpdate(function (this: HTMLElement, d: { data: CardDatum }) {
-      self.decorateCard(this, d.data);
-    });
+  }
+
+  private updateCard(element: HTMLElement, datum: CardDatum) {
+    this.markDeceased(element, datum);
+    if (this.editable) {
+      this.decorateCard(element, datum);
+    }
+  }
+
+  private markDeceased(element: HTMLElement, datum: CardDatum) {
+    if (datum._new_rel_data) return;
+    const card = element.querySelector('.card') ?? element;
+    card.classList.toggle('deceased', Boolean(datum.data?.deathYear));
   }
 
   private decorateCard(element: HTMLElement, datum: CardDatum) {

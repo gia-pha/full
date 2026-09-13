@@ -129,7 +129,17 @@ const tranClan: Person[] = [
   }),
 ];
 
-const ALL_PERSONS: Person[] = [...nguyenClan, ...tranClan];
+const DECEASED: Record<string, string> = {
+  ng1a: '1998',
+  ng1b: '2005',
+  tr1a: '2008',
+  tr1b: '2012',
+};
+
+const ALL_PERSONS: Person[] = [...nguyenClan, ...tranClan].map((p) => {
+  const deathYear = DECEASED[p.id];
+  return deathYear ? { ...p, data: { ...p.data, deathYear } } : p;
+});
 
 const CLANS: { id: string; label: string; mainPersonId: string }[] = [
   { id: 'nguyen', label: 'Họ Nguyễn (14 người)', mainPersonId: 'ng1a' },

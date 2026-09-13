@@ -202,7 +202,25 @@ describe('AppFamilyTree', () => {
   it('does not set up editing by default', async () => {
     await renderComponent({ persons: people });
     expect(chartMock.editTree).not.toHaveBeenCalled();
-    expect(cardMock.setOnCardUpdate).not.toHaveBeenCalled();
+  });
+
+  it('marks cards with a death year as deceased', async () => {
+    await renderComponent({ persons: people });
+    const onCardUpdate = cardMock.setOnCardUpdate.mock.calls[0][0] as (
+      this: HTMLElement,
+      d: { data: { id: string; data?: { deathYear?: string } } },
+    ) => void;
+    const dead = document.createElement('div');
+    dead.innerHTML = '<div class="card"></div>';
+    onCardUpdate.call(dead, {
+      data: { id: 'p1', data: { deathYear: '1998' } },
+    });
+    expect(dead.querySelector('.card')?.classList).toContain('deceased');
+
+    const living = document.createElement('div');
+    living.innerHTML = '<div class="card"></div>';
+    onCardUpdate.call(living, { data: { id: 'p2', data: {} } });
+    expect(living.querySelector('.card')?.classList).not.toContain('deceased');
   });
 
   it('sets up the edit tree when editable', async () => {
