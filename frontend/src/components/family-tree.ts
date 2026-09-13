@@ -17,7 +17,6 @@ type CardDatum = Parameters<EditTree['open']>[0];
 const CARD_DISPLAY = [
   ['firstName', 'lastName'],
   ['birthYear', 'deathYear'],
-  ['generation'],
 ];
 
 const EDIT_FIELDS = [
