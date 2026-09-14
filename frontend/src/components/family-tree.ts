@@ -4,7 +4,7 @@ import { createChart, type EditTree, icons } from 'family-chart';
 import { html, LitElement, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { I18nMixin } from '../i18n/i18n-mixin.js';
-import type { Person } from '../types/index.js';
+import { Gender, type Person } from '../types/index.js';
 import { getGenderIconSvg } from '../utils/avatar.js';
 import { getFullName } from '../utils/format.js';
 import { toFamilyChartData } from '../utils/tree.js';
@@ -127,7 +127,7 @@ export class AppFamilyTree extends I18nMixin(LitElement) {
     card
       .setCardDisplay(CARD_DISPLAY)
       .setDefaultPersonIcon((person) =>
-        getGenderIconSvg(String(person.data.data.gender)),
+        getGenderIconSvg(person.data.data.gender as Gender),
       )
       .setOnCardClick((e: MouseEvent, d: { data: CardDatum }) =>
         this.handleCardClick(e, d),

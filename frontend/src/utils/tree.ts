@@ -1,9 +1,9 @@
-import type { Person } from '../types/index.js';
+import type { Gender, Person } from '../types/index.js';
 
 export interface FamilyChartDatum {
   id: string;
   data: {
-    gender: 'M' | 'F';
+    gender: Gender;
     [key: string]: unknown;
   };
   rels: {

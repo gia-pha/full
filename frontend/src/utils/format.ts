@@ -1,4 +1,4 @@
-import type { Person } from '../types/index.js';
+import { Gender, type Person } from '../types/index.js';
 
 export const pad2 = (n: number): string => String(n).padStart(2, '0');
 
@@ -18,7 +18,7 @@ export function getInitials(person: Person): string {
 }
 
 export function getGenderSymbol(person: Person): string {
-  return person.data.gender === 'M' ? '♂' : '♀';
+  return person.data.gender === Gender.Male ? '♂' : '♀';
 }
 
 export function formatDate(dateStr: string): string {

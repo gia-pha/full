@@ -1,6 +1,6 @@
 import type { TemplateResult } from 'lit';
 import { html } from 'lit';
-import type { Person } from '../../src/types/index.js';
+import type { Gender, Person } from '../../src/types/index.js';
 import { notify, state } from '../state.js';
 
 const person = (
@@ -8,7 +8,7 @@ const person = (
   clanId: string,
   firstName: string,
   lastName: string,
-  gender: 'M' | 'F',
+  gender: Gender,
   birthYear: string,
   generation: number,
   rels: Person['rels'] = { parents: [], spouses: [], children: [] },

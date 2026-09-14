@@ -1,9 +1,16 @@
+export const Gender = {
+  Male: 'M',
+  Female: 'F',
+} as const;
+
+export type Gender = (typeof Gender)[keyof typeof Gender];
+
 export interface Person {
   id: string;
   data: {
     firstName: string;
     lastName: string;
-    gender: 'M' | 'F';
+    gender: Gender;
     birthYear?: string;
     deathYear?: string;
     generation: number;
