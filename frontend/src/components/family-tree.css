@@ -29,6 +29,8 @@
 }
 
 .tree-chart .card-image-rect .card-label > div {
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
