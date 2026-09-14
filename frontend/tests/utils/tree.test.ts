@@ -1,10 +1,16 @@
 import { describe, expect, it } from 'vitest';
-import type { Person } from '../../src/types/index.js';
+import { Gender, type Person } from '../../src/types/index.js';
 import { toFamilyChartData } from '../../src/utils/tree.js';
 
 const makePerson = (data: Partial<Person['data']>): Person => ({
   id: 'p1',
-  data: { firstName: 'A', lastName: 'B', gender: 'M', generation: 1, ...data },
+  data: {
+    firstName: 'A',
+    lastName: 'B',
+    gender: Gender.Male,
+    generation: 1,
+    ...data,
+  },
   rels: { parents: [], spouses: [], children: [] },
 });
 

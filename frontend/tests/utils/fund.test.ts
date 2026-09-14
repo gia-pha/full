@@ -1,11 +1,16 @@
 import { describe, expect, it } from 'vitest';
-import type { Event, Person } from '../../src/types/index.js';
+import { type Event, Gender, type Person } from '../../src/types/index.js';
 import { getEventTitle, getPersonName } from '../../src/utils/fund.js';
 
 function person(id: string, first: string, last: string): Person {
   return {
     id,
-    data: { firstName: first, lastName: last, gender: 'M', generation: 5 },
+    data: {
+      firstName: first,
+      lastName: last,
+      gender: Gender.Male,
+      generation: 5,
+    },
     rels: { parents: [], spouses: [], children: [] },
   };
 }

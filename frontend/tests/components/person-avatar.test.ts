@@ -4,7 +4,7 @@ import type {
   AvatarSize,
   PersonAvatar,
 } from '../../src/components/person-avatar.js';
-import type { Person } from '../../src/types/index.js';
+import { Gender, type Person } from '../../src/types/index.js';
 
 const makePerson = (
   overrides?: Partial<Person['data']> & { gender?: 'M' | 'F' },
@@ -13,7 +13,7 @@ const makePerson = (
   data: {
     firstName: 'Văn',
     lastName: 'Nguyễn',
-    gender: 'M',
+    gender: Gender.Male,
     generation: 1,
     ...overrides,
   },
@@ -49,7 +49,7 @@ describe('PersonAvatar', () => {
   });
 
   it('renders female avatar with pink colors', async () => {
-    const female = makePerson({ gender: 'F', lastName: 'B' });
+    const female = makePerson({ gender: Gender.Female, lastName: 'B' });
     const el = await renderComponent(female);
     const rendered = getContent(el);
     expect(rendered).toContain('bg-pink-100');

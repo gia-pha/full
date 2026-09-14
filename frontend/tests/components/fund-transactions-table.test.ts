@@ -3,7 +3,12 @@ import '../../src/components/fund-transactions-table.js';
 import type { AppEmptyState } from '../../src/components/empty-state.js';
 import type { FundTransactionsTable } from '../../src/components/fund-transactions-table.js';
 import type { Locale } from '../../src/i18n/context.js';
-import type { Event, Person, Transaction } from '../../src/types/index.js';
+import {
+  type Event,
+  Gender,
+  type Person,
+  type Transaction,
+} from '../../src/types/index.js';
 import { formatCurrency } from '../../src/utils/format.js';
 import type { FundSortDir, FundSortKey } from '../../src/utils/fund.js';
 import { mountWithLocale } from '../utils/i18n.js';
@@ -22,7 +27,12 @@ function tx(overrides?: Partial<Transaction>): Transaction {
 function person(id: string, first: string, last: string): Person {
   return {
     id,
-    data: { firstName: first, lastName: last, gender: 'M', generation: 5 },
+    data: {
+      firstName: first,
+      lastName: last,
+      gender: Gender.Male,
+      generation: 5,
+    },
     rels: { parents: [], spouses: [], children: [] },
   };
 }

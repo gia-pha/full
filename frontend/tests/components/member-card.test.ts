@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import '../../src/components/member-card.js';
 import type { MemberCard } from '../../src/components/member-card.js';
 import type { RelationCard } from '../../src/components/relation-card.js';
-import type { Person } from '../../src/types/index.js';
+import { Gender, type Person } from '../../src/types/index.js';
 
 type PersonDataOverrides = Partial<
   Pick<
@@ -29,7 +29,7 @@ const makePerson = (
     data: {
       firstName: 'Văn',
       lastName: 'Nguyễn',
-      gender: 'M',
+      gender: Gender.Male,
       generation: 1,
       ...data,
     },
@@ -146,7 +146,7 @@ describe('MemberCard', () => {
     const el = await renderComponent(
       makePerson('p1', {
         birthYear: '1980',
-        gender: 'F',
+        gender: Gender.Female,
         generation: 3,
         role: 'admin',
       }),
@@ -182,7 +182,7 @@ describe('MemberCard', () => {
     const spouse = makePerson('p2', {
       firstName: 'Lan',
       lastName: 'Trần',
-      gender: 'F',
+      gender: Gender.Female,
       birthYear: '1982',
     });
     const el = await renderComponent(person, { persons: [person, spouse] });
@@ -264,7 +264,7 @@ describe('MemberCard', () => {
     const c1 = makePerson('c1', { firstName: 'An', birthYear: '2010' });
     const c2 = makePerson('c2', {
       firstName: 'Bình',
-      gender: 'F',
+      gender: Gender.Female,
       birthYear: '2012',
     });
     const el = await renderComponent(person, {
@@ -392,7 +392,11 @@ describe('MemberCard', () => {
 
   it('renders female person with pink gender color', async () => {
     const el = await renderComponent(
-      makePerson('p1', { gender: 'F', firstName: 'Hương', lastName: 'Trần' }),
+      makePerson('p1', {
+        gender: Gender.Female,
+        firstName: 'Hương',
+        lastName: 'Trần',
+      }),
     );
     expect(el.innerHTML).toContain('Hương Trần');
     expect(el.innerHTML).toContain('Nữ');

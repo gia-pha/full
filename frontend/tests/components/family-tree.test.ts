@@ -62,13 +62,13 @@ vi.mock('family-chart', () => ({
 
 import '../../src/components/family-tree.js';
 import type { AppFamilyTree } from '../../src/components/family-tree.js';
-import type { Person } from '../../src/types/index.js';
+import { Gender, type Person } from '../../src/types/index.js';
 import type { FamilyChartDatum } from '../../src/utils/tree.js';
 
 const makePerson = (
   id: string,
   firstName: string,
-  gender: 'M' | 'F',
+  gender: Gender,
   clanId?: string,
 ): Person => ({
   id,
@@ -240,7 +240,7 @@ describe('AppFamilyTree', () => {
 
   it('dispatches tree-changed when the edit tree data changes', async () => {
     editTreeMock.exportData.mockReturnValueOnce([
-      { id: 'p1', data: { gender: 'M' }, rels: {} },
+      { id: 'p1', data: { gender: Gender.Male }, rels: {} },
     ]);
     const el = await renderComponent({ persons: people, editable: true });
     const onChange = editTreeMock.setOnChange.mock.calls[0][0] as () => void;
