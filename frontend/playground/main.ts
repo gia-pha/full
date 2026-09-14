@@ -26,6 +26,7 @@ import '../src/components/app-button.js';
 import '../src/components/sidebar.js';
 import '../src/components/calendar.js';
 import '../src/components/family-tree.js';
+import '../src/components/toast.js';
 import { appButtonSection } from './components/app-button.js';
 import { appSearchBarSection } from './components/app-search-bar.js';
 import { avatarStackSection } from './components/avatar-stack.js';
@@ -44,6 +45,7 @@ import { modalSection } from './components/modal.js';
 import { notificationItemSection } from './components/notification-item.js';
 import { personAvatarSection } from './components/person-avatar.js';
 import { sidebarSection } from './components/sidebar.js';
+import { toastSection } from './components/toast.js';
 import { uiBasicsSection } from './components/ui-basics.js';
 import { notify, state, subscribe, updatePerson } from './state.js';
 
@@ -93,6 +95,7 @@ function renderPlayground() {
           ${notificationItemSection()}
           ${modalSection()}
           ${confirmDialogSection()}
+          ${toastSection()}
           ${formControlsSection()}
           ${appSearchBarSection()}
           ${appButtonSection()}
