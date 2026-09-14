@@ -4,7 +4,7 @@ import { createChart, type EditTree, icons } from 'family-chart';
 import { html, LitElement, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { I18nMixin } from '../i18n/i18n-mixin.js';
-import { Gender, type Person } from '../types/index.js';
+import type { Gender, Person } from '../types/index.js';
 import { getGenderIconSvg } from '../utils/avatar.js';
 import { getFullName } from '../utils/format.js';
 import { toFamilyChartData } from '../utils/tree.js';

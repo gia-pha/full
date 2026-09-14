@@ -2,7 +2,7 @@ import { svg } from 'lit';
 import { describe, expect, it, vi } from 'vitest';
 import '../../src/components/member-item.js';
 import type { MemberItem } from '../../src/components/member-item.js';
-import type { Person } from '../../src/types/index.js';
+import { Gender, type Person } from '../../src/types/index.js';
 
 const makePerson = (
   overrides?: Partial<Person['data']> & { gender?: 'M' | 'F' },
@@ -11,7 +11,7 @@ const makePerson = (
   data: {
     firstName: 'Văn',
     lastName: 'Nguyễn',
-    gender: 'M',
+    gender: Gender.Male,
     generation: 1,
     ...overrides,
   },
@@ -203,7 +203,11 @@ describe('MemberItem', () => {
 
   it('renders female person name', async () => {
     const el = await renderComponent(
-      makePerson({ gender: 'F', firstName: 'Hương', lastName: 'Trần' }),
+      makePerson({
+        gender: Gender.Female,
+        firstName: 'Hương',
+        lastName: 'Trần',
+      }),
     );
     const rendered = getContent(el);
     expect(rendered).toContain('Hương Trần');

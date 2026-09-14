@@ -2,9 +2,9 @@ import { afterEach, describe, expect, it } from 'vitest';
 import '../../src/components/avatar-stack.js';
 import type { AvatarStack } from '../../src/components/avatar-stack.js';
 import type { AvatarSize } from '../../src/components/person-avatar.js';
-import type { Person } from '../../src/types/index.js';
+import type { Gender, Person } from '../../src/types/index.js';
 
-const makePerson = (id: string, gender: 'M' | 'F'): Person => ({
+const makePerson = (id: string, gender: Gender): Person => ({
   id,
   data: {
     firstName: id,

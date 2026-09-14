@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { Person } from '../../src/types/index.js';
+import { Gender, type Person } from '../../src/types/index.js';
 import {
   formatCurrency,
   formatDate,
@@ -17,7 +17,12 @@ const makePerson = (overrides?: Partial<typeof mockPerson.data>): Person => ({
 
 const mockPerson: Person = {
   id: 'test-1',
-  data: { firstName: 'Văn', lastName: 'Nguyễn', gender: 'M', generation: 1 },
+  data: {
+    firstName: 'Văn',
+    lastName: 'Nguyễn',
+    gender: Gender.Male,
+    generation: 1,
+  },
   rels: { parents: [], spouses: [], children: [] },
 };
 
@@ -75,7 +80,7 @@ describe('getGenderSymbol', () => {
   });
 
   it('returns female symbol for gender F', () => {
-    const p = makePerson({ gender: 'F' });
+    const p = makePerson({ gender: Gender.Female });
     expect(getGenderSymbol(p)).toBe('♀');
   });
 });

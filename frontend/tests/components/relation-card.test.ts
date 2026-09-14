@@ -4,14 +4,14 @@ import type {
   RelationCard,
   RelationCardColor,
 } from '../../src/components/relation-card.js';
-import type { Person } from '../../src/types/index.js';
+import { Gender, type Person } from '../../src/types/index.js';
 
 const makePerson = (overrides?: Partial<Person['data']>): Person => ({
   id: 'p1',
   data: {
     firstName: 'A',
     lastName: 'Nguyễn',
-    gender: 'M',
+    gender: Gender.Male,
     generation: 1,
     ...overrides,
   },
@@ -77,12 +77,16 @@ describe('RelationCard', () => {
   });
 
   it('renders the male gender symbol', async () => {
-    const el = await renderComponent({ person: makePerson({ gender: 'M' }) });
+    const el = await renderComponent({
+      person: makePerson({ gender: Gender.Male }),
+    });
     expect(getCard(el).textContent).toContain('♂');
   });
 
   it('renders the female gender symbol', async () => {
-    const el = await renderComponent({ person: makePerson({ gender: 'F' }) });
+    const el = await renderComponent({
+      person: makePerson({ gender: Gender.Female }),
+    });
     expect(getCard(el).textContent).toContain('♀');
   });
 

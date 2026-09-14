@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import '../../src/components/event-card.js';
 import type { EventCard } from '../../src/components/event-card.js';
-import type { Event, Person } from '../../src/types/index.js';
+import { type Event, Gender, type Person } from '../../src/types/index.js';
 
 const makeEvent = (overrides?: Partial<Event>): Event => ({
   id: 'event-1',
@@ -18,7 +18,7 @@ const makePerson = (overrides?: Partial<Person['data']>): Person => ({
   data: {
     firstName: 'Văn',
     lastName: 'Nguyễn',
-    gender: 'M',
+    gender: Gender.Male,
     generation: 1,
     ...overrides,
   },
@@ -316,7 +316,11 @@ describe('EventCard', () => {
   describe('attendee avatars', () => {
     it('shows gender icon avatar when person has no avatar URL', async () => {
       const persons = [
-        makePerson({ gender: 'M', firstName: 'Văn', lastName: 'Nguyễn' }),
+        makePerson({
+          gender: Gender.Male,
+          firstName: 'Văn',
+          lastName: 'Nguyễn',
+        }),
       ];
       const el = await renderComponent(makeEvent({ attendees: ['person-1'] }), {
         persons,
@@ -328,7 +332,11 @@ describe('EventCard', () => {
 
     it('shows female avatar with pink colors when no avatar URL', async () => {
       const persons = [
-        makePerson({ gender: 'F', firstName: 'Hương', lastName: 'Trần' }),
+        makePerson({
+          gender: Gender.Female,
+          firstName: 'Hương',
+          lastName: 'Trần',
+        }),
       ];
       const el = await renderComponent(makeEvent({ attendees: ['person-1'] }), {
         persons,
@@ -339,7 +347,11 @@ describe('EventCard', () => {
 
     it('shows male avatar with blue colors when no avatar URL', async () => {
       const persons = [
-        makePerson({ gender: 'M', firstName: 'Văn', lastName: 'Nguyễn' }),
+        makePerson({
+          gender: Gender.Male,
+          firstName: 'Văn',
+          lastName: 'Nguyễn',
+        }),
       ];
       const el = await renderComponent(makeEvent({ attendees: ['person-1'] }), {
         persons,
@@ -365,7 +377,7 @@ describe('EventCard', () => {
         data: {
           firstName: 'Văn',
           lastName: 'Nguyễn',
-          gender: 'M',
+          gender: Gender.Male,
           generation: 1,
         },
         rels: { parents: [], spouses: [], children: [] },
@@ -375,7 +387,7 @@ describe('EventCard', () => {
         data: {
           firstName: 'Hương',
           lastName: 'Trần',
-          gender: 'F',
+          gender: Gender.Female,
           generation: 1,
           avatar: 'https://example.com/avatar.jpg',
         },
@@ -386,7 +398,7 @@ describe('EventCard', () => {
         data: {
           firstName: 'Thắng',
           lastName: 'Lê',
-          gender: 'M',
+          gender: Gender.Male,
           generation: 2,
         },
         rels: { parents: [], spouses: [], children: [] },

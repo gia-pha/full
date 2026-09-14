@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import '../../src/components/sidebar.js';
 import type { NavItem, Sidebar } from '../../src/components/sidebar.js';
 import type { Locale } from '../../src/i18n/context.js';
-import type { Clan, Person } from '../../src/types/index.js';
+import { type Clan, Gender, type Person } from '../../src/types/index.js';
 import { mountWithLocale } from '../utils/i18n.js';
 
 function makeClans(): Clan[] {
@@ -580,7 +580,7 @@ describe('Sidebar', () => {
 
   it('shows female gender symbol in drawer header', async () => {
     const el = await renderSidebar({
-      currentPerson: makePerson({ gender: 'F' }),
+      currentPerson: makePerson({ gender: Gender.Female }),
     });
     expect(el.querySelector('.drawer-panel')!.innerHTML).toContain('♀');
   });
