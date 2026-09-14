@@ -13,6 +13,16 @@ export interface FamilyChartDatum {
   };
 }
 
+function formatLifespan(
+  birthYear: unknown,
+  deathYear: unknown,
+): string | undefined {
+  const birth = birthYear == null ? '' : String(birthYear);
+  const death = deathYear == null ? '' : String(deathYear);
+  if (birth && death) return `${birth} - ${death}`;
+  return birth || death || undefined;
+}
+
 export function toFamilyChartData(
   persons: Person[],
   clanId?: string,
@@ -31,6 +41,7 @@ export function toFamilyChartData(
           id: p.id,
           avatar: (rest.avatar as string | undefined) ?? '',
           isCurrentUser: p.id === currentPersonId,
+          years: formatLifespan(rest.birthYear, rest.deathYear),
         } as unknown as FamilyChartDatum['data'],
         rels: {
           parents: [...p.rels.parents],
