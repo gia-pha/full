@@ -129,6 +129,8 @@ const tranClan: Person[] = [
   }),
 ];
 
+const leClan: Person[] = [];
+
 const DECEASED: Record<string, string> = {
   ng1a: '1998',
   ng1b: '2005',
@@ -136,14 +138,17 @@ const DECEASED: Record<string, string> = {
   tr1b: '2012',
 };
 
-const ALL_PERSONS: Person[] = [...nguyenClan, ...tranClan].map((p) => {
-  const deathYear = DECEASED[p.id];
-  return deathYear ? { ...p, data: { ...p.data, deathYear } } : p;
-});
+const ALL_PERSONS: Person[] = [...nguyenClan, ...tranClan, ...leClan].map(
+  (p) => {
+    const deathYear = DECEASED[p.id];
+    return deathYear ? { ...p, data: { ...p.data, deathYear } } : p;
+  },
+);
 
-const CLANS: { id: string; label: string; mainPersonId: string }[] = [
+const CLANS: { id: string; label: string; mainPersonId?: string }[] = [
   { id: 'nguyen', label: 'Họ Nguyễn (14 người)', mainPersonId: 'ng1a' },
   { id: 'tran', label: 'Họ Trần (7 người)', mainPersonId: 'tr1a' },
+  { id: 'le', label: 'Họ Lê (0 người)', mainPersonId: undefined },
 ];
 
 export function familyTreeSection(): TemplateResult {
