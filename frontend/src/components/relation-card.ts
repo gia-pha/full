@@ -1,6 +1,6 @@
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { Person } from '../types/index.js';
+import { Gender, type Person } from '../types/index.js';
 import { getFullName, getGenderSymbol } from '../utils/format.js';
 
 export type RelationCardColor = 'pink' | 'blue' | 'green';
@@ -63,7 +63,7 @@ export class RelationCard extends LitElement {
       ? `${fullName} (${birthYear}${deathYear ? ` - ${deathYear}` : ''})`
       : fullName;
     const genderColor =
-      person?.data.gender === 'M' ? 'text-blue-500' : 'text-pink-500';
+      person?.data.gender === Gender.Male ? 'text-blue-500' : 'text-pink-500';
     return html`
       <button
         type="button"

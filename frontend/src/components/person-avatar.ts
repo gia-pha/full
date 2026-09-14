@@ -1,6 +1,6 @@
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { Person } from '../types/index.js';
+import { Gender, type Person } from '../types/index.js';
 import { getGenderIcon } from '../utils/avatar.js';
 import { getFullName } from '../utils/format.js';
 
@@ -14,10 +14,10 @@ export const sizes: Record<AvatarSize, { dim: string; icon: string }> = {
   xl: { dim: 'w-20 h-20', icon: 'w-12 h-12' },
 };
 
-function getColors(gender: string): string {
-  if (gender === 'M')
+function getColors(gender: Gender): string {
+  if (gender === Gender.Male)
     return 'bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300';
-  if (gender === 'F')
+  if (gender === Gender.Female)
     return 'bg-pink-100 dark:bg-pink-900 text-pink-600 dark:text-pink-300';
   return 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300';
 }

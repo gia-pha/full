@@ -2,7 +2,7 @@ import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { defaultRoles } from '../consts/index.js';
 import { I18nMixin } from '../i18n/i18n-mixin.js';
-import type { Person } from '../types/index.js';
+import { Gender, type Person } from '../types/index.js';
 import { getFullName, isDeceased } from '../utils/format.js';
 import './info-card.js';
 import './relation-card.js';
@@ -131,7 +131,7 @@ export class MemberCard extends I18nMixin(LitElement) {
       (role ? this.t(`roles.${role.name}`) : person.data.role) ||
       '-';
     const genderText =
-      person.data.gender === 'M'
+      person.data.gender === Gender.Male
         ? this.t('common.male')
         : this.t('common.female');
     const canEdit =
@@ -188,7 +188,7 @@ export class MemberCard extends I18nMixin(LitElement) {
           <app-info-card
             label=${this.t('members.gender')}
             value=${genderText}
-            color=${person.data.gender === 'M' ? 'blue' : 'pink'}
+            color=${person.data.gender === Gender.Male ? 'blue' : 'pink'}
           ></app-info-card>
           <app-info-card
             label=${this.t('members.generation')}
