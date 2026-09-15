@@ -123,10 +123,14 @@ describe('AppToast', () => {
     });
 
     it('auto-dismisses after the duration elapses', async () => {
+      const dismiss = vi.fn();
       const el = await renderComponent({ duration: 100 });
-      const eventPromise = awaitEvent(el, 'dismiss');
-      vi.advanceTimersByTime(100);
-      await eventPromise;
+      el.addEventListener('dismiss', dismiss);
+      expect(dismiss).not.toHaveBeenCalled();
+      vi.advanceTimersByTime(99);
+      expect(dismiss).not.toHaveBeenCalled();
+      vi.advanceTimersByTime(1);
+      expect(dismiss).toHaveBeenCalledTimes(1);
     });
 
     it('does not auto-dismiss when duration is 0', async () => {
