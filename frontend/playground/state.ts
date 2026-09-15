@@ -3,6 +3,7 @@ import type { FieldType } from '../src/components/app-input.js';
 import type { SelectOption } from '../src/components/app-select.js';
 import type { AvatarSize } from '../src/components/person-avatar.js';
 import type { TabDef } from '../src/components/tabs.js';
+import type { ToastVariant } from '../src/components/toast.js';
 import type {
   Event as CalendarEvent,
   Clan,
@@ -58,6 +59,10 @@ export interface PlaygroundState {
   confirmCancelLabel: string;
   confirmDanger: boolean;
   confirmResult: string;
+  toastMessage: string;
+  toastVariant: ToastVariant;
+  toastDuration: number;
+  toastResult: string;
   fieldLabel: string;
   fieldType: FieldType;
   fieldValue: string;
@@ -156,6 +161,10 @@ export const state: PlaygroundState = {
   confirmCancelLabel: '',
   confirmDanger: true,
   confirmResult: '',
+  toastMessage: 'Đã lưu (prototype)',
+  toastVariant: 'success',
+  toastDuration: 3000,
+  toastResult: '',
   fieldLabel: 'Name',
   fieldType: 'text',
   fieldValue: 'Nguyễn Văn A',
