@@ -22,11 +22,13 @@ import '../src/components/relation-card.js';
 import '../src/components/fund-chart.js';
 import '../src/components/fund-summary.js';
 import '../src/components/fund-transactions-table.js';
+import '../src/components/app-badge.js';
 import '../src/components/app-button.js';
 import '../src/components/sidebar.js';
 import '../src/components/calendar.js';
 import '../src/components/family-tree.js';
 import '../src/components/toast.js';
+import { appBadgeSection } from './components/app-badge.js';
 import { appButtonSection } from './components/app-button.js';
 import { appSearchBarSection } from './components/app-search-bar.js';
 import { avatarStackSection } from './components/avatar-stack.js';
@@ -99,6 +101,7 @@ function renderPlayground() {
           ${formControlsSection()}
           ${appSearchBarSection()}
           ${appButtonSection()}
+          ${appBadgeSection()}
           ${uiBasicsSection()}
           ${cardsSection()}
           ${fundChartSection()}
