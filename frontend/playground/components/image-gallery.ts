@@ -85,15 +85,6 @@ export function imageGallerySection(): TemplateResult {
             : html``
         }
       </div>
-
-      <div class="space-y-3">
-        <p class="text-sm text-gray-500 os-dark:text-gray-400">strip variant</p>
-        <app-image-gallery
-          .images=${images}
-          variant="strip"
-          alt="Family photos"
-        ></app-image-gallery>
-      </div>
     </section>
   `;
 }
