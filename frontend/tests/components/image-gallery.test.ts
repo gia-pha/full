@@ -1,0 +1,95 @@
+import { afterEach, describe, expect, it } from 'vitest';
+import '../../src/components/image-gallery.js';
+import type { AppImageGallery } from '../../src/components/image-gallery.js';
+
+const IMAGES = [
+  'https://picsum.photos/seed/img1/300/200',
+  'https://picsum.photos/seed/img2/300/200',
+  'https://picsum.photos/seed/img3/300/200',
+];
+
+async function renderComponent(opts?: {
+  images?: string[];
+  variant?: 'grid' | 'strip';
+  alt?: string;
+}): Promise<AppImageGallery> {
+  const el = document.createElement('app-image-gallery');
+  if (opts?.images !== undefined) el.images = opts.images;
+  if (opts?.variant !== undefined) el.variant = opts.variant;
+  if (opts?.alt !== undefined) el.alt = opts.alt;
+  document.body.appendChild(el);
+  await el.updateComplete;
+  return el;
+}
+
+afterEach(() => {
+  document.querySelectorAll('app-image-gallery').forEach((el) => {
+    el.remove();
+  });
+});
+
+describe('AppImageGallery', () => {
+  it('renders nothing when images is empty', async () => {
+    const el = await renderComponent({ images: [] });
+    expect(el.querySelector('img')).toBeNull();
+  });
+
+  it('renders nothing when images is not set', async () => {
+    const el = await renderComponent({});
+    expect(el.querySelector('img')).toBeNull();
+  });
+
+  it('defaults to the grid variant', async () => {
+    const el = await renderComponent({ images: IMAGES });
+    expect(el.variant).toBe('grid');
+    const grid = el.querySelector('.grid');
+    expect(grid).not.toBeNull();
+    expect(grid!.classList.contains('grid-cols-2')).toBe(true);
+    expect(grid!.querySelectorAll('img')).toHaveLength(3);
+  });
+
+  it('renders grid items with aspect-video cells', async () => {
+    const el = await renderComponent({ images: IMAGES });
+    const cells = el.querySelectorAll('.grid > div');
+    expect(cells).toHaveLength(3);
+    expect(cells[0].classList.contains('aspect-video')).toBe(true);
+  });
+
+  it('renders the strip variant as a horizontal scroller', async () => {
+    const el = await renderComponent({ images: IMAGES, variant: 'strip' });
+    expect(el.querySelector('.grid')).toBeNull();
+    const strip = el.querySelector('.flex.overflow-x-auto');
+    expect(strip).not.toBeNull();
+    expect(strip!.querySelectorAll('img')).toHaveLength(3);
+    const cell = strip!.querySelector('div')!;
+    expect(cell.classList.contains('w-36')).toBe(true);
+    expect(cell.classList.contains('flex-shrink-0')).toBe(true);
+  });
+
+  it('sets src and lazy loading on every image', async () => {
+    const el = await renderComponent({ images: IMAGES });
+    el.querySelectorAll('img').forEach((img, i) => {
+      expect(img.getAttribute('src')).toBe(IMAGES[i]);
+      expect(img.getAttribute('loading')).toBe('lazy');
+    });
+  });
+
+  it('applies the alt text to every image', async () => {
+    const el = await renderComponent({ images: IMAGES, alt: 'Family photos' });
+    el.querySelectorAll('img').forEach((img) => {
+      expect(img.getAttribute('alt')).toBe('Family photos');
+    });
+  });
+
+  it('updates when images change', async () => {
+    const el = await renderComponent({ images: IMAGES });
+    el.images = [IMAGES[0]];
+    await el.updateComplete;
+    expect(el.querySelectorAll('img')).toHaveLength(1);
+  });
+
+  it('renders without shadow DOM', async () => {
+    const el = await renderComponent({ images: IMAGES });
+    expect(el.shadowRoot).toBeNull();
+  });
+});
