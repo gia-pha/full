@@ -1,6 +1,7 @@
 import type { ButtonVariant } from '../src/components/app-button.js';
 import type { FieldType } from '../src/components/app-input.js';
 import type { SelectOption } from '../src/components/app-select.js';
+import type { GalleryVariant } from '../src/components/image-gallery.js';
 import type { AvatarSize } from '../src/components/person-avatar.js';
 import type { TabDef } from '../src/components/tabs.js';
 import type { ToastVariant } from '../src/components/toast.js';
@@ -114,6 +115,8 @@ export interface PlaygroundState {
   treeClan: string;
   treeEvent: string;
   treeEditable: boolean;
+  galleryVariant: GalleryVariant;
+  galleryCount: number;
 }
 
 export const state: PlaygroundState = {
@@ -216,6 +219,8 @@ export const state: PlaygroundState = {
   treeClan: 'nguyen',
   treeEvent: '',
   treeEditable: false,
+  galleryVariant: 'grid',
+  galleryCount: 6,
 };
 
 const chartSample: Transaction[] = [
