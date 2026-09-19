@@ -2,6 +2,7 @@ import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
 import 'photoswipe/style.css';
+import type { GalleryImage } from '../types/index.js';
 
 export type GalleryVariant = 'grid' | 'strip';
 
@@ -13,7 +14,7 @@ const CELL_CLASSES: Record<GalleryVariant, string> = {
 
 @customElement('app-image-gallery')
 export class AppImageGallery extends LitElement {
-  @property({ type: Array }) images: string[] = [];
+  @property({ type: Array }) images: GalleryImage[] = [];
   @property({ type: String }) variant: GalleryVariant = 'grid';
   @property({ type: String }) alt = '';
   @property({ type: Boolean }) lightbox = true;
@@ -31,16 +32,6 @@ export class AppImageGallery extends LitElement {
         children: 'a',
         pswpModule: () => import('photoswipe'),
       });
-      pswp.on('gettingData', (e) => {
-        const item = e.data;
-        if (!item.width || !item.height) {
-          const img = item.element?.querySelector('img');
-          if (img?.naturalWidth) {
-            item.width = img.naturalWidth;
-            item.height = img.naturalHeight;
-          }
-        }
-      });
       pswp.init();
       this.pswp = pswp;
     } else if (!this.lightbox && this.pswp) {
@@ -55,18 +46,24 @@ export class AppImageGallery extends LitElement {
     super.disconnectedCallback();
   }
 
-  private renderItem(img: string): TemplateResult {
+  private renderItem(item: GalleryImage): TemplateResult {
     const cell = CELL_CLASSES[this.variant] ?? CELL_CLASSES.grid;
     const content = html`
       <img
-        src=${img}
-        alt=${this.alt}
+        src=${item.thumbnail}
+        alt=${item.alt ?? this.alt}
         class="w-full h-full object-cover hover:scale-105 transition-transform"
         loading="lazy"
       />
     `;
     return this.lightbox
-      ? html`<a href=${img} class="block ${cell}">${content}</a>`
+      ? html`<a
+          href=${item.image}
+          data-pswp-width=${item.width}
+          data-pswp-height=${item.height}
+          class="block ${cell}"
+          >${content}</a
+        >`
       : html`<div class="${cell}">${content}</div>`;
   }
 

@@ -1,15 +1,31 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import '../../src/components/image-gallery.js';
 import type { AppImageGallery } from '../../src/components/image-gallery.js';
+import type { GalleryImage } from '../../src/types/index.js';
 
-const IMAGES = [
-  'https://picsum.photos/seed/img1/300/200',
-  'https://picsum.photos/seed/img2/300/200',
-  'https://picsum.photos/seed/img3/300/200',
+const IMAGES: GalleryImage[] = [
+  {
+    image: 'https://picsum.photos/seed/img1/1500/1000',
+    thumbnail: 'https://picsum.photos/seed/img1/300/200',
+    width: 1500,
+    height: 1000,
+  },
+  {
+    image: 'https://picsum.photos/seed/img2/1500/1000',
+    thumbnail: 'https://picsum.photos/seed/img2/300/200',
+    width: 1500,
+    height: 1000,
+  },
+  {
+    image: 'https://picsum.photos/seed/img3/1500/1000',
+    thumbnail: 'https://picsum.photos/seed/img3/300/200',
+    width: 1500,
+    height: 1000,
+  },
 ];
 
 async function renderComponent(opts?: {
-  images?: string[];
+  images?: GalleryImage[];
   variant?: 'grid' | 'strip';
   alt?: string;
   lightbox?: boolean;
@@ -68,10 +84,10 @@ describe('AppImageGallery', () => {
     expect(cell.classList.contains('flex-shrink-0')).toBe(true);
   });
 
-  it('sets src and lazy loading on every image', async () => {
+  it('sets thumbnail src and lazy loading on every image', async () => {
     const el = await renderComponent({ images: IMAGES });
     el.querySelectorAll('img').forEach((img, i) => {
-      expect(img.getAttribute('src')).toBe(IMAGES[i]);
+      expect(img.getAttribute('src')).toBe(IMAGES[i].thumbnail);
       expect(img.getAttribute('loading')).toBe('lazy');
     });
   });
@@ -83,10 +99,26 @@ describe('AppImageGallery', () => {
     });
   });
 
+  it('prefers the per-image alt over the component alt', async () => {
+    const el = await renderComponent({
+      images: [{ ...IMAGES[0], alt: 'Wedding 1998' }],
+      alt: 'Family photos',
+    });
+    expect(el.querySelector('img')!.getAttribute('alt')).toBe('Wedding 1998');
+  });
+
   it('wraps every image in a link to the full image', async () => {
     const el = await renderComponent({ images: IMAGES });
     el.querySelectorAll('a').forEach((a, i) => {
-      expect(a.getAttribute('href')).toBe(IMAGES[i]);
+      expect(a.getAttribute('href')).toBe(IMAGES[i].image);
+    });
+  });
+
+  it('sets data-pswp dimensions on every anchor', async () => {
+    const el = await renderComponent({ images: IMAGES });
+    el.querySelectorAll('a').forEach((a, i) => {
+      expect(a.getAttribute('data-pswp-width')).toBe(String(IMAGES[i].width));
+      expect(a.getAttribute('data-pswp-height')).toBe(String(IMAGES[i].height));
     });
   });
 

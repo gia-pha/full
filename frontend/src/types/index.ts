@@ -25,6 +25,14 @@ export interface Person {
   };
 }
 
+export interface GalleryImage {
+  image: string;
+  thumbnail: string;
+  width: number;
+  height: number;
+  alt?: string;
+}
+
 export interface Clan {
   id: string;
   name: string;
