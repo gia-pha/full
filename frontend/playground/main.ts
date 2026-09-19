@@ -43,6 +43,7 @@ import { fundChartSection } from './components/fund-chart.js';
 import { fundSummarySection } from './components/fund-summary.js';
 import { fundTransactionsTableSection } from './components/fund-transactions-table.js';
 import { imageGallerySection } from './components/image-gallery.js';
+import { layoutsSection } from './components/layouts.js';
 import { memberCardSection } from './components/member-card.js';
 import { memberItemSection } from './components/member-item.js';
 import { modalSection } from './components/modal.js';
@@ -107,6 +108,7 @@ function renderPlayground() {
           ${uiBasicsSection()}
           ${cardsSection()}
           ${imageGallerySection()}
+          ${layoutsSection()}
           ${fundChartSection()}
           ${fundSummarySection()}
           ${fundTransactionsTableSection()}
