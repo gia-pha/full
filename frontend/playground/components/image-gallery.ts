@@ -1,15 +1,25 @@
 import type { TemplateResult } from 'lit';
 import { html } from 'lit';
 import type { GalleryVariant } from '../../src/components/image-gallery.js';
+import type { GalleryImage } from '../../src/types/index.js';
 import { notify, state } from '../state.js';
 
 const VARIANTS: GalleryVariant[] = ['grid', 'strip'];
 
-function galleryImages(count: number): string[] {
-  return Array.from(
-    { length: count },
-    (_, i) => `https://picsum.photos/seed/gallery${i + 1}/600/400`,
-  );
+const FULL_WIDTH = 1500;
+const FULL_HEIGHT = 1000;
+
+function galleryImages(count: number): GalleryImage[] {
+  return Array.from({ length: count }, (_, i) => {
+    const seed = `gallery${i + 1}`;
+    return {
+      image: `https://picsum.photos/seed/${seed}/${FULL_WIDTH}/${FULL_HEIGHT}`,
+      thumbnail: `https://picsum.photos/seed/${seed}/300/200`,
+      width: FULL_WIDTH,
+      height: FULL_HEIGHT,
+      alt: `Family photo ${i + 1}`,
+    };
+  });
 }
 
 export function imageGallerySection(): TemplateResult {
@@ -62,18 +72,37 @@ export function imageGallerySection(): TemplateResult {
             }}
           />
         </div>
+        <div class="flex items-end pb-2">
+          <label class="flex items-center gap-2 text-sm text-gray-700 os-dark:text-gray-200 cursor-pointer">
+            <input
+              type="checkbox"
+              class="w-4 h-4 accent-emerald-600"
+              ?checked=${state.galleryLightbox}
+              @change=${(e: Event) => {
+                state.galleryLightbox = (e.target as HTMLInputElement).checked;
+                notify();
+              }}
+            />
+            Lightbox
+          </label>
+        </div>
       </div>
 
       <div class="space-y-3">
         <p class="text-sm text-gray-500 os-dark:text-gray-400">
           ${state.galleryVariant} · ${images.length} image${
             images.length === 1 ? '' : 's'
+          }${
+            state.galleryLightbox && images.length > 0
+              ? ' · click an image to open the fullscreen viewer'
+              : ''
           }
         </p>
         <app-image-gallery
           .images=${images}
           variant=${state.galleryVariant}
           alt="Family photos"
+          ?lightbox=${state.galleryLightbox}
         ></app-image-gallery>
         ${
           images.length === 0
