@@ -3,6 +3,7 @@ import { customElement, property } from 'lit/decorators.js';
 import { I18nMixin } from '../i18n/i18n-mixin.js';
 import type { Event, Person } from '../types/index.js';
 import './person-avatar.js';
+import './image-gallery.js';
 import { formatDate } from '../utils/format.js';
 
 const eventTypeClass: Record<string, string> = {
@@ -132,15 +133,11 @@ export class EventCard extends I18nMixin(LitElement) {
               ? html`
                 <div class="mb-4">
                   <p class="text-sm text-gray-400 dark:text-gray-500 mb-3">🖼️ ${this.t('events.images', { count: evt.images.length })}</p>
-                  <div class="flex gap-3 overflow-x-auto pb-2">
-                    ${evt.images.map(
-                      (img) => html`
-                      <div class="w-36 h-24 lg:w-48 lg:h-32 bg-gray-100 dark:bg-gray-700 rounded-xl overflow-hidden flex-shrink-0">
-                        <img src="${img}" class="w-full h-full object-cover hover:scale-105 transition-transform" loading="lazy" />
-                      </div>
-                    `,
-                    )}
-                  </div>
+                  <app-image-gallery
+                    .images=${evt.images}
+                    variant="strip"
+                    alt=${evt.title}
+                  ></app-image-gallery>
                 </div>
               `
               : html``

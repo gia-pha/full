@@ -2,7 +2,7 @@ import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
 import 'photoswipe/style.css';
-import type { GalleryImage } from '../types/index.js';
+import type { Image } from '../types/index.js';
 
 export type GalleryVariant = 'grid' | 'strip';
 
@@ -14,7 +14,7 @@ const CELL_CLASSES: Record<GalleryVariant, string> = {
 
 @customElement('app-image-gallery')
 export class AppImageGallery extends LitElement {
-  @property({ type: Array }) images: GalleryImage[] = [];
+  @property({ type: Array }) images: Image[] = [];
   @property({ type: String }) variant: GalleryVariant = 'grid';
   @property({ type: String }) alt = '';
   @property({ type: Boolean }) lightbox = true;
@@ -46,7 +46,7 @@ export class AppImageGallery extends LitElement {
     super.disconnectedCallback();
   }
 
-  private renderItem(item: GalleryImage): TemplateResult {
+  private renderItem(item: Image): TemplateResult {
     const cell = CELL_CLASSES[this.variant] ?? CELL_CLASSES.grid;
     const content = html`
       <img

@@ -1,7 +1,7 @@
 import type { TemplateResult } from 'lit';
 import { html } from 'lit';
 import type { GalleryVariant } from '../../src/components/image-gallery.js';
-import type { GalleryImage } from '../../src/types/index.js';
+import type { Image } from '../../src/types/index.js';
 import { notify, state } from '../state.js';
 
 const VARIANTS: GalleryVariant[] = ['grid', 'strip'];
@@ -9,7 +9,7 @@ const VARIANTS: GalleryVariant[] = ['grid', 'strip'];
 const FULL_WIDTH = 1500;
 const FULL_HEIGHT = 1000;
 
-function galleryImages(count: number): GalleryImage[] {
+function galleryImages(count: number): Image[] {
   return Array.from({ length: count }, (_, i) => {
     const seed = `gallery${i + 1}`;
     return {

@@ -1,9 +1,9 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import '../../src/components/image-gallery.js';
 import type { AppImageGallery } from '../../src/components/image-gallery.js';
-import type { GalleryImage } from '../../src/types/index.js';
+import type { Image } from '../../src/types/index.js';
 
-const IMAGES: GalleryImage[] = [
+const IMAGES: Image[] = [
   {
     image: 'https://picsum.photos/seed/img1/1500/1000',
     thumbnail: 'https://picsum.photos/seed/img1/300/200',
@@ -25,7 +25,7 @@ const IMAGES: GalleryImage[] = [
 ];
 
 async function renderComponent(opts?: {
-  images?: GalleryImage[];
+  images?: Image[];
   variant?: 'grid' | 'strip';
   alt?: string;
   lightbox?: boolean;
