@@ -35,7 +35,7 @@ export interface PlaygroundState {
   eventType: string;
   eventLunarDate: string;
   eventMapUrl: string;
-  eventImages: string;
+  eventImageCount: number;
   eventCanEdit: boolean;
   txnType: 'contribution' | 'expense';
   txnAmount: number;
@@ -139,8 +139,7 @@ export const state: PlaygroundState = {
   eventType: 'reunion',
   eventLunarDate: '2024-01-10',
   eventMapUrl: 'https://maps.google.com/?q=ho+chi+minh+city',
-  eventImages:
-    'https://picsum.photos/seed/img1/300/200,https://picsum.photos/seed/img2/300/200',
+  eventImageCount: 2,
   eventCanEdit: true,
   txnType: 'contribution',
   txnAmount: 5000000,
@@ -1051,12 +1050,15 @@ export function updateEvent(persons: Person[]): CalendarEvent {
     type: state.eventType || undefined,
     lunarDate: state.eventLunarDate || undefined,
     mapUrl: state.eventMapUrl || undefined,
-    images: state.eventImages
-      ? state.eventImages
-          .split(',')
-          .map((s) => s.trim())
-          .filter(Boolean)
-      : undefined,
+    images: Array.from({ length: state.eventImageCount }, (_, i) => {
+      const seed = `event${i + 1}`;
+      return {
+        image: `https://picsum.photos/seed/${seed}/1500/1000`,
+        thumbnail: `https://picsum.photos/seed/${seed}/300/200`,
+        width: 1500,
+        height: 1000,
+      };
+    }),
     attendees: persons.map((p) => p.id),
   };
 }

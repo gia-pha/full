@@ -234,8 +234,18 @@ describe('EventCard', () => {
       const el = await renderComponent(
         makeEvent({
           images: [
-            'https://example.com/img1.jpg',
-            'https://example.com/img2.jpg',
+            {
+              image: 'https://example.com/img1.jpg',
+              thumbnail: 'https://example.com/img1.jpg',
+              width: 1200,
+              height: 800,
+            },
+            {
+              image: 'https://example.com/img2.jpg',
+              thumbnail: 'https://example.com/img2.jpg',
+              width: 1200,
+              height: 800,
+            },
           ],
         }),
       );

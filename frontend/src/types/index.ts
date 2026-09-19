@@ -25,7 +25,7 @@ export interface Person {
   };
 }
 
-export interface GalleryImage {
+export interface Image {
   image: string;
   thumbnail: string;
   width: number;
@@ -53,7 +53,7 @@ export interface Event {
   status: 'upcoming' | 'past';
   type?: string;
   mapUrl?: string;
-  images?: string[];
+  images?: Image[];
   attendees?: string[];
 }
 
