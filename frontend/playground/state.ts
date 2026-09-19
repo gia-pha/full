@@ -117,6 +117,7 @@ export interface PlaygroundState {
   treeEditable: boolean;
   galleryVariant: GalleryVariant;
   galleryCount: number;
+  galleryLightbox: boolean;
 }
 
 export const state: PlaygroundState = {
@@ -221,6 +222,7 @@ export const state: PlaygroundState = {
   treeEditable: false,
   galleryVariant: 'grid',
   galleryCount: 6,
+  galleryLightbox: true,
 };
 
 const chartSample: Transaction[] = [

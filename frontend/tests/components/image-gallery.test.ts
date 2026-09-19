@@ -12,11 +12,13 @@ async function renderComponent(opts?: {
   images?: string[];
   variant?: 'grid' | 'strip';
   alt?: string;
+  lightbox?: boolean;
 }): Promise<AppImageGallery> {
   const el = document.createElement('app-image-gallery');
   if (opts?.images !== undefined) el.images = opts.images;
   if (opts?.variant !== undefined) el.variant = opts.variant;
   if (opts?.alt !== undefined) el.alt = opts.alt;
+  if (opts?.lightbox !== undefined) el.lightbox = opts.lightbox;
   document.body.appendChild(el);
   await el.updateComplete;
   return el;
@@ -50,7 +52,7 @@ describe('AppImageGallery', () => {
 
   it('renders grid items with aspect-video cells', async () => {
     const el = await renderComponent({ images: IMAGES });
-    const cells = el.querySelectorAll('.grid > div');
+    const cells = el.querySelectorAll('.grid > a');
     expect(cells).toHaveLength(3);
     expect(cells[0].classList.contains('aspect-video')).toBe(true);
   });
@@ -61,7 +63,7 @@ describe('AppImageGallery', () => {
     const strip = el.querySelector('.flex.overflow-x-auto');
     expect(strip).not.toBeNull();
     expect(strip!.querySelectorAll('img')).toHaveLength(3);
-    const cell = strip!.querySelector('div')!;
+    const cell = strip!.querySelector('a')!;
     expect(cell.classList.contains('w-36')).toBe(true);
     expect(cell.classList.contains('flex-shrink-0')).toBe(true);
   });
@@ -79,6 +81,37 @@ describe('AppImageGallery', () => {
     el.querySelectorAll('img').forEach((img) => {
       expect(img.getAttribute('alt')).toBe('Family photos');
     });
+  });
+
+  it('wraps every image in a link to the full image', async () => {
+    const el = await renderComponent({ images: IMAGES });
+    el.querySelectorAll('a').forEach((a, i) => {
+      expect(a.getAttribute('href')).toBe(IMAGES[i]);
+    });
+  });
+
+  it('enables the photoswipe lightbox by default', async () => {
+    const el = await renderComponent({ images: IMAGES });
+    expect(el.lightbox).toBe(true);
+    expect(el.pswp).toBeDefined();
+  });
+
+  it('renders plain cells without the lightbox when disabled', async () => {
+    const el = await renderComponent({ images: IMAGES, lightbox: false });
+    expect(el.pswp).toBeUndefined();
+    expect(el.querySelector('a')).toBeNull();
+    expect(el.querySelectorAll('.grid > div')).toHaveLength(3);
+  });
+
+  it('destroys the lightbox when removed from the DOM', async () => {
+    const el = await renderComponent({ images: IMAGES });
+    let destroyed = false;
+    el.pswp!.destroy = () => {
+      destroyed = true;
+    };
+    el.remove();
+    expect(destroyed).toBe(true);
+    expect(el.pswp).toBeUndefined();
   });
 
   it('updates when images change', async () => {

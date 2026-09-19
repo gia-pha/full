@@ -62,18 +62,37 @@ export function imageGallerySection(): TemplateResult {
             }}
           />
         </div>
+        <div class="flex items-end pb-2">
+          <label class="flex items-center gap-2 text-sm text-gray-700 os-dark:text-gray-200 cursor-pointer">
+            <input
+              type="checkbox"
+              class="w-4 h-4 accent-emerald-600"
+              ?checked=${state.galleryLightbox}
+              @change=${(e: Event) => {
+                state.galleryLightbox = (e.target as HTMLInputElement).checked;
+                notify();
+              }}
+            />
+            Lightbox
+          </label>
+        </div>
       </div>
 
       <div class="space-y-3">
         <p class="text-sm text-gray-500 os-dark:text-gray-400">
           ${state.galleryVariant} · ${images.length} image${
             images.length === 1 ? '' : 's'
+          }${
+            state.galleryLightbox && images.length > 0
+              ? ' · click an image to open the fullscreen viewer'
+              : ''
           }
         </p>
         <app-image-gallery
           .images=${images}
           variant=${state.galleryVariant}
           alt="Family photos"
+          ?lightbox=${state.galleryLightbox}
         ></app-image-gallery>
         ${
           images.length === 0
