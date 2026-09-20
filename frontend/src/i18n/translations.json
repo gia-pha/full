@@ -111,6 +111,8 @@
       "of": "trên"
     },
     "app": {
+      "title": "Gia Phả",
+      "description": "Hệ thống quản lý họ tộc",
       "sidebar": {
         "tree": "Cây Phổ Hệ",
         "members": "Thành Viên",
@@ -143,6 +145,20 @@
       "search": "Tìm Kiếm",
       "reset": "Đặt Lại",
       "noData": "Không có dữ liệu"
+    },
+    "auth": {
+      "login": "Đăng nhập",
+      "register": "Đăng ký",
+      "loginWithPasskey": "Đăng nhập bằng Passkey",
+      "registerWithPasskey": "Đăng ký bằng Passkey",
+      "tapToUseDeviceOrFingerprint": "Nhấn để dùng thiết bị hoặc quét cảm biến",
+      "usePasskey": "Dùng Passkey",
+      "dataSavedLocally": "Dữ liệu sẽ được lưu trữ local trên thiết bị của bạn",
+      "createPasskeyAndJoin": "Tạo Passkey & Tham gia",
+      "name": "Họ tên",
+      "waitingForPasskey": "Đang chờ Passkey...",
+      "loginSuccess": "Đăng nhập thành công",
+      "registerSuccess": "Đăng ký thành công"
     }
   },
   "en": {
@@ -257,6 +273,8 @@
       "of": "of"
     },
     "app": {
+      "title": "Family Tree",
+      "description": "Clan Management System",
       "sidebar": {
         "tree": "Family Tree",
         "members": "Members",
@@ -289,6 +307,20 @@
       "search": "Search members",
       "reset": "Reset",
       "noData": "No data available"
+    },
+    "auth": {
+      "login": "Login",
+      "register": "Register",
+      "loginWithPasskey": "Login with Passkey",
+      "registerWithPasskey": "Register with Passkey",
+      "tapToUseDeviceOrFingerprint": "Tap to use device or scan fingerprint",
+      "usePasskey": "Use Passkey",
+      "dataSavedLocally": "Data will be stored locally on your device",
+      "createPasskeyAndJoin": "Create Passkey & Join",
+      "name": "Full Name",
+      "waitingForPasskey": "Waiting for passkey...",
+      "loginSuccess": "Login successful",
+      "registerSuccess": "Register successful"
     }
   }
 }

@@ -2,17 +2,20 @@ import { afterEach, describe, expect, it } from 'vitest';
 import '../../src/components/app-button.js';
 import type {
   AppButton,
+  ButtonSize,
   ButtonVariant,
 } from '../../src/components/app-button.js';
 
 async function renderComponent(opts?: {
   variant?: ButtonVariant;
+  size?: ButtonSize;
   disabled?: boolean;
   icon?: string;
   label?: string;
 }): Promise<AppButton> {
   const el = document.createElement('app-button');
   if (opts?.variant !== undefined) el.variant = opts.variant;
+  if (opts?.size !== undefined) el.size = opts.size;
   if (opts?.disabled !== undefined) el.disabled = opts.disabled;
   if (opts?.icon !== undefined) el.icon = opts.icon;
   el.label = opts?.label ?? 'Save';
@@ -96,6 +99,33 @@ describe('AppButton', () => {
     it('inner button fills host width', async () => {
       const el = await renderComponent();
       expect(getButton(el).className).toContain('w-full');
+    });
+
+    it('defaults to md size', async () => {
+      const el = await renderComponent();
+      const className = getButton(el).className;
+      expect(className).toContain('py-2.5');
+      expect(className).toContain('rounded-lg');
+      expect(className).toContain('text-sm');
+    });
+
+    it('applies lg size', async () => {
+      const el = await renderComponent({ size: 'lg' });
+      const className = getButton(el).className;
+      expect(className).toContain('py-3.5');
+      expect(className).toContain('rounded-xl');
+      expect(className).toContain('text-base');
+    });
+
+    it('falls back to md for unknown size', async () => {
+      const el = document.createElement('app-button');
+      el.size = 'unknown' as ButtonSize;
+      el.label = 'Go';
+      document.body.appendChild(el);
+      await el.updateComplete;
+      const className = getButton(el).className;
+      expect(className).toContain('py-2.5');
+      el.remove();
     });
 
     it('makes the host inline-block so consumer width classes apply', async () => {
