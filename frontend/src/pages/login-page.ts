@@ -98,7 +98,7 @@ export class LoginPage extends I18nMixin(LitElement) {
                   : this.t('auth.usePasskey')
               }
               ?disabled=${this.busy}
-              @click=${this.handleLogin}
+              @click=${() => this.handleLogin()}
             ></app-button>
           </div>
         `}

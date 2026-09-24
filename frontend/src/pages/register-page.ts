@@ -113,7 +113,7 @@ export class RegisterPage extends I18nMixin(LitElement) {
                   : this.t('auth.createPasskeyAndJoin')
               }
               ?disabled=${this.busy}
-              @click=${this.handleSubmit}
+              @click=${() => this.handleSubmit()}
             ></app-button>
           </div>
         `}
