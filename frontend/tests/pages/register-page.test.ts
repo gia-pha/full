@@ -11,17 +11,10 @@ vi.mock('../../src/services/passkey.js', () => ({
 import '../../src/pages/register-page.js';
 import type { RegisterPage } from '../../src/pages/register-page.js';
 
-function flush(): Promise<void> {
-  return (async () => {
-    for (let i = 0; i < 3; i++) await new Promise((r) => setTimeout(r, 0));
-  })();
-}
-
 async function renderPage(): Promise<RegisterPage> {
   const el = document.createElement('register-page');
   document.body.appendChild(el);
   await el.updateComplete;
-  await flush();
   return el;
 }
 
@@ -34,10 +27,12 @@ function submitButton(el: RegisterPage): HTMLButtonElement | null {
 }
 
 beforeEach(() => {
+  vi.useFakeTimers();
   register.mockReset();
 });
 
 afterEach(() => {
+  vi.useRealTimers();
   document.querySelectorAll('register-page').forEach((el) => {
     el.remove();
   });
@@ -56,7 +51,7 @@ describe('RegisterPage', () => {
   it('does not call register when the name is empty', async () => {
     const el = await renderPage();
     submitButton(el)?.click();
-    await flush();
+    await vi.advanceTimersByTimeAsync(0);
     expect(register).not.toHaveBeenCalled();
   });
 
@@ -69,7 +64,7 @@ describe('RegisterPage', () => {
     window.addEventListener('auth-success', success);
 
     submitButton(el)?.click();
-    await flush();
+    await vi.advanceTimersByTimeAsync(0);
 
     window.removeEventListener('auth-success', success);
     expect(register).toHaveBeenCalledWith('Alice');
@@ -86,7 +81,7 @@ describe('RegisterPage', () => {
     if (input) input.value = 'Alice';
 
     submitButton(el)?.click();
-    await flush();
+    await vi.advanceTimersByTimeAsync(0);
 
     expect(el.querySelector('[role="alert"]')?.textContent).toContain(
       'name taken',

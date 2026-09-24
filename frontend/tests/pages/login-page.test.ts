@@ -11,17 +11,10 @@ vi.mock('../../src/services/passkey.js', () => ({
 import '../../src/pages/login-page.js';
 import type { LoginPage } from '../../src/pages/login-page.js';
 
-function flush(): Promise<void> {
-  return (async () => {
-    for (let i = 0; i < 3; i++) await new Promise((r) => setTimeout(r, 0));
-  })();
-}
-
 async function renderPage(): Promise<LoginPage> {
   const el = document.createElement('login-page');
   document.body.appendChild(el);
   await el.updateComplete;
-  await flush();
   return el;
 }
 
@@ -30,10 +23,12 @@ function submitButton(el: LoginPage): HTMLButtonElement | null {
 }
 
 beforeEach(() => {
+  vi.useFakeTimers();
   login.mockReset();
 });
 
 afterEach(() => {
+  vi.useRealTimers();
   document.querySelectorAll('login-page').forEach((el) => {
     el.remove();
   });
@@ -55,7 +50,7 @@ describe('LoginPage', () => {
     window.addEventListener('auth-success', success);
 
     submitButton(el)?.click();
-    await flush();
+    await vi.advanceTimersByTimeAsync(0);
 
     window.removeEventListener('auth-success', success);
     expect(login).toHaveBeenCalledTimes(1);
@@ -72,7 +67,7 @@ describe('LoginPage', () => {
     window.addEventListener('auth-success', success);
 
     submitButton(el)?.click();
-    await flush();
+    await vi.advanceTimersByTimeAsync(0);
 
     window.removeEventListener('auth-success', success);
     expect(el.querySelector('[role="alert"]')?.textContent).toContain(
