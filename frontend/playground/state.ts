@@ -1,5 +1,6 @@
 import type { ButtonVariant } from '../src/components/app-button.js';
 import type { FieldType } from '../src/components/app-input.js';
+import type { LinkTab } from '../src/components/app-link-tabs.js';
 import type { SelectOption } from '../src/components/app-select.js';
 import type { GalleryVariant } from '../src/components/image-gallery.js';
 import type { AvatarSize } from '../src/components/person-avatar.js';
@@ -76,6 +77,7 @@ export interface PlaygroundState {
   textareaRows: number;
   toggleChecked: boolean;
   tabsValue: string;
+  linkTabsActive: string;
   emptyIcon: string;
   emptyMessage: string;
   emptyVisible: boolean;
@@ -180,6 +182,7 @@ export const state: PlaygroundState = {
   textareaRows: 3,
   toggleChecked: true,
   tabsValue: 'upcoming',
+  linkTabsActive: '#login',
   emptyIcon: '📭',
   emptyMessage: 'No events yet',
   emptyVisible: true,
@@ -836,6 +839,12 @@ export function chartTransactions(): Transaction[] {
 export const tabOptions: TabDef[] = [
   { id: 'upcoming', label: '📅 Upcoming (3)' },
   { id: 'past', label: '📋 Past (12)' },
+];
+
+export const linkTabOptions: LinkTab[] = [
+  { href: '#login', label: 'auth.login' },
+  { href: '#register', label: 'auth.register' },
+  { href: '#help', label: 'Need help?' },
 ];
 
 export const sizes: AvatarSize[] = ['xs', 'sm', 'md', 'lg', 'xl'];

@@ -15,6 +15,7 @@ import '../src/components/app-textarea.js';
 import '../src/components/app-search-bar.js';
 import '../src/components/toggle.js';
 import '../src/components/tabs.js';
+import '../src/components/app-link-tabs.js';
 import '../src/components/empty-state.js';
 import '../src/components/stat-card.js';
 import '../src/components/info-card.js';
@@ -31,6 +32,7 @@ import '../src/components/family-tree.js';
 import '../src/components/toast.js';
 import { appBadgeSection } from './components/app-badge.js';
 import { appButtonSection } from './components/app-button.js';
+import { appLinkTabsSection } from './components/app-link-tabs.js';
 import { appSearchBarSection } from './components/app-search-bar.js';
 import { avatarStackSection } from './components/avatar-stack.js';
 import { calendarSection } from './components/calendar.js';
@@ -105,6 +107,7 @@ function renderPlayground() {
           ${appSearchBarSection()}
           ${appButtonSection()}
           ${appBadgeSection()}
+          ${appLinkTabsSection()}
           ${uiBasicsSection()}
           ${cardsSection()}
           ${imageGallerySection()}

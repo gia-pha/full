@@ -4,11 +4,12 @@ import { ref } from 'lit/directives/ref.js';
 import '../components/app-button.js';
 import '../components/app-input.js';
 import type { AppInput } from '../components/app-input.js';
+import '../components/app-link-tabs.js';
 import { I18nMixin } from '../i18n/i18n-mixin.js';
 import { iconFingerprint } from '../icons/index.js';
 import '../layouts/app-auth-layout.js';
 import { register } from '../services/passkey.js';
-import { authTabs } from './auth-tabs.js';
+import { AUTH_TABS } from './auth-tabs.js';
 
 @customElement('register-page')
 export class RegisterPage extends I18nMixin(LitElement) {
@@ -54,7 +55,10 @@ export class RegisterPage extends I18nMixin(LitElement) {
         description=${this.t('app.description')}
         footer=${`Gia Phả © ${new Date().getFullYear()}`}
         .content=${html`
-          ${authTabs('register', (key) => this.t(key))}
+          <app-link-tabs
+            active="/register"
+            .tabs=${AUTH_TABS}
+          ></app-link-tabs>
           <div class="space-y-4">
             <div class="py-4 text-center">
               <div

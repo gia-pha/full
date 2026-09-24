@@ -1,11 +1,12 @@
 import { html, LitElement } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import '../components/app-button.js';
+import '../components/app-link-tabs.js';
 import { I18nMixin } from '../i18n/i18n-mixin.js';
 import { iconFingerprint } from '../icons/index.js';
 import '../layouts/app-auth-layout.js';
 import { login } from '../services/passkey.js';
-import { authTabs } from './auth-tabs.js';
+import { AUTH_TABS } from './auth-tabs.js';
 
 @customElement('login-page')
 export class LoginPage extends I18nMixin(LitElement) {
@@ -48,7 +49,10 @@ export class LoginPage extends I18nMixin(LitElement) {
         description=${this.t('app.description')}
         footer=${`Gia Phả © ${new Date().getFullYear()}`}
         .content=${html`
-          ${authTabs('login', (key) => this.t(key))}
+          <app-link-tabs
+            active="/login"
+            .tabs=${AUTH_TABS}
+          ></app-link-tabs>
           <div class="space-y-4">
             <div class="py-8 text-center">
               <div
