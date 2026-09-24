@@ -1,10 +1,15 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import '../../src/components/app-input.js';
-import type { AppInput, FieldType } from '../../src/components/app-input.js';
+import type {
+  AppInput,
+  FieldType,
+  InputSize,
+} from '../../src/components/app-input.js';
 
 async function renderComponent(opts?: {
   label?: string;
   type?: FieldType;
+  size?: InputSize;
   value?: string;
   placeholder?: string;
   required?: boolean;
@@ -13,6 +18,7 @@ async function renderComponent(opts?: {
   const el = document.createElement('app-input');
   if (opts?.label !== undefined) el.label = opts.label;
   if (opts?.type !== undefined) el.type = opts.type;
+  if (opts?.size !== undefined) el.size = opts.size;
   if (opts?.value !== undefined) el.value = opts.value;
   if (opts?.placeholder !== undefined) el.placeholder = opts.placeholder;
   if (opts?.required !== undefined) el.required = opts.required;
@@ -89,6 +95,36 @@ describe('AppInput', () => {
     it('reflects disabled attribute', async () => {
       const el = await renderComponent({ disabled: true });
       expect(getInput(el).disabled).toBe(true);
+    });
+
+    it('defaults to md size', async () => {
+      const el = await renderComponent({ label: 'Name' });
+      const className = getInput(el).className;
+      expect(className).toContain('py-2.5');
+      expect(className).toContain('rounded-lg');
+      expect(className).toContain('text-sm');
+      expect(el.querySelector('label')!.className).toContain('text-xs');
+    });
+
+    it('applies lg size', async () => {
+      const el = await renderComponent({ label: 'Name', size: 'lg' });
+      const className = getInput(el).className;
+      expect(className).toContain('py-3');
+      expect(className).toContain('rounded-xl');
+      expect(className).toContain('text-base');
+      const labelClassName = el.querySelector('label')!.className;
+      expect(labelClassName).toContain('text-sm');
+      expect(labelClassName).not.toContain('text-xs');
+    });
+
+    it('falls back to md for unknown size', async () => {
+      const el = document.createElement('app-input');
+      el.size = 'unknown' as InputSize;
+      el.label = 'Name';
+      document.body.appendChild(el);
+      await el.updateComplete;
+      expect(getInput(el).className).toContain('py-2.5');
+      el.remove();
     });
 
     it('renders without shadow DOM', async () => {

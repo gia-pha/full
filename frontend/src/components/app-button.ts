@@ -2,6 +2,7 @@ import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'soft-danger';
+export type ButtonSize = 'md' | 'lg';
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary: 'bg-emerald-600 hover:bg-emerald-700 text-white',
@@ -12,9 +13,15 @@ const variantStyles: Record<ButtonVariant, string> = {
     'bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-950 dark:hover:bg-red-900 dark:text-red-400',
 };
 
+const sizeStyles: Record<ButtonSize, string> = {
+  md: 'px-5 py-2.5 rounded-lg text-sm',
+  lg: 'px-5 py-3.5 rounded-xl text-base',
+};
+
 @customElement('app-button')
 export class AppButton extends LitElement {
   @property({ type: String }) variant: ButtonVariant = 'primary';
+  @property({ type: String }) size: ButtonSize = 'md';
   @property({ type: String }) icon = '';
   @property({ type: String }) label = '';
   @property({ type: Boolean }) disabled = false;
@@ -33,7 +40,7 @@ export class AppButton extends LitElement {
       <button
         type="button"
         ?disabled=${this.disabled}
-        class="inline-flex w-full items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 ${variantStyles[this.variant] || variantStyles.primary} ${this.disabled ? 'opacity-50 cursor-not-allowed' : ''}"
+        class="inline-flex w-full items-center justify-center gap-2 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 ${sizeStyles[this.size] || sizeStyles.md} ${variantStyles[this.variant] || variantStyles.primary} ${this.disabled ? 'opacity-50 cursor-not-allowed' : ''}"
       >
         ${this.icon ? html`<span>${this.icon}</span>` : html``}
         ${this.label ? html`<span>${this.label}</span>` : html``}
