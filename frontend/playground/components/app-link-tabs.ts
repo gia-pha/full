@@ -1,6 +1,5 @@
 import type { TemplateResult } from 'lit';
 import { html } from 'lit';
-import type { LinkTab } from '../../src/components/app-link-tabs.js';
 import { linkTabOptions, notify, state } from '../state.js';
 
 export function appLinkTabsSection(): TemplateResult {
@@ -28,27 +27,6 @@ export function appLinkTabsSection(): TemplateResult {
           .tabs=${linkTabOptions}
           active=${state.linkTabsActive}
         ></app-link-tabs>
-      </div>
-
-      <div class="flex flex-wrap gap-2">
-        ${linkTabOptions.map(
-          (tab: LinkTab) => html`
-            <button
-              type="button"
-              class="px-3 py-1.5 text-sm rounded-lg transition-colors ${
-                tab.href === state.linkTabsActive
-                  ? 'bg-emerald-600 text-white'
-                  : 'bg-gray-100 os-dark:bg-gray-700 text-gray-700 os-dark:text-gray-200 hover:bg-gray-200 os-dark:hover:bg-gray-600'
-              }"
-              @click=${() => {
-                state.linkTabsActive = tab.href;
-                notify();
-              }}
-            >
-              ${tab.href}
-            </button>
-          `,
-        )}
       </div>
 
       <p class="text-xs text-gray-400">
