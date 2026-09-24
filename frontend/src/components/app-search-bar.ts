@@ -1,5 +1,6 @@
 import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { createRef, type Ref, ref } from 'lit/directives/ref.js';
 import { iconClose, iconSearch } from '../icons/index.js';
 
 export type SearchDetail = {
@@ -18,6 +19,7 @@ export class AppSearchBar extends LitElement {
   @property({ type: Boolean }) autofocus = false;
 
   private timer?: ReturnType<typeof setTimeout>;
+  private inputRef: Ref<HTMLInputElement> = createRef<HTMLInputElement>();
 
   override createRenderRoot() {
     return this;
@@ -55,7 +57,7 @@ export class AppSearchBar extends LitElement {
     if (this.timer) clearTimeout(this.timer);
     this.value = '';
     this.emit('');
-    this.renderRoot.querySelector<HTMLInputElement>('input')?.focus();
+    this.inputRef.value?.focus();
   };
 
   override render() {
@@ -73,6 +75,7 @@ export class AppSearchBar extends LitElement {
           placeholder=${this.placeholder}
           aria-label=${this.ariaLabel}
           ?autofocus=${this.autofocus}
+          ${ref(this.inputRef)}
           @input=${this.handleInput}
         />
         ${

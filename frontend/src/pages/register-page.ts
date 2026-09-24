@@ -1,6 +1,6 @@
 import { html, LitElement } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
-import { ref } from 'lit/directives/ref.js';
+import { createRef, type Ref, ref } from 'lit/directives/ref.js';
 import '../components/app-button.js';
 import '../components/app-input.js';
 import type { AppInput } from '../components/app-input.js';
@@ -16,7 +16,7 @@ export class RegisterPage extends I18nMixin(LitElement) {
   @state() private accessor busy = false;
   @state() private accessor error = '';
   @state() private accessor message = '';
-  private nameInput?: AppInput;
+  private nameInputRef: Ref<AppInput> = createRef<AppInput>();
 
   override createRenderRoot() {
     return this;
@@ -31,7 +31,7 @@ export class RegisterPage extends I18nMixin(LitElement) {
 
   private async handleSubmit() {
     if (this.busy) return;
-    const name = this.nameInput?.value.trim() ?? '';
+    const name = this.nameInputRef.value?.value.trim() ?? '';
     if (!name) return;
     this.busy = true;
     this.error = '';
@@ -98,9 +98,7 @@ export class RegisterPage extends I18nMixin(LitElement) {
               label=${this.t('auth.name')}
               placeholder=${this.t('auth.name')}
               required
-              ${ref((el: unknown) => {
-                this.nameInput = el as AppInput | undefined;
-              })}
+              ${ref(this.nameInputRef)}
             ></app-input>
             <app-button
               class="w-full"
