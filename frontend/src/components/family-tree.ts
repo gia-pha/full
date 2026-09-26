@@ -14,7 +14,7 @@ type TreeChart = ReturnType<typeof createChart>;
 type TreeCard = ReturnType<TreeChart['setCardHtml']>;
 type CardDatum = Parameters<EditTree['open']>[0];
 
-const CARD_DISPLAY = [['years'], ['firstName', 'lastName']];
+const CARD_DISPLAY = [['firstName', 'lastName'], ['years']];
 
 const EDIT_FIELDS = [
   'firstName',
@@ -189,7 +189,7 @@ export class AppFamilyTree extends I18nMixin(LitElement) {
       kind === 'edit'
         ? 'f3-svg-circle-hover f3-card-edit-btn'
         : 'f3-svg-circle-hover f3-card-add-btn';
-    button.style.cssText = `cursor:pointer;width:24px;height:24px;position:absolute;top:4px;${
+    button.style.cssText = `cursor:pointer;width:24px;height:24px;position:absolute;bottom:4px;${
       kind === 'edit' ? 'right:4px' : 'right:32px'
     };z-index:10;`;
     button.innerHTML =
