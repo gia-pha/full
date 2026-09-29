@@ -26,6 +26,9 @@ jobs:
   test:
     needs: check
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./auth    
     steps:
       - uses: actions/checkout@v6
 
@@ -41,6 +44,9 @@ jobs:
   build:
     needs: check
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./auth    
     steps:
       - uses: actions/checkout@v6
 

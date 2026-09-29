@@ -1,9 +1,11 @@
 package main
 
 import (
+	"auth-passkey/adapters"
 	"auth-passkey/ports"
 	"auth-passkey/service"
 	"fmt"
+	"log"
 	"log/slog"
 	"net/http"
 	"os"
@@ -13,6 +15,28 @@ import (
 )
 
 func main() {
+	db := adapters.ConnectDB()
+	defer db.Close()
+
+	rows, err := db.Query(`SELECT * FROM "user"`)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	fmt.Println("Users in the database:")
+	for rows.Next() {
+		var name string
+		var fullname string
+
+		err := rows.Scan(&name, &fullname)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Println(name, fullname)
+	}
+
 	var lvl slog.Level
 	switch getEnv("LOG_LEVEL", "DEBUG") {
 	case "INFO":
