@@ -2,7 +2,10 @@ module auth-passkey
 
 go 1.25.0
 
-require github.com/go-webauthn/webauthn v0.16.0
+require (
+	github.com/go-webauthn/webauthn v0.16.0
+	github.com/lib/pq v1.12.3
+)
 
 require (
 	github.com/fxamacker/cbor/v2 v2.9.0 // indirect
