@@ -5,9 +5,13 @@
   "main": "index.js",
   "scripts": {
     "dev": "vite",
+    "demo": "concurrently -n stub,web -c blue,green \"node ../contracts/stub-server.mjs --port 8090\" \"vite --mode demo\"",
     "build": "vite build",
     "test": "vitest",
     "test:run": "vitest run",
+    "test:contracts": "vitest run --config vitest.contracts.config.ts",
+    "pact:publish": "node ../contracts/publish.mjs",
+    "stub": "node ../contracts/stub-server.mjs --port 8090",
     "typecheck": "tsc --noEmit",
     "fix": "biome check src/ playground/ tests/ --fix",
     "check": "biome check src/ playground/ tests/"
@@ -16,10 +20,17 @@
   "author": "",
   "license": "ISC",
   "type": "module",
+  "pnpm": {
+    "ignoredBuiltDependencies": [
+      "@scarf/scarf"
+    ]
+  },
   "devDependencies": {
     "@biomejs/biome": "^2.5.2",
+    "@pact-foundation/pact": "^17.1.4",
     "@types/d3": "^7.4.3",
     "@types/node": "^26.0.1",
+    "concurrently": "^10.0.6",
     "jsdom": "^29.1.1",
     "tailwindcss": "^4.3.1",
     "typescript": "7.0.1-rc",
