@@ -5,6 +5,7 @@
     "useDefineForClassFields": false,
     "module": "ESNext",
     "moduleResolution": "bundler",
+    "types": ["node"],
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "rootDir": ".",
     "outDir": "./dist",
