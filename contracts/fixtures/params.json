@@ -1,0 +1,9 @@
+{
+  "rpId": "localhost",
+  "origin": "http://localhost:8083",
+  "challenge": "ASNFZ4mrze8BI0VniavN7w",
+  "userId": "cGFjdHVzZXIwMDAwMDAwMQ",
+  "credentialId": "cGFjdGNyZWQwMDAwMDAwMQ",
+  "cosePublicKey": "pQECAyYgAiFYIFnu-2DBPFhhqDQLPew9_DAZkhZ2WJ4uVjI4_-jJDUfmIlggq1Y0ltMEM7sP6nzAJXLY8GtcI2snSIK3NqVdLdkPc1Y",
+  "generatedAt": "2026-10-10T16:10:06.049Z"
+}

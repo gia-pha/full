@@ -5,14 +5,19 @@ on:
     branches: [main]
     paths:
       - 'auth/**'
+      - 'contracts/**'
   pull_request:
     branches: [main]
     paths:
       - 'auth/**'
+      - 'contracts/**'
 
 jobs:
   check:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./auth
     steps:
       - uses: actions/checkout@v6
 
@@ -20,12 +25,15 @@ jobs:
         with:
           go-version: '1.25.0'
           cache-dependency-path: auth/go.sum
-          
+
       - run: gofmt -l .
 
   test:
     needs: check
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./auth
     steps:
       - uses: actions/checkout@v6
 
@@ -36,11 +44,15 @@ jobs:
 
       - run: go mod download
 
-      - run: go test ./... -v -race
+      # contracts/ needs the Pact FFI library and runs in the pact-verify job
+      - run: go test $(go list ./... | grep -v '/contracts') -v -race
 
   build:
     needs: check
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./auth
     steps:
       - uses: actions/checkout@v6
 
@@ -53,3 +65,40 @@ jobs:
 
       - run: go build -v ./...
 
+  pact-verify:
+    needs: check
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./auth
+    env:
+      PACT_BROKER_URL: ${{ secrets.PACT_BROKER_URL }}
+      PACT_BROKER_TOKEN: ${{ secrets.PACT_BROKER_TOKEN }}
+      PACT_PROVIDER_VERSION: ${{ github.sha }}
+      PACT_PROVIDER_BRANCH: ${{ github.ref_name }}
+      PACT_PROVIDER_TAG: main
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version: '1.25.0'
+          cache-dependency-path: auth/go.sum
+
+      - name: Install Pact FFI library
+        working-directory: .
+        run: bash contracts/install-pact-ffi.sh
+
+      - name: Verify pacts from the broker
+        if: env.PACT_BROKER_URL != ''
+        run: go test ./contracts/ -v
+
+      - name: Verify pacts from the workspace (no broker configured)
+        if: env.PACT_BROKER_URL == ''
+        run: |
+          echo "PACT_BROKER_URL secret is not set; verifying local pacts if present"
+          if ls ../frontend/pacts/*.json >/dev/null 2>&1; then
+            go test ./contracts/ -v
+          else
+            echo "no local pacts found; skipping"
+          fi
