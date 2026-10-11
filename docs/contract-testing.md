@@ -69,15 +69,33 @@ Then re-run consumer tests and provider verification.
 
 | Mode | Command | Backend | Env file |
 |---|---|---|---|
-| **demo** (backend not ready) | `pnpm demo` | Pact stub server on `:8090` built from the contracts | `frontend/.env.demo` |
+| **demo** (backend not ready) | `docker compose up -d frontend-demo` | pact stub server (see Docker Compose below) | `frontend/.env.demo` |
 | **live** (real backend) | `pnpm dev` | real `auth` service on `:8080` | `frontend/.env.development` |
 
-`pnpm demo` starts the stub server (`contracts/stub-server.mjs`, which serves
-the example interactions from `frontend/pacts/`) and Vite in `demo` mode
-together. The stub returns the contract's example responses, so the register
-and login flows work end-to-end in the browser without the Go backend.
+In demo mode the frontend is built with an empty `VITE_AUTH_BACKEND_URL`, so
+all calls are same-origin `/api/` requests proxied to the pact stub server,
+which returns the contract's example responses. The register and login flows
+therefore work end-to-end in the browser without the Go backend.
 
 For production builds, set `VITE_AUTH_BACKEND_URL` at build time (live mode).
+
+## Docker Compose (demo vs live)
+
+| Service | Port | Talks to |
+|---|---|---|
+| `frontend` (live) | 8083 | real `auth` service (`VITE_AUTH_BACKEND_URL=http://localhost:8080`, baked at build time) |
+| `frontend-demo` (demo) | 8084 | pact stub server, via its nginx proxying `/api/` to `stub-server:8090` (built with `VITE_AUTH_BACKEND_URL=""`) |
+| `stub-server` | 8090 | official `pactfoundation/pact-stub-server` image, serving all latest pacts from the Pact Broker (`-b http://pact-broker:9292`) |
+
+Notes:
+
+- Publish pacts to the broker first (`pnpm pact:publish`); the stub loads them
+  at startup.
+- The stub image ships without ca-certificates, so `/etc/ssl/certs` is mounted
+  into it (otherwise it panics when fetching from the broker).
+- `frontend-demo` calls the stub same-origin because the official stub
+  server cannot do credentialed CORS (`Access-Control-Allow-Credentials`),
+  and the login flow needs `credentials: 'include'` for the `sid` cookie.
 
 ## CI
 
