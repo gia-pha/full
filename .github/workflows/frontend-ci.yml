@@ -87,16 +87,14 @@ jobs:
       - name: Publish pacts to the Pact Broker
         if: github.ref == 'refs/heads/main'
         env:
-          PACT_BROKER_URL: ${{ secrets.PACT_BROKER_URL }}
+          PACT_BROKER_BASE_URL: ${{ secrets.PACT_BROKER_URL }}
           PACT_BROKER_TOKEN: ${{ secrets.PACT_BROKER_TOKEN }}
-          PACT_CONSUMER_VERSION: ${{ github.sha }}
-          PACT_CONSUMER_TAG: main
         run: |
-          if [ -z "$PACT_BROKER_URL" ]; then
+          if [ -z "$PACT_BROKER_BASE_URL" ]; then
             echo "PACT_BROKER_URL secret is not set; skipping publish"
             exit 0
           fi
-          node ../contracts/publish.mjs
+          pnpm pact:publish
 
       - uses: actions/upload-artifact@v4
         with:

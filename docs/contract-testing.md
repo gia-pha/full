@@ -26,7 +26,9 @@ docker compose up -d pact-broker
 ```bash
 cd frontend
 pnpm test:contracts     # runs pact tests, writes frontend/pacts/
-pnpm pact:publish       # publishes pacts to PACT_BROKER_URL (tagged with the branch)
+pnpm pact:publish       # pact CLI: publishes pacts/ to the broker
+                        # (PACT_BROKER_BASE_URL, default http://localhost:9292;
+                        # version + branch auto-detected from git/CI)
 ```
 
 The tests drive the real client code (`src/services/passkey.ts`) against a
