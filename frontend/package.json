@@ -9,7 +9,7 @@
     "test": "vitest",
     "test:run": "vitest run",
     "test:contracts": "vitest run --config vitest.contracts.config.ts",
-    "pact:publish": "node ../contracts/publish.mjs",
+    "pact:publish": "pact broker publish -b ${PACT_BROKER_BASE_URL:-http://localhost:9292} -r --tag-with-git-branch pacts/*.json",
     "stub": "docker run --rm -p 8090:8090 -v \"$PWD/pacts:/app/pacts\" pactfoundation/pact-stub-server -p 8090 -o -d pacts",
     "typecheck": "tsc --noEmit",
     "fix": "biome check src/ playground/ tests/ --fix",
@@ -27,6 +27,7 @@
   "devDependencies": {
     "@biomejs/biome": "^2.5.2",
     "@pact-foundation/pact": "^17.1.4",
+    "@pact-foundation/pact-cli": "^18.1.2",
     "@types/d3": "^7.4.3",
     "@types/node": "^26.0.1",
     "jsdom": "^29.1.1",
