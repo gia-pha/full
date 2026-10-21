@@ -3,7 +3,9 @@
 Status: **plan** (decision record for the move from a single compose monorepo to
 independently-deployable services). This complements `docs/contract-testing.md`,
 which describes the current *local-directory, no-broker* setup. The target below
-replaces the broker part.
+replaces the broker part. For the exact *when* of each pact step (publish vs
+verify triggers, and what the submodule split breaks), see
+`docs/contract-testing-triggers.md`.
 
 ## Goal
 
