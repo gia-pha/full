@@ -10,7 +10,7 @@ services:
       - PORT=${PORT:-:8080}
       - WEBAUTHN_NAME=${WEBAUTHN_NAME:-Gia Pha}
       - WEBAUTHN_ID=${WEBAUTHN_ID:-localhost}
-      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:8081}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:8081,http://localhost:8083}
       - LOG_LEVEL=${LOG_LEVEL:-DEBUG}
     develop:
       watch:
@@ -42,9 +42,76 @@ services:
   frontend:
     build:
       context: ./frontend
+      args:
+        # live mode: the browser talks to the real auth service (published on :8080)
+        VITE_AUTH_BACKEND_URL: ${VITE_AUTH_BACKEND_URL:-http://localhost:8080}
     ports:
       - "8083:80"
     develop:
       watch:
         - action: rebuild
           path: ./frontend
+
+  frontend-demo:
+    # Same app as frontend, but built with an empty API base url so all
+    # /api/ calls are same-origin and proxied by nginx to the stub server.
+    # (The official stub server cannot do credentialed CORS, and the login
+    # flow needs credentials:'include' for the sid cookie.)
+    build:
+      context: ./frontend
+      args:
+        VITE_AUTH_BACKEND_URL: ""
+    ports:
+      - "8084:80"
+    volumes:
+      - ./frontend/nginx.demo.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - stub-server
+    develop:
+      watch:
+        - action: rebuild
+          path: ./frontend
+
+  stub-server:
+    # Official pact stub server: serves the mock APIs from all the latest
+    # pacts published to the Pact Broker (every consumer/provider pair).
+    image: pactfoundation/pact-stub-server:latest
+    command: -p 8090 -o -b http://pact-broker:9292
+    volumes:
+      # the image ships without ca-certificates; reqwest panics when fetching
+      # pacts from the broker unless the host's CA bundle is mounted
+      - /etc/ssl/certs:/etc/ssl/certs:ro
+    ports:
+      - "8090:8090"
+    depends_on:
+      - pact-broker
+
+  pact-broker:
+    image: pactfoundation/pact-broker:latest
+    ports:
+      - "9292:9292"
+    environment:
+      PACT_BROKER_DATABASE_URL: postgres://pactbroker:pactbroker@pact-broker-db/pactbroker
+      PACT_BROKER_PORT: 9292
+      PACT_BROKER_LOG_LEVEL: INFO
+      PACT_BROKER_ALLOW_MIGRATE: "true"
+    depends_on:
+      pact-broker-db:
+        condition: service_healthy
+
+  pact-broker-db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: pactbroker
+      POSTGRES_USER: pactbroker
+      POSTGRES_PASSWORD: pactbroker
+    volumes:
+      - pact-broker-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pactbroker -d pactbroker"]
+      interval: 2s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pact-broker-db-data:
