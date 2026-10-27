@@ -1,3 +1,6 @@
 [submodule "prototype"]
 	path = prototype
 	url = ../prototype.git
+[submodule "frontend"]
+	path = frontend
+	url = ../frontend.git
