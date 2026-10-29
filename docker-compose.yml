@@ -10,7 +10,7 @@ services:
       - PORT=${PORT:-:8080}
       - WEBAUTHN_NAME=${WEBAUTHN_NAME:-Gia Pha}
       - WEBAUTHN_ID=${WEBAUTHN_ID:-localhost}
-      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:8081}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:8081,http://localhost:8083}
       - LOG_LEVEL=${LOG_LEVEL:-DEBUG}
     develop:
       watch:
@@ -42,9 +42,36 @@ services:
   frontend:
     build:
       context: ./frontend
+      args:
+        # where the browser calls the auth API; see VITE_AUTH_BACKEND_URL in .env
+        VITE_AUTH_BACKEND_URL: ${VITE_AUTH_BACKEND_URL:-http://localhost:8080}
     ports:
       - "8083:80"
     develop:
       watch:
         - action: rebuild
           path: ./frontend
+
+  # Pact stub server wrapped with a CORS proxy, see docker/stub-server/.
+  # The official image cannot answer the credentialed CORS that the
+  # login/register flow needs, so it is built into an image here.
+  stub-server:
+    build:
+      context: ./docker/stub-server
+    environment:
+      # warn logs only the requests that matched no pact interaction; raise it
+      # to info to see every call the stub answers (PACT_STUB_LOG_LEVEL=info)
+      - PACT_STUB_LOG_LEVEL=${PACT_STUB_LOG_LEVEL:-warn}
+    ports:
+      - "8090:8090"
+    volumes:
+      # Pact files stay a runtime mount, so regenerating them needs no rebuild
+      # (the -d dir is scanned recursively: a new service only adds a mount).
+      # Pick up a regenerated pact with: docker compose restart stub-server
+      - ./frontend/pacts:/pacts:ro
+      # - ./auth-ui/pacts:/pacts/auth-ui:ro
+    develop:
+      watch:
+        # rebuild after editing the proxy conf or the entrypoint
+        - action: rebuild
+          path: ./docker/stub-server
